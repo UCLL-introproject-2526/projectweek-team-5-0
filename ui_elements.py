@@ -1,8 +1,8 @@
 import pygame
 
 def create_main_surface():
-    screen_size = (1024, 768)
-    return pygame.display.set_mode(screen_size)
+    window_size = [600, 600]
+    return pygame.display.set_mode(window_size, pygame.RESIZABLE)
 
 def draw_circle(surface):
     pygame.draw.circle(surface, (255, 0, 0), (512, 384), 50)
