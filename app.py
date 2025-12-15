@@ -12,28 +12,34 @@ def main():
     clock = pygame.time.Clock()
     font = pygame.font.Font(None, 36)
     start_time = time.time()
-    
+
     health = 100  # Starting health
-    
+
     while True:
         surface.fill((0, 0, 0))  # Clear screen with black
-        
+
         # Calculate elapsed time
         elapsed_time = time.time() - start_time
-        
+
         # Draw everything
         draw_circle(surface)
         draw_health(surface, font, health)
         draw_timer(surface, font, elapsed_time)
         draw_earth_bar(surface)
-        
+
         pygame.display.flip()
-        
+
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 return
-        
+
+            # checks for escape and quits
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_ESCAPE:
+                    print("closed game")
+                    pygame.quit()
+
         clock.tick(60)  # 60 FPS
 
 # no touchy, supposed to run
