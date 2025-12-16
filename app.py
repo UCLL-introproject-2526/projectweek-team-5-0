@@ -3,6 +3,7 @@ import time
 from ui_elements import *
 from metronome import Metronome
 from asteroids import Asteroid
+from player_state import PlayerState
 
 pygame.init()
 
@@ -19,7 +20,7 @@ def main():
     clock = pygame.time.Clock()
     font = pygame.font.Font(None, 36)
     start_time = time.time()
-    health = 100  
+    player_state = PlayerState()
     metronome = Metronome(bpm=120)
     running = True # run game status
     asteroids = []
@@ -33,12 +34,13 @@ def main():
         surface.fill((0, 0, 0))  # Clear screen with black
 
         metronome.update()
+        player_state.update()
 
         # Calculate elapsed time
         elapsed_time = time.time() - start_time
 
         # Draw everything
-        draw_health(surface, font, health)
+        draw_health(surface, font, player_state.health)
         draw_timer(surface, font, elapsed_time)
         draw_earth_bar(surface)
         draw_shoot_indicator(surface, metronome)
@@ -53,20 +55,6 @@ def main():
             asteroid.draw(surface)
             if asteroid.rect.y > surface.get_height():
                 asteroids.remove(asteroid)
-                health -= 10  # Decrease health by 10 if asteroid goes off screen
-
-
-        # Asteroid spawning logic
-        if elapsed_time - last_spawn_time >= 2:  # Spawn every 2 seconds
-            spawn_asteroid()
-            last_spawn_time = elapsed_time
-            
-        for asteroid in asteroids[:]:
-            asteroid.update()
-            asteroid.draw(surface)
-            if asteroid.rect.y > surface.get_height():
-                asteroids.remove(asteroid)
-                health -= 10  # Decrease health by 10 if asteroid goes off screen
 
         pygame.display.flip()
 
@@ -88,13 +76,12 @@ def main():
                     else:
                         print("FOUTE TIMING JIJ IDIOOT")
 
-            #dummy schiet functie
+# dit is tijdelijk omdat we nog geen damage feature hebben. nu kan je 
+# de damage-logica triggeren met h
             if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_SPACE:
-                    if metronome.can_shoot() == True:
-                        print("PEWPEW")
-                    else:
-                        print("FOUTE TIMING JIJ IDIOOT")
+                if event.key == pygame.K_h:
+                    player_hit = player_state.take_damage(10)
+                
 
         clock.tick(60)  # 60 FPS
 
