@@ -1,10 +1,11 @@
-
 import pygame
+import pygame_gui
 import time
 from ui_elements import *
 from metronome import Metronome
 from asteroids import Asteroid
 from player_state import PlayerState
+from avatar import Avatar
 from projectile import Projectile
 
 pygame.init()
@@ -29,6 +30,9 @@ def main():
     asteroids = []
     projectiles = []
     last_spawn_time = 0
+
+    # Create a avatar instance
+    avatar = Avatar(surface.get_width(), surface.get_height())
 
     def spawn_asteroid():
         asteroid = Asteroid(surface.get_width(), surface.get_height())
@@ -55,12 +59,16 @@ def main():
             draw_earth_bar(surface)
             draw_shoot_indicator(surface, metronome)
 
+            # Update and draw avatar
+            keys = pygame.key.get_pressed()
+            avatar.update(keys, surface.get_width(), surface.get_height())
+            avatar.draw(surface)
 
             # Asteroid spawning logic
             if elapsed_time - last_spawn_time >= 2:  # Spawn every 2 seconds
                 spawn_asteroid()
                 last_spawn_time = elapsed_time
-            
+
             # Update and draw asteroids
             for asteroid in asteroids[:]:
                 asteroid.update()
@@ -109,12 +117,11 @@ def main():
                     else:
                         print("FOUTE TIMING JIJ IDIOOT")
 
-# dit is tijdelijk omdat we nog geen damage feature hebben. nu kan je 
+# dit is tijdelijk omdat we nog geen damage feature hebben. nu kan je
 # de damage-logica triggeren met h
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_h:
                     player_hit = player_state.take_damage(10)
-                
 
         clock.tick(60)  # 60 FPS
 
