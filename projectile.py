@@ -9,13 +9,11 @@ class Projectile:
         self.speed = -4
         self.rect = pygame.Rect(self.x, self.y, 20, 20)
 
-    def update(self):
+    def update(self, projectiles):
         # move straight up
+        if self.rect.y < 0:
+            projectiles.remove(self)
         self.rect.y += self.speed
-    
-    def hit_reg(self):
-        rect.collidelist
-        pass
 
     def draw(self, surface):
         pygame.draw.rect(surface, (255, 100, 100), self.rect)
