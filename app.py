@@ -10,9 +10,6 @@ from projectile import Projectile
 
 pygame.init()
 
-# =====================================================
-# Start Screen with Smaller Rounded Button (Adjusted)
-# =====================================================
 def draw_rounded_button(surface, text, rect, color, font):
     # Draw the rounded rectangle
     pygame.draw.rect(surface, color, rect, border_radius=25)
@@ -26,25 +23,25 @@ def show_start_screen(surface):
     clock = pygame.time.Clock()
     font = pygame.font.Font(None, 35)  # Slightly reduced font size for the start button
 
-    # Set background color
-    surface.fill((0, 0, 0))
-
     # Title text with smaller font size
     title_font = pygame.font.Font(None, 80)  # Smaller title font size
     title_text = title_font.render("ASTEROID SHOOTER", True, (255, 255, 255))  # White text
-    surface.blit(title_text, (surface.get_width() // 2 - title_text.get_width() // 2, surface.get_height() // 5))
 
     # Start button position and size (centering the button)
+    button_width, button_height = 200, 50
     start_button_rect = pygame.Rect(
-        (surface.get_width() // 2 - 100, surface.get_height() // 2 + 50),  # Adjusted position for better centering
-        (200, 50)  # Adjusted button size to fit text
+        (surface.get_width() // 2 - button_width // 2, surface.get_height() // 2 + 50),  # Adjusted position for better centering
+        (button_width, button_height)  # Adjusted button size to fit text
     )
-
-    # Draw Start button (blue with rounded corners)
-    draw_rounded_button(surface, "START GAME", start_button_rect, (0, 128, 255), font)
 
     running = True
     while running:
+        surface.fill((0, 0, 0))  # Fill background with black to clear previous frames
+
+        # Draw the title and start button
+        surface.blit(title_text, (surface.get_width() // 2 - title_text.get_width() // 2, surface.get_height() // 5))
+        draw_rounded_button(surface, "START GAME", start_button_rect, (0, 128, 255), font)
+
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
@@ -55,19 +52,25 @@ def show_start_screen(surface):
                 if start_button_rect.collidepoint(event.pos):
                     running = False  # Stop the loop and start the game
 
-            # checks for escape and quits
+            # Checks for escape and quits
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
                     print("closed menu")
                     pygame.quit()
                     quit()
 
-
             # If the screen is resized or fullscreened, re-draw the elements
             if event.type == pygame.VIDEORESIZE:
                 surface = pygame.display.set_mode((event.w, event.h), pygame.RESIZABLE)  # Dynamically resize surface
-                # Re-call the start screen function to re-center UI
-                show_start_screen(surface)
+
+                # Recalculate start button position to keep it centered
+                start_button_rect = pygame.Rect(
+                    (surface.get_width() // 2 - button_width // 2, surface.get_height() // 2 + 50),
+                    (button_width, button_height)
+                )
+
+                # Recalculate title text position based on new surface size
+                title_text = title_font.render("ASTEROID SHOOTER", True, (255, 255, 255))  # Re-render the title
 
         pygame.display.flip()
         clock.tick(60)  # Ensure the screen updates at 60 FPS
