@@ -82,6 +82,14 @@ def main():
                 projectile.update()
                 projectile.draw(surface)
             
+            #Check for projectile-asteroid collisions
+            for projectile in projectiles[:]:
+                for asteroid in asteroids[:]:
+                    if projectile.rect.colliderect(asteroid.rect):
+                        projectiles.remove(projectile)
+                        asteroids.remove(asteroid)
+                        break  # Exit inner loop to avoid further checks with this projectile
+                 
             # Check for game over
             if player_state.health <= 0:
                 game_over = True
@@ -93,6 +101,8 @@ def main():
             surface.blit(game_over_text, ((surface.get_width() - game_over_text.get_width()) // 2,
                                          (surface.get_height() - game_over_text.get_height()) // 2 - 20))
             surface.blit(restart_text, ((surface.get_width() - restart_text.get_width()) // 2,
+                                        (surface.get_height() - restart_text.get_height()) // 2 + 20))
+            surface.blit(restart_text, ((surface.get_width()- restart_text.get_width()) // 2, 
                                         (surface.get_height() - restart_text.get_height()) // 2 + 20))
 
 
@@ -122,6 +132,16 @@ def main():
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_h:
                     player_hit = player_state.take_damage(10)
+            
+                if event.key == pygame.K_r:
+                    #Reset all game state
+                    player_state = PlayerState()
+                    asteroids.clear()
+                    projectiles.clear()
+                    start_time = time.time()
+                    avatar = Avatar(surface.get_width(), surface.get_height())
+                    game_over = False
+                    print("Game restarted")
 
         clock.tick(60)  # 60 FPS
 
