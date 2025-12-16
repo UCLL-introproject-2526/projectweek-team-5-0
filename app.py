@@ -38,21 +38,31 @@ def main_menu():
     # Buttons
     start_button = pygame_gui.elements.UIButton(
         relative_rect=pygame.Rect(
-            (screen.get_width() // 2 - 100, screen.get_height() // 2),
+            (screen.get_width() // 2 - 100, screen.get_height() // 2),  # y-position
             (200, 50)
         ),
         text="Start Game",
         manager=manager
     )
 
+    settings_button = pygame_gui.elements.UIButton(
+        relative_rect=pygame.Rect(
+            (screen.get_width() // 2 - 100, screen.get_height() // 2 + 60),  # slightly below Start
+            (200, 50)
+        ),
+        text="Settings",
+        manager=manager
+    )
+
     quit_button = pygame_gui.elements.UIButton(
         relative_rect=pygame.Rect(
-            (screen.get_width() // 2 - 100, screen.get_height() // 2 + 70),
+            (screen.get_width() // 2 - 100, screen.get_height() // 2 + 120),  # slightly below Settings
             (200, 50)
         ),
         text="Quit",
         manager=manager
     )
+
 
     running = True
     while running:
@@ -71,9 +81,12 @@ def main_menu():
             if event.type == pygame_gui.UI_BUTTON_PRESSED:
                 if event.ui_element == start_button:
                     return
-                if event.ui_element == quit_button:
+                elif event.ui_element == settings_button:
+                    print("Settings button clicked!")  # Replace with actual settings logic
+                elif event.ui_element == quit_button:
                     pygame.quit()
                     exit()
+
 
             manager.process_events(event)
 
