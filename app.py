@@ -21,6 +21,7 @@ def main():
     clock = pygame.time.Clock()
     font = pygame.font.Font(None, 36)
     start_time = time.time()
+    player_state = PlayerState()
     health = 100
     metronome = Metronome(bpm=120)
     running = True # run game status
