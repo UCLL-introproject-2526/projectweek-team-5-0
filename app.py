@@ -35,7 +35,7 @@ def main():
     avatar = Avatar(surface.get_width(), surface.get_height())
 
     def spawn_asteroid():
-        asteroid = Asteroid(surface.get_width(), surface.get_height())
+        asteroid = Asteroid(surface.get_width(), surface.get_height(), 10)
         asteroids.append(asteroid)
 
     def spawn_projectile(avatar_position):
@@ -60,15 +60,17 @@ def main():
 
             # Update and draw asteroids
             for asteroid in asteroids[:]:
-                asteroid.update()
+                asteroid.update(projectiles)
                 asteroid.draw(surface)
+                if asteroid.health <= 0:
+                    asteroids.remove(asteroid)
                 if asteroid.rect.y > surface.get_height():
                     asteroids.remove(asteroid)
                     player_state.take_damage(10)  # Decrease health by 10 if asteroid goes off screen
 
             # Update and draw projectiles
             for projectile in projectiles[:]:
-                projectile.update()
+                projectile.update(projectiles)
                 projectile.draw(surface)
 
             #draw alle ui elementen laatste en on top
