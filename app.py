@@ -5,6 +5,7 @@ from ui_elements import *
 from metronome import Metronome
 from asteroids import Asteroid
 from player_state import PlayerState
+from projectile import Projectile
 
 pygame.init()
 
@@ -26,12 +27,17 @@ def main():
     running = True # run game status
     game_over = False
     asteroids = []
+    projectiles = []
     last_spawn_time = 0
 
     def spawn_asteroid():
         asteroid = Asteroid(surface.get_width(), surface.get_height())
         asteroids.append(asteroid)
-
+    
+    def spawn_projectile():
+        projectile = Projectile([100,100])
+        projectiles.append(projectile)
+    
     while running:
         surface.fill((0, 0, 0))  # Clear screen with black
 
@@ -62,7 +68,12 @@ def main():
                 if asteroid.rect.y > surface.get_height():
                     asteroids.remove(asteroid)
                     player_state.take_damage(10)  # Decrease health by 10 if asteroid goes off screen
-
+        
+            # Update and draw projectiles
+            for projectile in projectiles[:]:
+                projectile.update()
+                projectile.draw(surface)
+            
             # Check for game over
             if player_state.health <= 0:
                 game_over = True
@@ -93,6 +104,7 @@ def main():
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_SPACE:
                     if metronome.can_shoot() == True:
+                        spawn_projectile(avatar.get_player_position())
                         print("PEWPEW")
                     else:
                         print("FOUTE TIMING JIJ IDIOOT")
