@@ -54,8 +54,16 @@ def main():
         pygame.RESIZABLE
     )
 
+    try:
+        game_background = pygame.image.load("sprites/earth_space.png").convert()
+        game_background = pygame.transform.scale(game_background, (surface.get_width(), surface.get_height()))
+    except pygame.error:
+        print("Failed to load background image.")
+        running = False
+
     while running:
         surface.fill((0, 0, 0))  # Clear screen with black
+        surface.blit(game_background, (0, 0))  # Set bg
 
         metronome.update()
         player_state.update()
