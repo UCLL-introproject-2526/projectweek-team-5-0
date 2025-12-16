@@ -38,8 +38,8 @@ def main():
         asteroid = Asteroid(surface.get_width(), surface.get_height())
         asteroids.append(asteroid)
     
-    def spawn_projectile():
-        projectile = Projectile([100,100])
+    def spawn_projectile(avatar_position):
+        projectile = Projectile(avatar_position)
         projectiles.append(projectile)
     
     while running:
@@ -112,7 +112,7 @@ def main():
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_SPACE:
                     if metronome.can_shoot() == True:
-                        spawn_projectile(avatar.get_player_position())
+                        spawn_projectile(avatar.get_avatar_position())
                         print("PEWPEW")
                     else:
                         print("FOUTE TIMING JIJ IDIOOT")
