@@ -3,7 +3,7 @@ import random
 import os
 
 class Asteroid:
-    def __init__(self, screen_width, screen_height, health):
+    def __init__(self, screen_width, screen_height, health, size):
         script_dir = os.path.dirname(os.path.abspath(__file__))
         sprite_folder = os.path.join(script_dir, "sprites", "asteroid")
 
@@ -16,7 +16,7 @@ class Asteroid:
         self.image = pygame.image.load(sprite_path).convert_alpha()
 
         # Scale to 40x40
-        self.image = pygame.transform.scale(self.image, (40, 40))
+        self.image = pygame.transform.scale(self.image, (size, size))
 
         # NOW create rect from image (after image exists!)
         self.rect = self.image.get_rect()
@@ -26,7 +26,9 @@ class Asteroid:
         self.speed = random.randint(2, 3)
         self.rect.x = self.x
         self.rect.y = -40
+
         self.health = health
+        self.splitter = random.random
 
     def update(self, projectiles):
         # move straight down
@@ -40,3 +42,9 @@ class Asteroid:
 
     def draw(self, surface):
         surface.blit(self.image, self.rect)
+
+    def get_asteroid_position(self):
+        #gets asteroid position and returns it
+        asteroid_position = [self.rect.x + (self.width/4), self.rect.y + (self.height/2)]
+        #the division ensures the middle of the avatar is returned
+        return asteroid_position

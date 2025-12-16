@@ -138,6 +138,11 @@ def main():
                 asteroid.update(projectiles)
                 asteroid.draw(surface)
                 if asteroid.health <= 0:
+                    if asteroid.is_splitter:
+                        for i in range(1):
+                            asteroid = Asteroid(surface.get_width(), surface.get_height(), 10)
+                            asteroids.append(asteroid)
+
                     asteroids.remove(asteroid)
                 if asteroid.rect.y > surface.get_height():
                     asteroids.remove(asteroid)
