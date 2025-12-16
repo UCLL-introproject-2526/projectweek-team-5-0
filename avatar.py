@@ -11,9 +11,9 @@ class Avatar:
 
         self.vx = 0  # Velocity X
         self.vy = 0  # Velocity Y
-        self.acceleration = 0.5  # How fast to speed up
-        self.friction = 0.85  # Friction/deceleration (0.85 = 15% slowdown per frame)
-        self.max_speed = 12  # Maximum speed
+        self.acceleration = 1.5
+        self.friction = 0.9
+        self.max_speed = 8
 
     def update(self, keys, screen_width, screen_height):
         
@@ -25,6 +25,9 @@ class Avatar:
             self.vy -= self.acceleration
         if keys[pygame.K_DOWN]:
             self.vy += self.acceleration
+
+        self.vx *= self.friction
+        self.vy *= self.friction
 
         # Cap maximum speed
         speed = math.sqrt(self.vx**2 + self.vy**2)
@@ -44,16 +47,16 @@ class Avatar:
         # Bouncy boi - actually bounces!
         if self.rect.left < 0:
             self.rect.left = 0
-            self.vx = -self.vx * 2  # Reverse and dampen (70% energy retained)
+            self.vx = -self.vx * 0.3  # Reverse and dampen (70% energy retained)
         if self.rect.right > screen_width:
             self.rect.right = screen_width
-            self.vx = -self.vx * 2
+            self.vx = -self.vx * 0.3
         if self.rect.top < 0:
             self.rect.top = 0
-            self.vy = -self.vy * 2
+            self.vy = -self.vy * 0.3
         if self.rect.bottom > screen_height:
             self.rect.bottom = screen_height
-            self.vy = -self.vy * 2
+            self.vy = -self.vy * 0.3
             
     def get_avatar_position(self):
         #gets avatar position and returns it
