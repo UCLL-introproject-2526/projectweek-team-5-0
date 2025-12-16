@@ -15,6 +15,10 @@ class Avatar:
         self.friction = 0.9
         self.max_speed = 8
 
+        self.base_image = pygame.image.load('sprites/player/player.png').convert_alpha()
+        self.base_image = pygame.transform.scale(self.base_image, (self.width, self.height))
+        self.image = self.base_image
+
     def update(self, keys, screen_width, screen_height):
         
         if keys[pygame.K_LEFT]:
@@ -65,4 +69,4 @@ class Avatar:
         return avatar_position
     
     def draw(self, surface):
-        pygame.draw.rect(surface, (255, 255, 0), self.rect)
+        surface.blit(self.image, self.rect)
