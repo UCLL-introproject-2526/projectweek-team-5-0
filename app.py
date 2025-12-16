@@ -1,5 +1,5 @@
 import pygame
-import pygame_gui
+# import pygame_gui
 import time
 from ui_elements import *
 from metronome import Metronome
@@ -47,18 +47,7 @@ def main():
 
         # Draw everything
         if not game_over:
-            draw_circle(surface)
-            draw_health(surface, font, player_state.health)
-            draw_timer(surface, font, elapsed_time)
-            draw_earth_bar(surface)
-            draw_shoot_indicator(surface, metronome)
-
-            # Update and draw avatar
-            keys = pygame.key.get_pressed()
-            avatar.update(keys, surface.get_width(), surface.get_height())
-            avatar.draw(surface)
-
-            # Asteroid spawning logic
+                        # Asteroid spawning logic
             if elapsed_time - last_spawn_time >= 2:  # Spawn every 2 seconds
                 spawn_asteroid()
                 last_spawn_time = elapsed_time
@@ -70,6 +59,16 @@ def main():
                 if asteroid.rect.y > surface.get_height():
                     asteroids.remove(asteroid)
                     player_state.take_damage(10)  # Decrease health by 10 if asteroid goes off screen
+
+            #draw alle ui elementen laatste en on top
+            draw_earth_bar(surface)
+            # Update and draw avatar
+            keys = pygame.key.get_pressed()
+            avatar.update(keys, surface.get_width(), surface.get_height())
+            avatar.draw(surface)
+            draw_health(surface, font, player_state.health)
+            draw_timer(surface, font, elapsed_time)
+            draw_shoot_indicator(surface, metronome)
 
             # Check for game over
             if player_state.health <= 0:

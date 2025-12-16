@@ -36,7 +36,7 @@ class Metronome:
         self.last_beat_time = current_time - self.beat_interval
         self.next_beat_time = current_time  # First beat will happen immediately
 
-        self.shoot_tolerance = 100  # Increased for easier testing
+        self.shoot_tolerance = 100 
 
     def update(self):
         current_time = pygame.time.get_ticks()
