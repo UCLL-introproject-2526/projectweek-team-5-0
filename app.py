@@ -71,6 +71,16 @@ def main():
                 projectile.update()
                 projectile.draw(surface)
 
+            #draw alle ui elementen laatste en on top
+            draw_earth_bar(surface)
+            # Update and draw avatar
+            keys = pygame.key.get_pressed()
+            avatar.update(keys, surface.get_width(), surface.get_height())
+            avatar.draw(surface)
+            draw_health(surface, font, player_state.health)
+            draw_timer(surface, font, elapsed_time)
+            draw_shoot_indicator(surface, metronome)
+
             # Check for game over
             if player_state.health <= 0:
                 game_over = True
