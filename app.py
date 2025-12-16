@@ -1,6 +1,7 @@
 import pygame
-# import pygame_gui
+import pygame_gui
 import time
+import os
 from ui_elements import *
 from metronome import Metronome
 from asteroids import Asteroid
@@ -10,70 +11,60 @@ from projectile import Projectile
 
 pygame.init()
 
-def draw_rounded_button(surface, text, rect, color, font):
-    # Draw the rounded rectangle
-    pygame.draw.rect(surface, color, rect, border_radius=25)
-
-    # Render text and position it in the center of the button
-    text_surface = font.render(text, True, (255, 255, 255))  # White text for contrast
-    text_rect = text_surface.get_rect(center=rect.center)
-    surface.blit(text_surface, text_rect)
-
-def show_start_screen(surface):
+def main_menu():
+    screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
     clock = pygame.time.Clock()
-    font = pygame.font.Font(None, 35)  # Slightly reduced font size for the start button
 
-    # Title text with smaller font size
-    title_font = pygame.font.Font(None, 80)  # Smaller title font size
-    title_text = title_font.render("ASTEROID SHOOTER", True, (255, 255, 255))  # White text
+    # load BG and size it
+    main_menu_background = pygame.image.load("sprites/background/space.jpg").convert()
+    main_menu_background = pygame.transform.scale(main_menu_background, screen.get_size())
 
-    # Start button position and size (centering the button)
-    button_width, button_height = 200, 50
-    start_button_rect = pygame.Rect(
-        (surface.get_width() // 2 - button_width // 2, surface.get_height() // 2 + 50),  # Adjusted position for better centering
-        (button_width, button_height)  # Adjusted button size to fit text
+
+    # Load UI theme from JSON in "gui-themes" folder
+    theme_path = os.path.join("gui-themes", "theme.json")
+    manager = pygame_gui.UIManager(screen.get_size(), theme_path)
+
+    start_button = pygame_gui.elements.UIButton(
+        relative_rect=pygame.Rect(
+            (screen.get_width() // 2 - 100, screen.get_height() // 2 - 60),
+            (200, 50)
+        ),
+        text="Start Game",
+        manager=manager
+    )
+
+    quit_button = pygame_gui.elements.UIButton(
+        relative_rect=pygame.Rect(
+            (screen.get_width() // 2 - 100, screen.get_height() // 2 + 10),
+            (200, 50)
+        ),
+        text="Quit",
+        manager=manager
     )
 
     running = True
     while running:
-        surface.fill((0, 0, 0))  # Fill background with black to clear previous frames
-
-        # Draw the title and start button
-        surface.blit(title_text, (surface.get_width() // 2 - title_text.get_width() // 2, surface.get_height() // 5))
-        draw_rounded_button(surface, "START GAME", start_button_rect, (0, 128, 255), font)
+        time_delta = clock.tick(60) / 1000.0
+        screen.blit(main_menu_background, (0, 0))
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
-                quit()
+                exit()
 
-            # Check if the user clicked the button
-            if event.type == pygame.MOUSEBUTTONDOWN:
-                if start_button_rect.collidepoint(event.pos):
-                    running = False  # Stop the loop and start the game
-
-            # Checks for escape and quits
-            if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_ESCAPE:
-                    print("closed menu")
+            if event.type == pygame_gui.UI_BUTTON_PRESSED:
+                if event.ui_element == start_button:
+                    return
+                if event.ui_element == quit_button:
                     pygame.quit()
-                    quit()
+                    exit()
 
-            # If the screen is resized or fullscreened, re-draw the elements
-            if event.type == pygame.VIDEORESIZE:
-                surface = pygame.display.set_mode((event.w, event.h), pygame.RESIZABLE)  # Dynamically resize surface
+            manager.process_events(event)
 
-                # Recalculate start button position to keep it centered
-                start_button_rect = pygame.Rect(
-                    (surface.get_width() // 2 - button_width // 2, surface.get_height() // 2 + 50),
-                    (button_width, button_height)
-                )
-
-                # Recalculate title text position based on new surface size
-                title_text = title_font.render("ASTEROID SHOOTER", True, (255, 255, 255))  # Re-render the title
+        manager.update(time_delta)
+        manager.draw_ui(screen)
 
         pygame.display.flip()
-        clock.tick(60)  # Ensure the screen updates at 60 FPS
 
 # =====================================================
 # deze functie zitten alle dingen in die gerund worden.
@@ -107,8 +98,15 @@ def main():
         projectile = Projectile(avatar_position)
         projectiles.append(projectile)
 
-    # show start screen first
-    show_start_screen(surface)
+    # show start screen firt
+    main_menu()
+
+    os.environ['SDL_VIDEO_CENTERED'] = '1'  # center the window
+    info = pygame.display.Info()
+    surface = pygame.display.set_mode(
+        (info.current_w, info.current_h),
+        pygame.RESIZABLE
+    )
 
     while running:
         surface.fill((0, 0, 0))  # Clear screen with black
@@ -126,14 +124,13 @@ def main():
                 spawn_asteroid()
                 last_spawn_time = elapsed_time
 
-           
             #==========================
             #ENKEL DRAWS HIERONDER
-            # =============================           
+            # =============================
 
             #draw alle ui elementen laatste en on top
             draw_earth_bar(surface)
-             # Update and draw asteroids
+            # Update and draw asteroids
             for asteroid in asteroids[:]:
                 asteroid.update(projectiles)
                 asteroid.draw(surface)
@@ -166,7 +163,6 @@ def main():
                                          (surface.get_height() - game_over_text.get_height()) // 2 - 20))
             surface.blit(restart_text, ((surface.get_width() - restart_text.get_width()) // 2,
                                         (surface.get_height() - restart_text.get_height()) // 2 + 20))
-
 
         pygame.display.flip()
 
