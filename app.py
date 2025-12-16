@@ -44,7 +44,7 @@ def main():
         # Draw everything
         if not game_over:
             draw_circle(surface)
-            draw_health(surface, font, health)
+            draw_health(surface, font, player_state.health)
             draw_timer(surface, font, elapsed_time)
             draw_earth_bar(surface)
             draw_shoot_indicator(surface, metronome)
@@ -61,10 +61,10 @@ def main():
                 asteroid.draw(surface)
                 if asteroid.rect.y > surface.get_height():
                     asteroids.remove(asteroid)
-                    health -= 10  # Decrease health by 10 if asteroid goes off screen
+                    player_state.health -= 10  # Decrease health by 10 if asteroid goes off screen
 
             # Check for game over
-            if health <= 0:
+            if player_state.health <= 0:
                 game_over = True
         else:
             # Display Game Over message

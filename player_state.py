@@ -24,7 +24,7 @@ class PlayerState:
         sound_path = os.path.join(script_dir, "sfx/hitHurt.wav")
         # Try to load hit sound
         self.hit_sound = pygame.mixer.Sound(sound_path)
-        self.hit_sound.set_volume(5)
+        self.hit_sound.set_volume(1)
         print("Hit sound loaded successfully from hit_sound.wav")
 
     
