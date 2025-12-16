@@ -1,5 +1,5 @@
-
 import pygame
+import pygame_gui
 import time
 from ui_elements import *
 from metronome import Metronome
@@ -21,7 +21,7 @@ def main():
     clock = pygame.time.Clock()
     font = pygame.font.Font(None, 36)
     start_time = time.time()
-    player_state = PlayerState()
+    health = 100
     metronome = Metronome(bpm=120)
     running = True # run game status
     game_over = False
@@ -54,7 +54,7 @@ def main():
             if elapsed_time - last_spawn_time >= 2:  # Spawn every 2 seconds
                 spawn_asteroid()
                 last_spawn_time = elapsed_time
-            
+
             # Update and draw asteroids
             for asteroid in asteroids[:]:
                 asteroid.update()
