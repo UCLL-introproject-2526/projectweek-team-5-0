@@ -128,6 +128,7 @@ def main():
                 if event.key == pygame.K_SPACE:
                     if metronome.can_shoot() == True:
                         spawn_projectile(avatar.get_avatar_position())
+                        avatar.trigger_fire()
                         print("PEWPEW")
                     else:
                         print("FOUTE TIMING JIJ IDIOOT")

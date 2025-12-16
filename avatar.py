@@ -1,8 +1,35 @@
 import pygame
 import math
+import random
+import os
 
 class Avatar:
+
+    flame_sprites = None
+    
+    @classmethod
+    def load_flame_sprites(cls):
+        """Load all flame sprites from the sprites/flames folder"""
+        if cls.flame_sprites is None:
+            cls.flame_sprites = []
+            script_dir = os.path.dirname(os.path.abspath(__file__))
+            flame_folder = os.path.join(script_dir, "sprites", "flames")
+            
+            try:
+                for filename in os.listdir(flame_folder):
+                    if filename.endswith(('.png', '.jpg', '.jpeg')):
+                        image_path = os.path.join(flame_folder, filename)
+                        sprite = pygame.image.load(image_path).convert_alpha()
+                        cls.flame_sprites.append(sprite)
+                
+                print(f"Loaded {len(cls.flame_sprites)} flame sprites")
+            except FileNotFoundError:
+                print(f"Warning: {flame_folder} not found - no flame effects")
+                cls.flame_sprites = []
+
     def __init__(self, screen_width, screen_height):
+        Avatar.load_flame_sprites() #enkel bij eerste shoot nodig, init
+
         # start at center bottom
         self.width = 40
         self.height = 40
@@ -18,6 +45,19 @@ class Avatar:
         self.base_image = pygame.image.load('sprites/player/player.png').convert_alpha()
         self.base_image = pygame.transform.scale(self.base_image, (self.width, self.height))
         self.image = self.base_image
+
+        #VUUR 
+        self.is_firing = False   #A FLAG
+        self.fire_duration = 8  # How many frames the flame shows
+        self.fire_frame_count = 0
+        self.current_flame = None  # Currently displayed flame sprite
+
+    def trigger_fire(self):
+        """Call this when the avatar shoots"""
+        if Avatar.flame_sprites:
+            self.current_flame = random.choice(Avatar.flame_sprites)
+            self.is_firing = True
+            self.fire_frame_count = self.fire_duration
 
     def update(self, keys, screen_width, screen_height):
         
@@ -61,6 +101,12 @@ class Avatar:
         if self.rect.bottom > screen_height:
             self.rect.bottom = screen_height
             self.vy = -self.vy * 0.3
+
+        # Update fire animation
+        if self.is_firing:
+            self.fire_frame_count -= 1
+            if self.fire_frame_count <= 0:
+                self.is_firing = False
             
     def get_avatar_position(self):
         #gets avatar position and returns it
@@ -70,3 +116,21 @@ class Avatar:
     
     def draw(self, surface):
         surface.blit(self.image, self.rect)
+
+        # Draw flame sprite if firing
+        if self.is_firing and self.current_flame:
+            # Scale flame to fit (adjust size as needed)
+            flame_width = 30
+            flame_height = 30
+            scaled_flame = pygame.transform.scale(self.current_flame, (flame_width, flame_height))
+            
+            # Position flame above avatar, centered
+            flame_x = self.rect.centerx - flame_width // 2
+            flame_y = self.rect.top - flame_height + 10  # Overlap slightly with ship
+            
+            # Optional: fade out flame as animation ends
+            if self.fire_frame_count < 4:
+                # Make flame semi-transparent in last few frames
+                scaled_flame.set_alpha(int(255 * (self.fire_frame_count / 4)))
+            
+            surface.blit(scaled_flame, (flame_x, flame_y))
