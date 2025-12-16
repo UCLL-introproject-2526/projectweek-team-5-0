@@ -192,6 +192,10 @@ def main():
                 if event.key == pygame.K_h:
                     player_hit = player_state.take_damage(10)
 
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_k:
+                    player_hit = player_state.paralyse()
+
         clock.tick(60)  # 60 FPS
 
     close_game() # cleanly close game

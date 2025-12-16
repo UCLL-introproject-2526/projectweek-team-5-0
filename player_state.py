@@ -53,28 +53,53 @@ class PlayerState:
 
     def take_damage(self, damage_amount=10):
         """
-        Called when player takes damage
-
+        Called when player (earth) takes damage
+        
         damage_amount: How much health to subtract (default 10)
         Returns: True if player died, False otherwise
         """
         current_time = pygame.time.get_ticks()
+        
+        # Apply damage
+        self.health -= damage_amount
+        
+        # Clamp health to 0 minimum
+        if self.health < 0:
+            self.health = 0
+        
+        # Play sound
+        print(f"Attempting to play hit sound: {self.hit_sound}")
+        if self.hit_sound:
+            self.hit_sound.play()
+            print("Hit sound played!")
+        else:
+            print("ERROR: No hit sound to play!")
+        
+        print(f"Earth hit! Health: {self.health}/{self.max_health}")
+        
+        # Return True if player died
+        return self.health <= 0
+    
+    def paralyse(self):
+        # Paralyzes the player(ship)
 
         # Prevent taking damage while already in hit state (invincibility frames)
         if self.is_hit:
             print("Can't take damage - still in hit state")
             return False
-
-        # Apply damage
-        self.health -= damage_amount
-
-        # Clamp health to 0 minimum
-        if self.health < 0:
-            self.health = 0
-
-        # Set hit state
-        self.is_hit = True
-        self.hit_time = current_time
+        
+        # paralyze
+        if self.is_hit == False:
+            self.is_hit = True
+            print(f"Ship paralysed! Keep your shots in scync capt\'n")
+        
+        # Play sound
+        print(f"Attempting to play hit sound: {self.hit_sound}")
+        if self.hit_sound:
+            self.hit_sound.play()
+            print("Hit sound played!")
+        else:
+            print("ERROR: No hit sound to play!")
 
         # Play sound
         print(f"Attempting to play hit sound: {self.hit_sound}")
