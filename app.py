@@ -58,7 +58,14 @@ def main():
                 spawn_asteroid()
                 last_spawn_time = elapsed_time
 
-            # Update and draw asteroids
+           
+            #==========================
+            #ENKEL DRAWS HIERONDER
+            # =============================           
+
+            #draw alle ui elementen laatste en on top
+            draw_earth_bar(surface)
+             # Update and draw asteroids
             for asteroid in asteroids[:]:
                 asteroid.update(projectiles)
                 asteroid.draw(surface)
@@ -66,15 +73,11 @@ def main():
                     asteroids.remove(asteroid)
                 if asteroid.rect.y > surface.get_height():
                     asteroids.remove(asteroid)
-                    player_state.take_damage(10)  # Decrease health by 10 if asteroid goes off screen
-
+                    player_state.take_damage(10)
             # Update and draw projectiles
             for projectile in projectiles[:]:
                 projectile.update(projectiles)
                 projectile.draw(surface)
-
-            #draw alle ui elementen laatste en on top
-            draw_earth_bar(surface)
             # Update and draw avatar
             keys = pygame.key.get_pressed()
             avatar.update(keys, surface.get_width(), surface.get_height())
