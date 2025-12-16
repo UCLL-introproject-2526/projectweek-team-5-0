@@ -44,16 +44,16 @@ class Avatar:
         # Bouncy boi - actually bounces!
         if self.rect.left < 0:
             self.rect.left = 0
-            self.vx = -self.vx * 0.7  # Reverse and dampen (70% energy retained)
+            self.vx = -self.vx * 2  # Reverse and dampen (70% energy retained)
         if self.rect.right > screen_width:
             self.rect.right = screen_width
-            self.vx = -self.vx * 0.7
+            self.vx = -self.vx * 2
         if self.rect.top < 0:
             self.rect.top = 0
-            self.vy = -self.vy * 0.7
+            self.vy = -self.vy * 2
         if self.rect.bottom > screen_height:
             self.rect.bottom = screen_height
-            self.vy = -self.vy * 0.7
+            self.vy = -self.vy * 2
             
     def get_avatar_position(self):
         #gets avatar position and returns it
