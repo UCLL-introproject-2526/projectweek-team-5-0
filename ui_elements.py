@@ -33,10 +33,6 @@ def draw_earth_bar(surface):
     # Blue section (water) = left half
     pygame.draw.rect(surface, (30, 144, 255), (0, bar_y, surface.get_width()//2, bar_height))
     
-<<<<<<< HEAD
-    # Green section (land) = right half
-    pygame.draw.rect(surface, (34, 139, 34), (surface.get_width()//2, bar_y, surface.get_width()//2, bar_height))
-=======
     # Green section (land)
     pygame.draw.rect(surface, (34, 139, 34), (512, bar_y, 512, bar_height))
 
@@ -82,4 +78,3 @@ def draw_shoot_indicator(surface, metronome):
     # Draw border
     pygame.draw.rect(surface, (255, 255, 255), 
                     (bar_x, bar_y, bar_width, bar_height), 2)
->>>>>>> david-beepboopmetronoom
