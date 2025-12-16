@@ -9,18 +9,18 @@ class Asteroid:
 
         # Get all image files
         sprite_files = [f for f in os.listdir(sprite_folder) if f.endswith('.png')]
-        
+
         # Pick random sprite and load it
         chosen_sprite = random.choice(sprite_files)
         sprite_path = os.path.join(sprite_folder, chosen_sprite)
         self.image = pygame.image.load(sprite_path).convert_alpha()
-        
+
         # Scale to 40x40
         self.image = pygame.transform.scale(self.image, (40, 40))
-        
+
         # NOW create rect from image (after image exists!)
         self.rect = self.image.get_rect()
-        
+
         # Position
         self.x = random.randint(0, screen_width - 40)
         self.speed = random.randint(2, 3)
