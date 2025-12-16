@@ -1,3 +1,4 @@
+
 import pygame
 import time
 from ui_elements import *
@@ -22,6 +23,7 @@ def main():
     health = 100  
     metronome = Metronome(bpm=120)
     running = True # run game status
+    game_over = False
     asteroids = []
     last_spawn_time = 0
 
@@ -38,35 +40,40 @@ def main():
         elapsed_time = time.time() - start_time
 
         # Draw everything
-        draw_health(surface, font, health)
-        draw_timer(surface, font, elapsed_time)
-        draw_earth_bar(surface)
-        draw_shoot_indicator(surface, metronome)
+        if not game_over:
+            draw_circle(surface)
+            draw_health(surface, font, health)
+            draw_timer(surface, font, elapsed_time)
+            draw_earth_bar(surface)
+            draw_shoot_indicator(surface, metronome)
 
-        # Asteroid spawning logic
-        if elapsed_time - last_spawn_time >= 2:  # Spawn every 2 seconds
-            spawn_asteroid()
-            last_spawn_time = elapsed_time
+
+            # Asteroid spawning logic
+            if elapsed_time - last_spawn_time >= 2:  # Spawn every 2 seconds
+                spawn_asteroid()
+                last_spawn_time = elapsed_time
             
-        for asteroid in asteroids[:]:
-            asteroid.update()
-            asteroid.draw(surface)
-            if asteroid.rect.y > surface.get_height():
-                asteroids.remove(asteroid)
-                health -= 10  # Decrease health by 10 if asteroid goes off screen
+            # Update and draw asteroids
+            for asteroid in asteroids[:]:
+                asteroid.update()
+                asteroid.draw(surface)
+                if asteroid.rect.y > surface.get_height():
+                    asteroids.remove(asteroid)
+                    health -= 10  # Decrease health by 10 if asteroid goes off screen
 
+            # Check for game over
+            if health <= 0:
+                game_over = True
+        else:
+            # Display Game Over message
+            game_over_text = font.render("Game Over", True, (255, 0, 0))
+            restart_text = font.render("Press ESC to quit", True, (255, 255, 255))
 
-        # Asteroid spawning logic
-        if elapsed_time - last_spawn_time >= 2:  # Spawn every 2 seconds
-            spawn_asteroid()
-            last_spawn_time = elapsed_time
-            
-        for asteroid in asteroids[:]:
-            asteroid.update()
-            asteroid.draw(surface)
-            if asteroid.rect.y > surface.get_height():
-                asteroids.remove(asteroid)
-                health -= 10  # Decrease health by 10 if asteroid goes off screen
+            surface.blit(game_over_text, ((surface.get_width() - game_over_text.get_width()) // 2,
+                                         (surface.get_height() - game_over_text.get_height()) // 2 - 20))
+            surface.blit(restart_text, ((surface.get_width() - restart_text.get_width()) // 2,
+                                        (surface.get_height() - restart_text.get_height()) // 2 + 20))
+
 
         pygame.display.flip()
 
