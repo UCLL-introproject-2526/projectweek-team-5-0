@@ -24,6 +24,11 @@ class Avatar:
         if keys[pygame.K_DOWN] and self.rect.bottom < screen_height:
             self.rect.y += self.speed
             
+    def get_avatar_position(self):
+        #gets avatar position and returns it
+        avatar_position = [self.rect.x + (self.width/4), self.rect.y + (self.height/2)]
+        #the division ensures the middle of the avatar is returned
+        return avatar_position
     
     def draw(self, surface):
         pygame.draw.rect(surface, (255, 255, 0), self.rect)
