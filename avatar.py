@@ -3,11 +3,20 @@ import math
 
 class Avatar:
     def __init__(self, screen_width, screen_height):
-        # start at center bottom
+        # Start at center bottom
         self.width = 40
         self.height = 40
         self.rect = pygame.Rect((screen_width - self.width) // 2, screen_height - self.height - 10, self.width, self.height)
         self.speed = 5
+
+        # Position rect
+        self.base_image = pygame.image.load('sprites/player/player.png').convert_alpha()
+
+        # Scale to desired size
+        self.base_image = pygame.transform.scale(self.base_image, (self.width, self.height))
+
+        # Current image
+        self.image = self.base_image
 
         self.vx = 0  # Velocity X
         self.vy = 0  # Velocity Y
@@ -62,4 +71,4 @@ class Avatar:
         return avatar_position
     
     def draw(self, surface):
-        pygame.draw.rect(surface, (255, 255, 0), self.rect)
+        surface.blit(self.image, self.rect)
