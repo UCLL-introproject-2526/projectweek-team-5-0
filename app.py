@@ -61,7 +61,7 @@ def main():
                 asteroid.draw(surface)
                 if asteroid.rect.y > surface.get_height():
                     asteroids.remove(asteroid)
-                    player_state.health -= 10  # Decrease health by 10 if asteroid goes off screen
+                    player_state.take_damage(10)  # Decrease health by 10 if asteroid goes off screen
 
             # Check for game over
             if player_state.health <= 0:
