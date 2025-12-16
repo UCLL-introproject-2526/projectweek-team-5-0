@@ -1,5 +1,5 @@
 import pygame
-import pygame_gui
+# import pygame_gui
 import time
 from ui_elements import *
 from metronome import Metronome
@@ -9,6 +9,71 @@ from avatar import Avatar
 from projectile import Projectile
 
 pygame.init()
+
+def draw_rounded_button(surface, text, rect, color, font):
+    # Draw the rounded rectangle
+    pygame.draw.rect(surface, color, rect, border_radius=25)
+
+    # Render text and position it in the center of the button
+    text_surface = font.render(text, True, (255, 255, 255))  # White text for contrast
+    text_rect = text_surface.get_rect(center=rect.center)
+    surface.blit(text_surface, text_rect)
+
+def show_start_screen(surface):
+    clock = pygame.time.Clock()
+    font = pygame.font.Font(None, 35)  # Slightly reduced font size for the start button
+
+    # Title text with smaller font size
+    title_font = pygame.font.Font(None, 80)  # Smaller title font size
+    title_text = title_font.render("ASTEROID SHOOTER", True, (255, 255, 255))  # White text
+
+    # Start button position and size (centering the button)
+    button_width, button_height = 200, 50
+    start_button_rect = pygame.Rect(
+        (surface.get_width() // 2 - button_width // 2, surface.get_height() // 2 + 50),  # Adjusted position for better centering
+        (button_width, button_height)  # Adjusted button size to fit text
+    )
+
+    running = True
+    while running:
+        surface.fill((0, 0, 0))  # Fill background with black to clear previous frames
+
+        # Draw the title and start button
+        surface.blit(title_text, (surface.get_width() // 2 - title_text.get_width() // 2, surface.get_height() // 5))
+        draw_rounded_button(surface, "START GAME", start_button_rect, (0, 128, 255), font)
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                quit()
+
+            # Check if the user clicked the button
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if start_button_rect.collidepoint(event.pos):
+                    running = False  # Stop the loop and start the game
+
+            # Checks for escape and quits
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_ESCAPE:
+                    print("closed menu")
+                    pygame.quit()
+                    quit()
+
+            # If the screen is resized or fullscreened, re-draw the elements
+            if event.type == pygame.VIDEORESIZE:
+                surface = pygame.display.set_mode((event.w, event.h), pygame.RESIZABLE)  # Dynamically resize surface
+
+                # Recalculate start button position to keep it centered
+                start_button_rect = pygame.Rect(
+                    (surface.get_width() // 2 - button_width // 2, surface.get_height() // 2 + 50),
+                    (button_width, button_height)
+                )
+
+                # Recalculate title text position based on new surface size
+                title_text = title_font.render("ASTEROID SHOOTER", True, (255, 255, 255))  # Re-render the title
+
+        pygame.display.flip()
+        clock.tick(60)  # Ensure the screen updates at 60 FPS
 
 # =====================================================
 # deze functie zitten alle dingen in die gerund worden.
@@ -35,13 +100,16 @@ def main():
     avatar = Avatar(surface.get_width(), surface.get_height())
 
     def spawn_asteroid():
-        asteroid = Asteroid(surface.get_width(), surface.get_height())
+        asteroid = Asteroid(surface.get_width(), surface.get_height(), 10)
         asteroids.append(asteroid)
-    
+
     def spawn_projectile(avatar_position):
         projectile = Projectile(avatar_position)
         projectiles.append(projectile)
-    
+
+    # show start screen first
+    show_start_screen(surface)
+
     while running:
         surface.fill((0, 0, 0))  # Clear screen with black
 
@@ -53,35 +121,39 @@ def main():
 
         # Draw everything
         if not game_over:
-            draw_circle(surface)
-            draw_health(surface, font, player_state.health)
-            draw_timer(surface, font, elapsed_time)
-            draw_earth_bar(surface)
-            draw_shoot_indicator(surface, metronome)
-
-            # Update and draw avatar
-            keys = pygame.key.get_pressed()
-            avatar.update(keys, surface.get_width(), surface.get_height())
-            avatar.draw(surface)
-
-            # Asteroid spawning logic
+                        # Asteroid spawning logic
             if elapsed_time - last_spawn_time >= 2:  # Spawn every 2 seconds
                 spawn_asteroid()
                 last_spawn_time = elapsed_time
 
-            # Update and draw asteroids
+           
+            #==========================
+            #ENKEL DRAWS HIERONDER
+            # =============================           
+
+            #draw alle ui elementen laatste en on top
+            draw_earth_bar(surface)
+             # Update and draw asteroids
             for asteroid in asteroids[:]:
-                asteroid.update()
+                asteroid.update(projectiles)
                 asteroid.draw(surface)
+                if asteroid.health <= 0:
+                    asteroids.remove(asteroid)
                 if asteroid.rect.y > surface.get_height():
                     asteroids.remove(asteroid)
-                    player_state.take_damage(10)  # Decrease health by 10 if asteroid goes off screen
-        
+                    player_state.take_damage(10)
             # Update and draw projectiles
             for projectile in projectiles[:]:
-                projectile.update()
+                projectile.update(projectiles)
                 projectile.draw(surface)
-            
+            # Update and draw avatar
+            keys = pygame.key.get_pressed()
+            avatar.update(keys, surface.get_width(), surface.get_height())
+            avatar.draw(surface)
+            draw_health(surface, font, player_state.health)
+            draw_timer(surface, font, elapsed_time)
+            draw_shoot_indicator(surface, metronome)
+
             # Check for game over
             if player_state.health <= 0:
                 game_over = True

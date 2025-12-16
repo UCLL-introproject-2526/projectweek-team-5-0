@@ -1,4 +1,6 @@
 import pygame
+import os
+_earth_image = None
 
 def create_main_surface():
     # Create a resizable 600x600 window
@@ -25,21 +27,38 @@ def draw_timer(surface, font, elapsed_time):
     timer_rect.topright = (surface.get_width() - 20, 20)  # 20px from right edge
     surface.blit(timer_text, timer_rect)
 
+def load_earth_image():
+    """Load earth image once and cache it"""
+    global _earth_image
+    
+    if _earth_image is None:
+        script_dir = os.path.dirname(os.path.abspath(__file__))
+        try:
+            _earth_image = pygame.image.load(os.path.join(script_dir, "sprites", "earth.png")).convert_alpha()
+            print("Earth image loaded successfully")
+        except:
+            _earth_image = False  # Mark as failed to avoid retrying
+            print("Warning: sprites/earth.png not found - using colored bar")
+    
+    return _earth_image if _earth_image else None
+
 def draw_earth_bar(surface):
-    # Draw bar at bottom of window
-    bar_height = 60
+    """Draw earth image bar at bottom of screen"""
+    bar_height = 120  # Height for earth display
     bar_y = surface.get_height() - bar_height
-
-    half_width = surface.get_width() // 2
-
-    # Blue section (water) = left half
-    pygame.draw.rect(surface, (30, 144, 255), (0, bar_y, half_width, bar_height))
-
-    #pygame.draw.rect(surface, (30, 144, 255), (0, bar_y, surface.get_width()//2, bar_height))
-
-    # Green section (land)
-    pygame.draw.rect(surface, (34, 139, 34), (half_width, bar_y, half_width, bar_height))
-    #pygame.draw.rect(surface, (34, 139, 34), (512, bar_y, 512, bar_height))
+    bar_width = surface.get_width()
+    
+    earth_image = load_earth_image()
+    
+    if earth_image:
+        # Stretch earth image to fit the bar
+        earth_stretched = pygame.transform.scale(earth_image, (bar_width, bar_height))
+        surface.blit(earth_stretched, (0, bar_y))
+    else:
+        # Fallback: colored rectangles
+        half_width = bar_width // 2
+        pygame.draw.rect(surface, (30, 144, 255), (0, bar_y, half_width, bar_height))
+        pygame.draw.rect(surface, (34, 139, 34), (half_width, bar_y, half_width, bar_height))
 
 def draw_shoot_indicator(surface, metronome):
     """
