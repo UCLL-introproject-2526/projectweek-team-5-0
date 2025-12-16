@@ -4,6 +4,7 @@ import time
 from ui_elements import *
 from metronome import Metronome
 from asteroids import Asteroid
+from avatar import Avatar
 
 pygame.init()
 
@@ -27,6 +28,9 @@ def main():
     asteroids = []
     last_spawn_time = 0
 
+    # Create a avatar instance
+    avatar = Avatar(surface.get_width(), surface.get_height())
+
     def spawn_asteroid():
         asteroid = Asteroid(surface.get_width(), surface.get_height())
         asteroids.append(asteroid)
@@ -47,6 +51,10 @@ def main():
             draw_earth_bar(surface)
             draw_shoot_indicator(surface, metronome)
 
+            # Update and draw avatar
+            keys = pygame.key.get_pressed()
+            avatar.update(keys, surface.get_width(), surface.get_height())
+            avatar.draw(surface)
 
             # Asteroid spawning logic
             if elapsed_time - last_spawn_time >= 2:  # Spawn every 2 seconds
