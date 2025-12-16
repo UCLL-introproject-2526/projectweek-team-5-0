@@ -16,7 +16,7 @@ class PlayerState:
         """
         self.is_hit = False  # Flag indicating if player was just hit
         self.hit_time = 0  # When the hit occurred
-        self.hit_duration = 1000000  # How long hit state lasts (ms)
+        self.hit_duration = 5000  # How long hit state lasts (ms)
 
         self.health = 100  # Starting health
         self.max_health = 100

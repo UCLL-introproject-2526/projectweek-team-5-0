@@ -184,9 +184,11 @@ def main():
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_SPACE:
                     if metronome.can_shoot() == True:
-                        spawn_projectile(avatar.get_avatar_position())
-                        print("PEWPEW")
+                        if player_state.is_hit == False:
+                            spawn_projectile(avatar.get_avatar_position())
+                            print("PEWPEW")
                     else:
+                        player_state.is_hit = True
                         print("FOUTE TIMING JIJ IDIOOT")
 
 # dit is tijdelijk omdat we nog geen damage feature hebben. nu kan je
