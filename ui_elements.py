@@ -29,14 +29,14 @@ def draw_earth_bar(surface):
     # Draw bar at bottom of window
     bar_height = 60
     bar_y = surface.get_height() - bar_height
-    
+
     half_width = surface.get_width() // 2
-    
+
     # Blue section (water) = left half
     pygame.draw.rect(surface, (30, 144, 255), (0, bar_y, half_width, bar_height))
 
     #pygame.draw.rect(surface, (30, 144, 255), (0, bar_y, surface.get_width()//2, bar_height))
-    
+
     # Green section (land)
     pygame.draw.rect(surface, (34, 139, 34), (half_width, bar_y, half_width, bar_height))
     #pygame.draw.rect(surface, (34, 139, 34), (512, bar_y, 512, bar_height))
@@ -44,24 +44,24 @@ def draw_earth_bar(surface):
 def draw_shoot_indicator(surface, metronome):
     """
     Draws a vertical bar on the right side that lights up when you can shoot
-    
+
     surface: The pygame surface to draw on
     metronome: The Metronome object to check timing
     """
     # Get window dimensions
     screen_width, screen_height = surface.get_size()
-    
+
     # Bar dimensions as percentage of screen
     bar_width = screen_width * 0.03  # 3% of screen width
     bar_height = screen_height * 0.5  # 50% of screen height
-    
+
     # Position on right side, vertically centered
     bar_x = screen_width - bar_width - (screen_width * 0.02)  # 2% margin from right
     bar_y = (screen_height - bar_height) / 2  # Centered vertically
-    
+
     # Check if player can shoot
     can_shoot = metronome.can_shoot()
-    
+
     # Choose color based on shoot window
     if can_shoot:
         bar_color = (74, 222, 128)  # Bright green - GO!
@@ -69,17 +69,17 @@ def draw_shoot_indicator(surface, metronome):
     else:
         bar_color = (71, 85, 105)  # Dark gray - NOT YET
         glow_color = None
-    
+
     # Draw glow effect when active
     if glow_color:
         glow_width = bar_width * 1.5
         glow_x = bar_x - (glow_width - bar_width) / 2
-        pygame.draw.rect(surface, glow_color[:3], 
+        pygame.draw.rect(surface, glow_color[:3],
                         (glow_x, bar_y, glow_width, bar_height))
-    
+
     # Draw main bar
     pygame.draw.rect(surface, bar_color, (bar_x, bar_y, bar_width, bar_height))
-    
+
     # Draw border
-    pygame.draw.rect(surface, (255, 255, 255), 
+    pygame.draw.rect(surface, (255, 255, 255),
                     (bar_x, bar_y, bar_width, bar_height), 2)
