@@ -97,12 +97,11 @@ def main():
                     else:
                         print("FOUTE TIMING JIJ IDIOOT")
 
-# dit is tijdelijk omdat we nog geen damage feature hebben. nu kan je 
+# dit is tijdelijk omdat we nog geen damage feature hebben. nu kan je
 # de damage-logica triggeren met h
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_h:
                     player_hit = player_state.take_damage(10)
-                
 
         clock.tick(60)  # 60 FPS
 
