@@ -22,7 +22,6 @@ def main():
     font = pygame.font.Font(None, 36)
     start_time = time.time()
     player_state = PlayerState()
-    health = 100
     metronome = Metronome(bpm=120)
     running = True # run game status
     game_over = False
