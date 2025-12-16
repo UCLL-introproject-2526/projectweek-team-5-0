@@ -109,14 +109,7 @@ def main():
             if player_state.health <= 0:
                 game_over = True
         else:
-            # Display Game Over message
-            game_over_text = font.render("Game Over", True, (255, 0, 0))
-            restart_text = font.render("Press ESC to quit", True, (255, 255, 255))
-
-            surface.blit(game_over_text, ((surface.get_width() - game_over_text.get_width()) // 2,
-                                         (surface.get_height() - game_over_text.get_height()) // 2 - 20))
-            surface.blit(restart_text, ((surface.get_width() - restart_text.get_width()) // 2,
-                                        (surface.get_height() - restart_text.get_height()) // 2 + 20))
+            game_over_menu()
 
         pygame.display.flip()
 

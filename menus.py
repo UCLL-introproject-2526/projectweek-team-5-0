@@ -110,6 +110,11 @@ def game_over_menu():
     title_text = title_font.render("Astroid Destroyers", True, (255, 255, 255))
     title_rect = title_text.get_rect(center=(screen.get_width() // 2, screen.get_height() // 2 - 70))
 
+    # Title game over
+    title_game_over_font = pygame.font.Font(None, 60)
+    title_game_over_text = title_game_over_font.render("Game Over", True, (255, 0, 0))
+    title_game_over_rect = title_game_over_text.get_rect(center=(screen.get_width() // 2, screen.get_height() // 2))
+
     # Buttons
     quit_button = pygame_gui.elements.UIButton(
         relative_rect=pygame.Rect(
@@ -126,6 +131,8 @@ def game_over_menu():
         screen.blit(main_menu_background, (0, 0))
         screen.blit(logo_image, logo_rect)
         screen.blit(title_text, title_rect)
+        screen.blit(title_game_over_text, title_game_over_rect)
+
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
