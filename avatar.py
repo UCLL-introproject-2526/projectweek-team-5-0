@@ -9,51 +9,20 @@ class Avatar:
         self.rect = pygame.Rect((screen_width - self.width) // 2, screen_height - self.height - 10, self.width, self.height)
         self.speed = 5
 
-        self.vx = 0  # Velocity X
-        self.vy = 0  # Velocity Y
-        self.acceleration = 0.5  # How fast to speed up
-        self.friction = 0.85  # Friction/deceleration (0.85 = 15% slowdown per frame)
-        self.max_speed = 12  # Maximum speed
-
     def update(self, keys, screen_width, screen_height):
-        
-        if keys[pygame.K_LEFT]:
-            self.vx -= self.acceleration
-        if keys[pygame.K_RIGHT]:
-            self.vx += self.acceleration
-        if keys[pygame.K_UP]:
-            self.vy -= self.acceleration
-        if keys[pygame.K_DOWN]:
-            self.vy += self.acceleration
+        #Move left or right with arrow keys
 
-        # Cap maximum speed
-        speed = math.sqrt(self.vx**2 + self.vy**2)
-        if speed > self.max_speed:
-            self.vx = (self.vx / speed) * self.max_speed
-            self.vy = (self.vy / speed) * self.max_speed    
+        #Horizontal movement
+        if keys[pygame.K_LEFT] and self.rect.left > 0:
+            self.rect.x -= self.speed
+        if keys[pygame.K_RIGHT] and self.rect.right < screen_width:
+            self.rect.x += self.speed
 
-        # Stop completely if moving very slowly (prevents tiny drifting)
-        if abs(self.vx) < 0.1:
-            self.vx = 0
-        if abs(self.vy) < 0.1:
-            self.vy = 0
-        
-        self.rect.x += self.vx
-        self.rect.y += self.vy
-
-        # Bouncy boi - actually bounces!
-        if self.rect.left < 0:
-            self.rect.left = 0
-            self.vx = -self.vx * 2  # Reverse and dampen (70% energy retained)
-        if self.rect.right > screen_width:
-            self.rect.right = screen_width
-            self.vx = -self.vx * 2
-        if self.rect.top < 0:
-            self.rect.top = 0
-            self.vy = -self.vy * 2
-        if self.rect.bottom > screen_height:
-            self.rect.bottom = screen_height
-            self.vy = -self.vy * 2
+        #Vertical movement
+        if keys[pygame.K_UP] and self.rect.top > 0:
+            self.rect.y -= self.speed
+        if keys[pygame.K_DOWN] and self.rect.bottom < screen_height:
+            self.rect.y += self.speed
             
     def get_avatar_position(self):
         #gets avatar position and returns it
