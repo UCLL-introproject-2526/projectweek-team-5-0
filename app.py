@@ -73,6 +73,8 @@ def main():
             for asteroid in asteroids[:]:
                 asteroid.update()
                 asteroid.draw(surface)
+                if asteroid.is_dead():
+                    asteroids.remove(asteroid)
                 if asteroid.rect.y > surface.get_height():
                     asteroids.remove(asteroid)
                     player_state.take_damage(10)  # Decrease health by 10 if asteroid goes off screen

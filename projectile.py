@@ -1,4 +1,5 @@
 import pygame
+import math
 
 class Projectile:
     def __init__(self, player_position):
@@ -11,6 +12,10 @@ class Projectile:
     def update(self):
         # move straight up
         self.rect.y += self.speed
+    
+    def hit_reg(self):
+        rect.collidelist
+        pass
 
     def draw(self, surface):
         pygame.draw.rect(surface, (255, 100, 100), self.rect)
