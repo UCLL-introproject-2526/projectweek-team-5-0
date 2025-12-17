@@ -6,6 +6,7 @@ from ui_elements import *
 from menus import *
 from metronome import Metronome
 from asteroids import Asteroid
+from asteroids import Splitter
 from player_state import PlayerState
 from avatar import Avatar
 from projectile import Projectile
@@ -30,6 +31,7 @@ def main():
     running = True # run game status
     game_over = False
     asteroids = []
+    splitters = []
     projectiles = []
     last_spawn_time = 0
 
@@ -89,10 +91,26 @@ def main():
                 asteroid.update(projectiles)
                 asteroid.draw(surface)
                 if asteroid.health <= 0:
+                    if asteroid.is_splitter:
+                            splitter = Splitter(30, 0, 10, 20, asteroid)
+                            splitters.append(splitter)
+
+                            splitter = Splitter(-30, 0, 10, 20, asteroid)
+                            splitters.append(splitter)
+
                     asteroids.remove(asteroid)
                 if asteroid.rect.y > surface.get_height():
                     asteroids.remove(asteroid)
                     player_state.take_damage(10)
+            # Update and draw splitters
+            for splitter in splitters[:]:
+                splitter.update(projectiles)
+                splitter.draw(surface)
+                if splitter.health <= 0:
+                    splitters.remove(splitter)
+                if splitter.rect.y > surface.get_height():
+                    splitters.remove(splitter)
+                    player_state.take_damage(5)
             # Update and draw projectiles
             for projectile in projectiles[:]:
                 projectile.update(projectiles, surface.get_width(), surface.get_height())
@@ -126,12 +144,12 @@ def main():
                     print("closed game")
                     running = False
 
-            #dummy schiet functie
+            #schiet functie
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_SPACE:
                     if metronome.can_shoot() == True:
                         if player_state.is_hit == False:
-                            spawn_projectile(avatar.get_avatar_position(), avatar.angle)
+                            spawn_projectile(avatar.get_gun_position(), avatar.angle)
                             avatar.trigger_fire()
                             print("PEWPEW")
                     else:
@@ -144,9 +162,13 @@ def main():
                 if event.key == pygame.K_h:
                     player_hit = player_state.take_damage(10)
 
+            # if event.type == pygame.KEYDOWN:
+            #     if event.key == pygame.K_j:
+            #         player_state.self.health += 10
+
         clock.tick(60)  # 60 FPS
 
     close_game() # cleanly close game
 
 # no touchy, supposed to run
-main() 
+main()
