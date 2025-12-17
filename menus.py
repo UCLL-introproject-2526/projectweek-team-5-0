@@ -189,7 +189,7 @@ def settings_menu():
 
     skins_button = pygame_gui.elements.UIButton(
         relative_rect=pygame.Rect(
-            (screen.get_width() // 2 - 100, screen.get_height() // 2 + 40),
+            (screen.get_width() // 2 - 100, screen.get_height() // 2 + 100),
             (200, 50)
         ),
         text="skins",
@@ -198,7 +198,7 @@ def settings_menu():
 
     back_button = pygame_gui.elements.UIButton(
         relative_rect=pygame.Rect(
-            (screen.get_width() // 2 - 100, screen.get_height() // 2 + 40),
+            (screen.get_width() // 2 - 100, screen.get_height() // 2 + 160),
             (200, 50)
         ),
         text="Back",
@@ -217,7 +217,7 @@ def settings_menu():
         for event in pygame.event.get():
 
             if event.type == pygame_gui.UI_BUTTON_PRESSED:
-                if event.ui_element == quit_button:
+                if event.ui_element == back_button:
                     pygame.quit()
                     exit()
 
