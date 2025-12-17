@@ -79,9 +79,10 @@ def settings_menu(screen):
 
     manager = pygame_gui.UIManager(screen.get_size(), "gui-themes/theme.json")
 
-    video_btn = pygame_gui.elements.UIButton(pygame.Rect(screen.get_width()//2 - 100, screen.get_height()//2 + 40, 200, 50), "Video", manager)
-    skins_btn = pygame_gui.elements.UIButton(pygame.Rect(screen.get_width()//2 - 100, screen.get_height()//2 + 100, 200, 50), "Skins", manager)
-    back_btn = pygame_gui.elements.UIButton(pygame.Rect(screen.get_width()//2 - 100, screen.get_height()//2 + 160, 200, 50), "Back", manager)
+    keyboard_btn = pygame_gui.elements.UIButton(pygame.Rect(screen.get_width()//2 - 100, screen.get_height()//2 + 40, 200, 50), "Keyboard", manager)
+    video_btn = pygame_gui.elements.UIButton(pygame.Rect(screen.get_width()//2 - 100, screen.get_height()//2 + 100, 200, 50), "Video", manager)
+    skins_btn = pygame_gui.elements.UIButton(pygame.Rect(screen.get_width()//2 - 100, screen.get_height()//2 + 160, 200, 50), "Skins", manager)
+    back_btn = pygame_gui.elements.UIButton(pygame.Rect(screen.get_width()//2 - 100, screen.get_height()//2 + 220, 200, 50), "Back", manager)
 
     while True:
         time_delta = clock.tick(60)/1000.0
@@ -98,6 +99,12 @@ def settings_menu(screen):
             if event.type == pygame_gui.UI_BUTTON_PRESSED:
                 if event.ui_element == back_btn:
                     return "back"
+                elif event.ui_element == keyboard_btn:
+                    return "keyboard"
+                elif event.ui_element == video_btn:
+                    return "video"
+                elif event.ui_element == skins_btn:
+                    return "skins"
 
         manager.update(time_delta)
         manager.draw_ui(screen)
