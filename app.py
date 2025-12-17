@@ -1,3 +1,7 @@
+# we hebben ai enkel gebruikt in een ondersteunende functie. Voor tijdelijk
+# feature testen hebben we AI-code overgenomen maar al deze functies
+# zijn door mensen herschreven. Onze game is dus niet gevibe-coded.
+
 import pygame
 import pygame_gui
 import time
@@ -11,6 +15,7 @@ from asteroids import Splitter
 from player_state import PlayerState
 from avatar import Avatar
 from projectile import Projectile
+from healthpack import HealthPack
 
 pygame.init()
 
@@ -36,6 +41,8 @@ def main():
     projectiles = []
     last_spawn_time = 0
     shoot_pressed = False
+    healthpacks = []
+    last_healthpack_spawn = 0   
 
     # Create a avatar instance
     avatar = Avatar(surface.get_width(), surface.get_height())
@@ -43,6 +50,10 @@ def main():
     def spawn_asteroid():
         asteroid = Asteroid(surface.get_width(), surface.get_height(), 10)
         asteroids.append(asteroid)
+
+    def spawn_healthpack():
+        healthpack = HealthPack(surface.get_width(), surface.get_height())
+        healthpacks.append(healthpack)
 
     def spawn_projectile(avatar_position, angle):
         projectile = Projectile(avatar_position, angle)
@@ -77,6 +88,11 @@ def main():
             if elapsed_time - last_spawn_time >= 2:
                 spawn_asteroid()
                 last_spawn_time = elapsed_time
+            
+            # HP ORB SPAWN
+            if elapsed_time - last_healthpack_spawn >= 15:  # Spawn every 15 seconds
+                spawn_healthpack()
+                last_healthpack_spawn = elapsed_time
 
             # 1. DRAW BACKGROUND LAYER FIRST (Earth Bar)
             draw_earth_image(surface)
@@ -127,7 +143,21 @@ def main():
                     splitters.remove(splitter)
                 if splitter.rect.y > surface.get_height():
                     splitters.remove(splitter)
-                    player_state.take_damage(5)
+                    player_state.take_damage(2)
+
+            #THIS DRAWS ALL HP OBS/PACKS
+            for healthpack in healthpacks[:]:
+                healthpack.update()
+                
+                # Check collision with player
+                if healthpack.rect.colliderect(avatar.rect):
+                    player_state.heal(50)
+                    healthpacks.remove(healthpack)
+                    print("HEALTH PACK COLLECTED!")
+                    continue
+                
+                healthpack.draw(surface)
+            #NO MORE HP 
 
             # 3. DRAW PLAYER LAYER (On top of asteroids)
             keys = pygame.key.get_pressed()
