@@ -20,7 +20,7 @@ def create_click_sound(frequency, duration=0.1):
     return pygame.sndarray.make_sound(stereo_wave)
 
 # Create sounds
-accent_beat = create_click_sound(800)
+accent_beat = create_click_sound(400)
 regular_beat = create_click_sound(400)
 
 class Metronome:
