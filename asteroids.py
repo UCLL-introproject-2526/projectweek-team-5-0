@@ -23,7 +23,7 @@ class Asteroid:
 
         # Position
         self.x = random.randint(0, screen_width - 40)
-        self.speed = random.randint(2, 3)
+        self.speed = random.randint(1, 2)
         self.rect.x = self.x
         self.rect.y = -40
 
