@@ -131,7 +131,12 @@ def main():
             if player_state.health <= 0:
                 game_over = True
         else:
-            game_over_menu()
+            action = game_over_menu()
+
+            if action == "restart":
+                return main()  # clean restart
+            elif action == "quit":
+                running = False
 
         pygame.display.flip()
 
