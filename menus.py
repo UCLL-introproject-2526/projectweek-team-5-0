@@ -3,9 +3,9 @@ import pygame
 import pygame_gui
 import os
 
-# ------------------------------
+################################
 # Main Menu
-# ------------------------------
+################################
 def main_menu(screen):
     clock = pygame.time.Clock()
 
@@ -54,9 +54,9 @@ def main_menu(screen):
         manager.draw_ui(screen)
         pygame.display.flip()
 
-# ------------------------------
+################################
 # Settings Menu
-# ------------------------------
+################################
 def settings_menu(screen):
     clock = pygame.time.Clock()
 
@@ -103,12 +103,18 @@ def settings_menu(screen):
         manager.draw_ui(screen)
         pygame.display.flip()
 
-def main_menu(screen):
+################################
+# Game Over Menu
+################################
+def game_over_menu():
+    screen = pygame.display.get_surface()
     clock = pygame.time.Clock()
 
-    # Load background and UI theme using the passed screen
-    main_menu_background = pygame.image.load("sprites/background/space.jpg").convert()
-    main_menu_background = pygame.transform.scale(main_menu_background, screen.get_size())
+    # Load background
+    background = pygame.image.load("sprites/background/space.jpg").convert()
+    background = pygame.transform.scale(background, screen.get_size())
+
+    # Load UI manager
     manager = pygame_gui.UIManager(screen.get_size(), "gui-themes/theme.json")
 
     # Logo
@@ -118,57 +124,53 @@ def main_menu(screen):
     logo_image = pygame.transform.scale(logo_image, (logo_width, logo_height))
     logo_rect = logo_image.get_rect(center=(screen.get_width() // 2, screen.get_height() // 2 - 200))
 
-    # Title
+    # Game title
     title_font = pygame.font.Font(None, 80)
-    title_text = title_font.render("Astroid Destroyers", True, (255, 255, 255))
+    title_text = title_font.render("Asteroid Destroyers", True, (255, 255, 255))
     title_rect = title_text.get_rect(center=(screen.get_width() // 2, screen.get_height() // 2 - 70))
 
+    # Game Over text
+    game_over_font = pygame.font.Font(None, 60)
+    game_over_text = game_over_font.render("Game Over", True, (255, 0, 0))
+    game_over_rect = game_over_text.get_rect(center=(screen.get_width() // 2, screen.get_height() // 2))
+
     # Buttons
-    start_button = pygame_gui.elements.UIButton(
-        relative_rect=pygame.Rect(
-            (screen.get_width() // 2 - 100, screen.get_height() // 2),
-            (200, 50)
-        ),
-        text="Start Game",
-        manager=manager
+    restart_btn = pygame_gui.elements.UIButton(
+        pygame.Rect(screen.get_width() // 2 - 100, screen.get_height() // 2 + 60, 200, 50),
+        "Restart",
+        manager
+    )
+    main_menu_btn = pygame_gui.elements.UIButton(
+        pygame.Rect(screen.get_width() // 2 - 100, screen.get_height() // 2 + 120, 200, 50),
+        "Main Menu",
+        manager
+    )
+    quit_btn = pygame_gui.elements.UIButton(
+        pygame.Rect(screen.get_width() // 2 - 100, screen.get_height() // 2 + 180, 200, 50),
+        "Quit",
+        manager
     )
 
-    settings_button = pygame_gui.elements.UIButton(
-        relative_rect=pygame.Rect(
-            (screen.get_width() // 2 - 100, screen.get_height() // 2 + 60),
-            (200, 50)
-        ),
-        text="Settings",
-        manager=manager
-    )
-
-    quit_button = pygame_gui.elements.UIButton(
-        relative_rect=pygame.Rect(
-            (screen.get_width() // 2 - 100, screen.get_height() // 2 + 120),
-            (200, 50)
-        ),
-        text="Quit",
-        manager=manager
-    )
-
-    running = True
-    while running:
+    # Event loop
+    while True:
         time_delta = clock.tick(60) / 1000.0
-        screen.blit(main_menu_background, (0, 0))
+        screen.blit(background, (0, 0))
         screen.blit(logo_image, logo_rect)
         screen.blit(title_text, title_rect)
+        screen.blit(game_over_text, game_over_rect)
 
         for event in pygame.event.get():
             manager.process_events(event)
-
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                exit()
             if event.type == pygame_gui.UI_BUTTON_PRESSED:
-                if event.ui_element == start_button:
-                    return
-                elif event.ui_element == settings_button:
-                    settings_menu(screen)
-                elif event.ui_element == quit_button:
-                    pygame.quit()
-                    exit()
+                if event.ui_element == restart_btn:
+                    return "restart"
+                elif event.ui_element == main_menu_btn:
+                    return "main_menu"
+                elif event.ui_element == quit_btn:
+                    return "quit"
 
         manager.update(time_delta)
         manager.draw_ui(screen)
