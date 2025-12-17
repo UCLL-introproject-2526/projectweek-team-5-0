@@ -28,7 +28,6 @@ class Asteroid:
         self.rect.y = -40
 
         self.health = health
-        self.splitter = random.randint(0, 1)
 
     def update(self, projectiles):
         # move straight down
@@ -39,9 +38,6 @@ class Asteroid:
 
     def damage(self, damage):
         self.health -= damage
-    
-    def is_splitter(self):
-        return self.splitter>0.5
 
     def draw(self, surface):
         surface.blit(self.image, self.rect)
