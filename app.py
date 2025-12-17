@@ -93,7 +93,7 @@ def main():
                 asteroid.update(projectiles)
                 asteroid.draw(surface)
                 if asteroid.health <= 0:
-                    if asteroid.is_splitter:
+                    if asteroid.is_splitter():
                             splitter = Splitter(30, 0, 10, 20, asteroid)
                             splitters.append(splitter)
                             splitter = Splitter(-30, 0, 10, 20, asteroid)
