@@ -23,7 +23,12 @@ def close_game():
     pygame.quit()
 
 def main():
-    surface = create_main_surface()
+    # create window once
+    os.environ['SDL_VIDEO_CENTERED'] = '1'
+    info = pygame.display.Info()
+    surface = pygame.display.set_mode((info.current_w, info.current_h), pygame.FULLSCREEN)
+    pygame.display.set_caption("Asteroid Destroyers")
+
     clock = pygame.time.Clock()
     font = pygame.font.Font(None, 36)
     start_time = time.time()
@@ -31,6 +36,10 @@ def main():
     metronome = Metronome(bpm=120)
     running = True # run game status
     game_over = False
+
+    # show main menu
+    main_menu(surface)
+
     asteroids = []
     splitters = []
     projectiles = []
@@ -47,16 +56,6 @@ def main():
     def spawn_projectile(avatar_position, angle):
         projectile = Projectile(avatar_position, angle)
         projectiles.append(projectile)
-
-    # show start screen firt
-    main_menu()
-
-    os.environ['SDL_VIDEO_CENTERED'] = '1'  # center the window
-    info = pygame.display.Info()
-    surface = pygame.display.set_mode(
-        (info.current_w, info.current_h),
-        pygame.FULLSCREEN # chnage to resizeable for windowed
-    )
 
     try:
         game_background = pygame.image.load("sprites/earth_space.png").convert()
