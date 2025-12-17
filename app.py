@@ -141,16 +141,17 @@ def main():
                 asteroid.draw(surface)
                 if asteroid.health <= 0:
                     if asteroid.is_splitter:
-                            splitter = Splitter(40, 40, 10, 20, asteroid)
+                            splitter = Splitter(30, 0, 10, 20, asteroid)
                             splitters.append(splitter)
 
-                            splitter = Splitter(40, 40, 10, 20, asteroid)
+                            splitter = Splitter(-30, 0, 10, 20, asteroid)
                             splitters.append(splitter)
 
                     asteroids.remove(asteroid)
                 if asteroid.rect.y > surface.get_height():
                     asteroids.remove(asteroid)
                     player_state.take_damage(10)
+            # Update and draw splitters
             for splitter in splitters[:]:
                 splitter.update(projectiles)
                 splitter.draw(surface)
@@ -158,7 +159,7 @@ def main():
                     splitters.remove(splitter)
                 if splitter.rect.y > surface.get_height():
                     splitters.remove(splitter)
-                    player_state.take_damage(10)
+                    player_state.take_damage(5)
             # Update and draw projectiles
             for projectile in projectiles[:]:
                 projectile.update(projectiles)

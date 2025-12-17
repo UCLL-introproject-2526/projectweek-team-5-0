@@ -28,7 +28,7 @@ class Asteroid:
         self.rect.y = -40
 
         self.health = health
-        self.splitter = random.random
+        self.splitter = random.randint(0, 1)
 
     def update(self, projectiles):
         # move straight down
@@ -46,11 +46,9 @@ class Asteroid:
     def draw(self, surface):
         surface.blit(self.image, self.rect)
 
-    def get_asteroid_position_x(self):
-        #gets asteroid position and returns it
-        asteroid_position_x = self.rect.x + (self.width/4)
-        #the division ensures the middle of the avatar is returned
-        return asteroid_position_x
+    def get_asteroid_position(self):
+        position = [self.rect.x + 20, self.rect.y - 20]
+        return position
 
 class Splitter:
     def __init__(self, spawn_offset_x, spawn_offset_y, health, size, asteroid):
@@ -65,17 +63,18 @@ class Splitter:
         sprite_path = os.path.join(sprite_folder, chosen_sprite)
         self.image = pygame.image.load(sprite_path).convert_alpha()
 
-        # Scale to 40x40
+        # Scale to size
         self.image = pygame.transform.scale(self.image, (size, size))
 
         # NOW create rect from image (after image exists!)
         self.rect = self.image.get_rect()
 
         # Position
-        self.x = 300
-        self.speed = asteroid.speed
-        self.rect.x = self.x
-        self.rect.y = -40 - spawn_offset_y
+        self.x = (asteroid.get_asteroid_position())[0]
+        self.y = (asteroid.get_asteroid_position())[1]
+        self.speed = asteroid.speed - 1
+        self.rect.x = self.x + spawn_offset_x
+        self.rect.y = self.y + spawn_offset_y
 
         self.health = health
 
