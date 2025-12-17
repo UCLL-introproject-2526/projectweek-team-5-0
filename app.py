@@ -34,6 +34,7 @@ def main():
     splitters = []
     projectiles = []
     last_spawn_time = 0
+    shoot_pressed = False
 
     # Create a avatar instance
     avatar = Avatar(surface.get_width(), surface.get_height())
@@ -67,6 +68,7 @@ def main():
         surface.fill((0, 0, 0))  # Clear screen with black
         surface.blit(game_background, (0, 0))  # Set bg
 
+        shoot_pressed = False
         metronome.update()
         player_state.update()
 
@@ -85,7 +87,7 @@ def main():
             # =============================
 
             #draw alle ui elementen laatste en on top
-            draw_earth_bar(surface)
+            draw_earth_image(surface)
             # Update and draw asteroids
             for asteroid in asteroids[:]:
                 asteroid.update(projectiles)
@@ -94,7 +96,6 @@ def main():
                     if asteroid.is_splitter:
                             splitter = Splitter(30, 0, 10, 20, asteroid)
                             splitters.append(splitter)
-
                             splitter = Splitter(-30, 0, 10, 20, asteroid)
                             splitters.append(splitter)
 
@@ -144,17 +145,26 @@ def main():
                     print("closed game")
                     running = False
 
-            #schiet functie
+            # SPATIE CHECK
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_SPACE:
-                    if metronome.can_shoot() == True:
-                        if player_state.is_hit == False:
-                            spawn_projectile(avatar.get_gun_position(), avatar.angle)
-                            avatar.trigger_fire()
-                            print("PEWPEW")
-                    else:
-                        player_state.is_hit = True
-                        print("FOUTE TIMING JIJ IDIOOT")
+                    shoot_pressed = True
+
+            # klik check
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if event.button == 1:  # Left click
+                    shoot_pressed = True
+
+            #schiet functie
+            if shoot_pressed:
+                if metronome.can_shoot() == True:
+                    if player_state.is_hit == False:
+                        spawn_projectile(avatar.get_gun_position(), avatar.angle)
+                        avatar.trigger_fire()
+                        print("PEWPEW")
+                else:
+                    player_state.is_hit = True
+                    print("FOUTE TIMING JIJ IDIOOT")
 
 # dit is tijdelijk omdat we nog geen damage feature hebben. nu kan je
 # de damage-logica triggeren met h
