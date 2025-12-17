@@ -110,8 +110,8 @@ def main():
         asteroid = Asteroid(surface.get_width(), surface.get_height(), 10)
         asteroids.append(asteroid)
 
-    def spawn_projectile(avatar_position):
-        projectile = Projectile(avatar_position)
+    def spawn_projectile(avatar_position, angle):
+        projectile = Projectile(avatar_position, angle)
         projectiles.append(projectile)
 
     # show start screen firt
@@ -157,7 +157,7 @@ def main():
                     player_state.take_damage(10)
             # Update and draw projectiles
             for projectile in projectiles[:]:
-                projectile.update(projectiles)
+                projectile.update(projectiles, surface.get_width(), surface.get_height())
                 projectile.draw(surface)
             # Update and draw avatar
             keys = pygame.key.get_pressed()
@@ -196,7 +196,7 @@ def main():
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_SPACE:
                     if metronome.can_shoot() == True:
-                        spawn_projectile(avatar.get_avatar_position())
+                        spawn_projectile(avatar.get_avatar_position(), avatar.angle)
                         print("PEWPEW")
                     else:
                         print("FOUTE TIMING JIJ IDIOOT")
