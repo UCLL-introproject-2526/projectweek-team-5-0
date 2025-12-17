@@ -68,7 +68,7 @@ def draw_shoot_indicator(surface, metronome):
     screen_width, screen_height = surface.get_size()
 
     # Bar dimensions as percentage of screen
-    bar_width = screen_width * 0.03  # 3% of screen width
+    bar_width = screen_width * 0.015  # 3% of screen width
     bar_height = screen_height * 0.5  # 50% of screen height
 
     # Position on right side, vertically centered
