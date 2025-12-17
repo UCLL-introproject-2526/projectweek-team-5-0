@@ -22,7 +22,7 @@ pygame.init()
 def close_game():
     pygame.quit()
 
-def main():
+def main(skip_menu=False):
     # create window once
     os.environ['SDL_VIDEO_CENTERED'] = '1'
     info = pygame.display.Info()
@@ -37,14 +37,16 @@ def main():
     running = True # run game status
     game_over = False
 
-    while running:
-        action = main_menu(surface)  # Returns "start", "settings", or quits
+    # Only show main menu if skip_menu is False
+    if not skip_menu:
+        while running:
+            action = main_menu(surface)  # Returns "start", "settings", or quits
 
-        if action == "settings":
-            settings_menu(surface)
-            continue  # Show main menu again after settings
-        elif action == "start":
-            break  # Exit menu loop and start game
+            if action == "settings":
+                settings_menu(surface)
+                continue  # Show main menu again after settings
+            elif action == "start":
+                break  # Exit menu loop and start game
 
     asteroids = []
     splitters = []
@@ -139,7 +141,11 @@ def main():
             action = game_over_menu()
 
             if action == "restart":
-                return main()  # clean restart
+                # Restart the game and skip the main menu
+                return main(skip_menu=True)
+            elif action == "main_menu":
+                # go to main menu
+                return main(skip_menu=False)
             elif action == "quit":
                 running = False
 
