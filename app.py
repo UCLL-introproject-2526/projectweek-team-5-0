@@ -37,7 +37,7 @@ def main():
     last_spawn_time = 0
 
     # Create a avatar instance
-    avatar = Avatar(surface.get_width(), surface.get_height())
+    avatar = Avatar(surface.get_width(), surface.get_height(), player_state)
 
     def spawn_asteroid():
         asteroid = Asteroid(surface.get_width(), surface.get_height(), 10)
@@ -154,7 +154,7 @@ def main():
                             avatar.trigger_fire()
                             print("PEWPEW")
                     else:
-                        player_state.is_hit = True
+                        player_state.paralyse()
                         print("FOUTE TIMING JIJ IDIOOT")
 
 # dit is tijdelijk omdat we nog geen damage feature hebben. nu kan je
