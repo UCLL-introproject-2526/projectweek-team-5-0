@@ -122,7 +122,7 @@ class Avatar:
             
     def get_avatar_position(self):
         #gets avatar position and returns it
-        avatar_position = [self.rect.x + (self.width/4), self.rect.y + (self.height/2)]
+        avatar_position = [self.rect.x + (self.width/2), self.rect.y + (self.height/2)]
         #the division ensures the middle of the avatar is returned
         return avatar_position
     
