@@ -18,6 +18,13 @@ pygame.init()
 # deze functie zitten alle dingen in die gerund worden.
 # =====================================================
 
+# Settings menu's
+SETTINGS_MENUS = {
+    "keyboard": keyboard_menu,
+    "video": video_menu,
+    "skins": skins_menu,
+}
+
 # closes game properly
 def close_game():
     pygame.quit()
@@ -43,11 +50,24 @@ def main(skip_menu=False):
             action = main_menu(surface)  # Returns "start", "settings", or quits
 
             if action == "settings":
-                settings_menu(surface)
+                while True:
+                    settings_action = settings_menu(surface)
+
+                    if settings_action == "back":
+                        break  # back to main menu
+
+                    submenu = SETTINGS_MENUS.get(settings_action)
+                    if submenu:
+                        submenu(surface)
+
                 continue
 
             elif action == "start":
                 break  # Exit menu loop and start game
+
+            elif action == "quit":
+                close_game()
+                return
 
     asteroids = []
     splitters = []
@@ -105,7 +125,7 @@ def main(skip_menu=False):
                     if asteroid.rect.colliderect(projectile.rect):
                         asteroid.damage(10)
                         if projectile in projectiles:
-                            projectiles.remove(projectile) 
+                            projectiles.remove(projectile)
 
                 asteroid.draw(surface)
 

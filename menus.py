@@ -111,6 +111,24 @@ def settings_menu(screen):
         pygame.display.flip()
 
 ################################
+# Testing new Menu
+################################
+
+# Handlers for settings submenus
+def keyboard_menu(surface):
+    print("Keyboard settings opened")
+    # You can later replace this with a new UI screen
+    return "back"
+
+def video_menu(surface):
+    print("Video settings opened")
+    return "back"
+
+def skins_menu(surface):
+    print("Skins settings opened")
+    return "back"
+
+################################
 # Game Over Menu
 ################################
 def game_over_menu():
@@ -182,3 +200,4 @@ def game_over_menu():
         manager.update(time_delta)
         manager.draw_ui(screen)
         pygame.display.flip()
+
