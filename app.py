@@ -2,6 +2,7 @@ import pygame
 import pygame_gui
 import time
 import os
+import random
 from ui_elements import *
 from menus import *
 from metronome import Metronome
@@ -91,7 +92,7 @@ def main():
                 asteroid.update(projectiles)
                 asteroid.draw(surface)
                 if asteroid.health <= 0:
-                    if asteroid.is_splitter:
+                    if  random.randint(0, 1)>0.5:
                             splitter = Splitter(30, 0, 10, 20, asteroid)
                             splitters.append(splitter)
 
