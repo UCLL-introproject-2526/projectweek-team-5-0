@@ -44,7 +44,8 @@ def main(skip_menu=False):
 
             if action == "settings":
                 settings_menu(surface)
-                continue  # Show main menu again after settings
+                continue
+
             elif action == "start":
                 break  # Exit menu loop and start game
 
@@ -73,7 +74,7 @@ def main(skip_menu=False):
         running = False
 
     while running:
-        surface.fill((0, 0, 0)) 
+        surface.fill((0, 0, 0))
         surface.blit(game_background, (0, 0))
 
         metronome.update()
@@ -89,7 +90,7 @@ def main(skip_menu=False):
             draw_earth_image(surface)
 
             # 2. UPDATE & COLLISION LOGIC
-            
+
             # Projectiles Update
             for projectile in projectiles[:]:
                 projectile.update(projectiles, surface.get_width(), surface.get_height())
@@ -98,7 +99,7 @@ def main(skip_menu=False):
             # Asteroid Update + Collision
             for asteroid in asteroids[:]:
                 asteroid.update() # CHANGE: No longer passing projectiles
-                
+
                 # NEW COLLISION BLOCK: Handles deletion on impact
                 for projectile in projectiles[:]:
                     if asteroid.rect.colliderect(projectile.rect):
@@ -113,7 +114,7 @@ def main(skip_menu=False):
                         splitters.append(Splitter(30, 0, 10, 20, asteroid))
                         splitters.append(Splitter(-30, 0, 10, 20, asteroid))
                     asteroids.remove(asteroid)
-                
+
                 if asteroid.rect.y > surface.get_height():
                     asteroids.remove(asteroid)
                     player_state.take_damage(10)
@@ -121,7 +122,7 @@ def main(skip_menu=False):
             # Splitter Update + Collision
             for splitter in splitters[:]:
                 splitter.update() # CHANGE: No longer passing projectiles
-                
+
                 # NEW COLLISION BLOCK for Splitters
                 for projectile in projectiles[:]:
                     if splitter.rect.colliderect(projectile.rect):
