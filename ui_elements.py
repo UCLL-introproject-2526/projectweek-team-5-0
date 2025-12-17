@@ -1,7 +1,22 @@
 import pygame
 import os
 
-_earth_image = None
+_earth_image = None  # cache variable
+
+def load_earth_image():
+    """Load earth image once and cache it"""
+    global _earth_image
+    if _earth_image is None:
+        script_dir = os.path.dirname(os.path.abspath(__file__))
+        try:
+            _earth_image = pygame.image.load(
+                os.path.join(script_dir, "sprites", "earth.png")
+            ).convert_alpha()
+            print("Earth image loaded successfully")
+        except:
+            _earth_image = False
+            print("Warning: sprites/earth.png not found - using colored bar")
+    return _earth_image if _earth_image else None
 
 def create_main_surface():
     # Create a resizable 600x600 window

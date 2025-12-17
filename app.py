@@ -65,6 +65,13 @@ def main():
         print("Failed to load background image.")
         running = False
 
+    earth_image = load_earth_image()
+    if earth_image:
+        earth_image = pygame.transform.scale(earth_image, (surface.get_width(), 300))
+        earth_rect = earth_image.get_rect(midbottom=(surface.get_width() // 2, surface.get_height()))
+    else:
+        earth_image = None
+
     while running:
         surface.fill((0, 0, 0)) 
         surface.blit(game_background, (0, 0))
