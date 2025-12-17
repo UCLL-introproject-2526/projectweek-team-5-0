@@ -51,7 +51,7 @@ def main():
     info = pygame.display.Info()
     surface = pygame.display.set_mode(
         (info.current_w, info.current_h),
-        pygame.RESIZABLE
+        pygame.FULLSCREEN # chnage to resizeable for windowed
     )
 
     try:
