@@ -30,12 +30,10 @@ class Asteroid:
         self.health = health
         self.splitter = random.randint(0, 1)
 
-    def update(self, projectiles):
+    def update(self):
         # move straight down
         self.rect.y += self.speed
-        if pygame.Rect.collidelist(self.rect, projectiles) != -1:
-            projectiles.remove(projectiles[pygame.Rect.collidelist(self.rect, projectiles)])
-            self.damage(10)
+
 
     def damage(self, damage):
         self.health -= damage
@@ -78,12 +76,9 @@ class Splitter:
 
         self.health = health
 
-    def update(self, projectiles):
+    def update(self):
         # move straight down
         self.rect.y += self.speed
-        if pygame.Rect.collidelist(self.rect, projectiles) != -1:
-            projectiles.remove(projectiles[pygame.Rect.collidelist(self.rect, projectiles)])
-            self.damage(10)
 
     def damage(self, damage):
         self.health -= damage

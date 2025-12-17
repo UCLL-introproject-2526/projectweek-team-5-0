@@ -2,6 +2,7 @@ import pygame
 import pygame_gui
 import time
 import os
+import random
 from ui_elements import *
 from menus import *
 from metronome import Metronome
@@ -65,69 +66,81 @@ def main():
         running = False
 
     while running:
-        surface.fill((0, 0, 0))  # Clear screen with black
-        surface.blit(game_background, (0, 0))  # Set bg
+        surface.fill((0, 0, 0)) 
+        surface.blit(game_background, (0, 0))
 
-        shoot_pressed = False
         metronome.update()
         player_state.update()
-
-        # Calculate elapsed time
         elapsed_time = time.time() - start_time
 
-        # Draw everything
         if not game_over:
-                        # Asteroid spawning logic
-            if elapsed_time - last_spawn_time >= 2:  # Spawn every 2 seconds
+            if elapsed_time - last_spawn_time >= 2:
                 spawn_asteroid()
                 last_spawn_time = elapsed_time
 
-            #==========================
-            #ENKEL DRAWS HIERONDER
-            # =============================
-
-            #draw alle ui elementen laatste en on top
+            # 1. DRAW BACKGROUND LAYER FIRST (Earth Bar)
             draw_earth_image(surface)
-            # Update and draw asteroids
-            for asteroid in asteroids[:]:
-                asteroid.update(projectiles)
-                asteroid.draw(surface)
-                if asteroid.health <= 0:
-                    if asteroid.is_splitter():
-                            splitter = Splitter(30, 0, 10, 20, asteroid)
-                            splitters.append(splitter)
-                            splitter = Splitter(-30, 0, 10, 20, asteroid)
-                            splitters.append(splitter)
 
+            # 2. UPDATE & COLLISION LOGIC
+            
+            # Projectiles Update
+            for projectile in projectiles[:]:
+                projectile.update(projectiles, surface.get_width(), surface.get_height())
+                projectile.draw(surface)
+
+            # Asteroid Update + Collision
+            for asteroid in asteroids[:]:
+                asteroid.update() # CHANGE: No longer passing projectiles
+                
+                # NEW COLLISION BLOCK: Handles deletion on impact
+                for projectile in projectiles[:]:
+                    if asteroid.rect.colliderect(projectile.rect):
+                        asteroid.damage(10)
+                        if projectile in projectiles:
+                            projectiles.remove(projectile) 
+
+                asteroid.draw(surface)
+
+                if asteroid.health <= 0:
+                    if random.random() > 0.5:
+                        splitters.append(Splitter(30, 0, 10, 20, asteroid))
+                        splitters.append(Splitter(-30, 0, 10, 20, asteroid))
                     asteroids.remove(asteroid)
+                
                 if asteroid.rect.y > surface.get_height():
                     asteroids.remove(asteroid)
                     player_state.take_damage(10)
-            # Update and draw splitters
+
+            # Splitter Update + Collision
             for splitter in splitters[:]:
-                splitter.update(projectiles)
+                splitter.update() # CHANGE: No longer passing projectiles
+                
+                # NEW COLLISION BLOCK for Splitters
+                for projectile in projectiles[:]:
+                    if splitter.rect.colliderect(projectile.rect):
+                        splitter.damage(10)
+                        if projectile in projectiles:
+                            projectiles.remove(projectile)
+
                 splitter.draw(surface)
                 if splitter.health <= 0:
                     splitters.remove(splitter)
                 if splitter.rect.y > surface.get_height():
                     splitters.remove(splitter)
                     player_state.take_damage(5)
-            # Update and draw projectiles
-            for projectile in projectiles[:]:
-                projectile.update(projectiles, surface.get_width(), surface.get_height())
-                projectile.draw(surface)
-            # Update and draw avatar
+
+            # 3. DRAW PLAYER LAYER (On top of asteroids)
             keys = pygame.key.get_pressed()
             avatar.update(keys, surface.get_width(), surface.get_height())
             avatar.draw(surface)
+
+            # 4. DRAW UI LAYER (On very top)
             draw_health(surface, font, player_state.health)
             draw_timer(surface, font, elapsed_time)
             draw_shoot_indicator(surface, metronome)
 
-            # ship collision
             player_state.update_ship_collision(avatar, asteroids)
 
-            # Check for game over
             if player_state.health <= 0:
                 game_over = True
         else:
@@ -165,6 +178,7 @@ def main():
                 else:
                     player_state.is_hit = True
                     print("FOUTE TIMING JIJ IDIOOT")
+                shoot_pressed=False
 
 # dit is tijdelijk omdat we nog geen damage feature hebben. nu kan je
 # de damage-logica triggeren met h
