@@ -3,7 +3,7 @@ import random
 import os
 
 class Asteroid:
-    def __init__(self, screen_width, screen_height, health, size):
+    def __init__(self, screen_width, screen_height, health):
         script_dir = os.path.dirname(os.path.abspath(__file__))
         sprite_folder = os.path.join(script_dir, "sprites", "asteroid")
 
@@ -16,7 +16,7 @@ class Asteroid:
         self.image = pygame.image.load(sprite_path).convert_alpha()
 
         # Scale to 40x40
-        self.image = pygame.transform.scale(self.image, (size, size))
+        self.image = pygame.transform.scale(self.image, (40, 40))
 
         # NOW create rect from image (after image exists!)
         self.rect = self.image.get_rect()
@@ -39,18 +39,21 @@ class Asteroid:
 
     def damage(self, damage):
         self.health -= damage
+    
+    def is_splitter(self):
+        return self.splitter>0.5
 
     def draw(self, surface):
         surface.blit(self.image, self.rect)
 
-    def get_asteroid_position(self):
+    def get_asteroid_position_x(self):
         #gets asteroid position and returns it
-        asteroid_position = [self.rect.x + (self.width/4), self.rect.y + (self.height/2)]
+        asteroid_position_x = self.rect.x + (self.width/4)
         #the division ensures the middle of the avatar is returned
-        return asteroid_position
+        return asteroid_position_x
 
 class Splitter:
-    def __init__(self, screen_width, screen_height, health, size):
+    def __init__(self, spawn_offset_x, spawn_offset_y, health, size, asteroid):
         script_dir = os.path.dirname(os.path.abspath(__file__))
         sprite_folder = os.path.join(script_dir, "sprites", "asteroid")
 
@@ -69,13 +72,12 @@ class Splitter:
         self.rect = self.image.get_rect()
 
         # Position
-        self.x = Asteroid.get_asteroid_position
-        self.speed = random.randint(2, 3)
+        self.x = 300
+        self.speed = asteroid.speed
         self.rect.x = self.x
-        self.rect.y = -40
+        self.rect.y = -40 - spawn_offset_y
 
         self.health = health
-        self.splitter = random.random
 
     def update(self, projectiles):
         # move straight down
