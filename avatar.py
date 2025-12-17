@@ -107,6 +107,18 @@ class Avatar:
             self.fire_frame_count -= 1
             if self.fire_frame_count <= 0:
                 self.is_firing = False
+
+        #Rotatation toward mouse
+        mouse_x, mouse_y = pygame.mouse.get_pos()
+        dx = mouse_x - self.rect.centerx
+        dy = mouse_y - self.rect.centery
+        self.angle = math.degrees(math.atan2(-dy, dx)) - 90  
+
+        #Rotate the image
+        self.image = pygame.transform.rotate(self.base_image, self.angle)
+
+        #Update rect to new image size and keep center
+        self.rect = self.image.get_rect(center=self.rect.center) 
             
     def get_avatar_position(self):
         #gets avatar position and returns it
