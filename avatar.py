@@ -61,14 +61,6 @@ class Avatar:
 
     def update(self, keys, screen_width, screen_height):
         
-        if keys[pygame.K_a]:
-            self.vx -= self.acceleration
-        if keys[pygame.K_d]:
-            self.vx += self.acceleration
-        if keys[pygame.K_w]:
-            self.vy -= self.acceleration
-        if keys[pygame.K_s]:
-            self.vy += self.acceleration
         if keys[pygame.K_LEFT]:
             self.vx -= self.acceleration
         if keys[pygame.K_RIGHT]:
@@ -116,8 +108,6 @@ class Avatar:
             if self.fire_frame_count <= 0:
                 self.is_firing = False
 
-        true_center = self.rect.center
-
         #Rotatation toward mouse
         mouse_x, mouse_y = pygame.mouse.get_pos()
         dx = mouse_x - self.rect.centerx
@@ -128,7 +118,7 @@ class Avatar:
         self.image = pygame.transform.rotate(self.base_image, self.angle)
 
         #Update rect to new image size and keep center
-        self.rect = self.image.get_rect(center=true_center) 
+        self.rect = self.image.get_rect(center=self.rect.center) 
             
     def get_avatar_position(self):
         #gets avatar position and returns it
@@ -146,21 +136,25 @@ class Avatar:
         tip_y = self.rect.centery - tip_offset * math.sin(rad)
         
         return [tip_x, tip_y]
+  
     
     def draw(self, surface):
         surface.blit(self.image, self.rect)
 
         # Draw flame sprite if firing
         if self.is_firing and self.current_flame:
-            rear_offset = self.height // 2 + 5
-            rad = math.radians(self.angle - 90)
-            flame_x = self.rect.centerx - rear_offset * math.cos(rad)
-            flame_y = self.rect.centery + rear_offset * math.sin(rad)
-
+            # Scale flame to fit (adjust size as needed)
             flame_width = 30
             flame_height = 30
             scaled_flame = pygame.transform.scale(self.current_flame, (flame_width, flame_height))
-            rotated_flame = pygame.transform.rotate(scaled_flame, self.angle)
-            flame_rect = rotated_flame.get_rect(center=(int(flame_x), int(flame_y)))
-
-            surface.blit(rotated_flame, flame_rect)
+            
+            # Position flame above avatar, centered
+            flame_x = self.rect.centerx - flame_width // 2
+            flame_y = self.rect.top - flame_height + 10  # Overlap slightly with ship
+            
+            # Optional: fade out flame as animation ends
+            if self.fire_frame_count < 4:
+                # Make flame semi-transparent in last few frames
+                scaled_flame.set_alpha(int(255 * (self.fire_frame_count / 4)))
+            
+            surface.blit(scaled_flame, (flame_x, flame_y))
