@@ -37,8 +37,14 @@ def main():
     running = True # run game status
     game_over = False
 
-    # show main menu
-    main_menu(surface)
+    while running:
+        action = main_menu(surface)  # Returns "start", "settings", or quits
+
+        if action == "settings":
+            settings_menu(surface)
+            continue  # Show main menu again after settings
+        elif action == "start":
+            break  # Exit menu loop and start game
 
     asteroids = []
     splitters = []
