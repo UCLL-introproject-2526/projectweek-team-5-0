@@ -149,7 +149,7 @@ def main():
                 if event.key == pygame.K_SPACE:
                     if metronome.can_shoot() == True:
                         if player_state.is_hit == False:
-                            spawn_projectile(avatar.get_avatar_position(), avatar.angle)
+                            spawn_projectile(avatar.get_gun_position(), avatar.angle)
                             avatar.trigger_fire()
                             print("PEWPEW")
                     else:
@@ -161,6 +161,10 @@ def main():
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_h:
                     player_hit = player_state.take_damage(10)
+
+            # if event.type == pygame.KEYDOWN:
+            #     if event.key == pygame.K_j:
+            #         player_state.self.health += 10
 
         clock.tick(60)  # 60 FPS
 
