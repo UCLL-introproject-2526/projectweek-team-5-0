@@ -6,7 +6,7 @@ import pygame
 import pygame_gui
 import time
 import os
-import random
+from random import random
 from ui_elements import *
 from menus import *
 from metronome import Metronome
@@ -125,7 +125,7 @@ def main(skip_menu=False):
                 asteroid.draw(surface)
 
                 if asteroid.health <= 0:
-                    if random.random() > 0.5:
+                    if random > 0.7:
                         splitters.append(Splitter(30, 0, 10, 20, asteroid))
                         splitters.append(Splitter(-30, 0, 10, 20, asteroid))
                     asteroids.remove(asteroid)
