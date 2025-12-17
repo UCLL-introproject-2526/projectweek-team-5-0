@@ -149,4 +149,4 @@ def main():
     close_game() # cleanly close game
 
 # no touchy, supposed to run
-main() 
+main()
