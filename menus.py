@@ -3,17 +3,13 @@ import pygame
 import pygame_gui
 import os
 
-def main_menu():
-    screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
+def main_menu(screen):
     clock = pygame.time.Clock()
 
-    # Load background
+    # Load background and UI theme using the passed screen
     main_menu_background = pygame.image.load("sprites/background/space.jpg").convert()
     main_menu_background = pygame.transform.scale(main_menu_background, screen.get_size())
-
-    # Load UI theme
-    theme_path = os.path.join("gui-themes", "theme.json")
-    manager = pygame_gui.UIManager(screen.get_size(), theme_path)
+    manager = pygame_gui.UIManager(screen.get_size(), "gui-themes/theme.json")
 
     # Logo
     logo_image = pygame.image.load("sprites/logo/logo.jpg").convert_alpha()
@@ -69,7 +65,7 @@ def main_menu():
                 if event.ui_element == start_button:
                     return
                 elif event.ui_element == settings_button:
-                    settings_menu()
+                    settings_menu(screen)
                 elif event.ui_element == quit_button:
                     pygame.quit()
                     exit()
@@ -82,8 +78,7 @@ def main_menu():
 # Settings menu menu function here
 ##################################
 
-def settings_menu():
-    screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
+def settings_menu(screen):
     clock = pygame.time.Clock()
 
     # Load background
@@ -126,7 +121,7 @@ def settings_menu():
             (screen.get_width() // 2 - 100, screen.get_height() // 2 + 100),
             (200, 50)
         ),
-        text="skins",
+        text="Skins",
         manager=manager
     )
 
