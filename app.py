@@ -104,6 +104,9 @@ def main():
             draw_health(surface, font, player_state.health)
             draw_timer(surface, font, elapsed_time)
             draw_shoot_indicator(surface, metronome)
+            
+            # ship collision
+            player_state.update_ship_collision(avatar, asteroids)
 
             # Check for game over
             if player_state.health <= 0:
@@ -127,10 +130,12 @@ def main():
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_SPACE:
                     if metronome.can_shoot() == True:
-                        spawn_projectile(avatar.get_avatar_position())
-                        avatar.trigger_fire()
-                        print("PEWPEW")
+                        if player_state.is_hit == False:
+                            spawn_projectile(avatar.get_avatar_position())
+                            avatar.trigger_fire()
+                            print("PEWPEW")
                     else:
+                        player_state.is_hit = True
                         print("FOUTE TIMING JIJ IDIOOT")
 
 # dit is tijdelijk omdat we nog geen damage feature hebben. nu kan je
@@ -138,10 +143,6 @@ def main():
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_h:
                     player_hit = player_state.take_damage(10)
-
-            if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_k:
-                    player_hit = player_state.paralyse()
 
         clock.tick(60)  # 60 FPS
 

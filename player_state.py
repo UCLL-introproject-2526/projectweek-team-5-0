@@ -7,6 +7,7 @@
 import pygame
 import numpy as np
 import os
+from avatar import Avatar
 
 class PlayerState:
     def __init__(self):
@@ -15,7 +16,7 @@ class PlayerState:
         """
         self.is_hit = False  # Flag indicating if player was just hit
         self.hit_time = 0  # When the hit occurred
-        self.hit_duration = 1000  # How long hit state lasts (ms)
+        self.hit_duration = 5000  # How long hit state lasts (ms)
 
         self.health = 100  # Starting health
         self.max_health = 100
@@ -125,6 +126,11 @@ class PlayerState:
             if current_time - self.hit_time >= self.hit_duration:
                 self.is_hit = False
                 print("Hit state ended - player vulnerable again")
+
+    def update_ship_collision(self, avatar, astroidlist):
+        if pygame.Rect.collidelist(avatar.rect, astroidlist) != -1:
+            self.is_hit = True
+            print("You've been hit")
 
     def is_alive(self):
         """Check if player is still alive"""
