@@ -149,6 +149,11 @@ def main(skip_menu=False):
             # Asteroid Update + Collision
             for asteroid in asteroids[:]:
                 asteroid.update() # CHANGE: No longer passing projectiles
+                # Only enable doomsday if time > 180 seconds
+                if elapsed_time > 180: #Stage 4 condition
+                    explosion = Explosion(asteroid.rect.centerx, asteroid.rect.centery)
+                    explosions.append(explosion)
+
 
                 # NEW COLLISION BLOCK: Handles deletion on impact
                 for projectile in projectiles[:]:
