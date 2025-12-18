@@ -41,14 +41,21 @@ class Metronome:
 
         self.shoot_tolerance = 100 
 
-    def update(self):
+    def update(self, combat_mod=None):
         current_time = pygame.time.get_ticks()
 
         if current_time >= self.next_beat_time:
-            if self.current_beat == 0 or self.current_beat == 4:
-                accent_beat.play()
-            else:
-                regular_beat.play()
+            # Check if this beat should be silent
+            is_silent = False
+            if combat_mod and combat_mod.is_beat_forbidden(self.current_beat):
+                is_silent = True
+
+            # Only play sound if NOT silent
+            if not is_silent:
+                if self.current_beat == 0 or self.current_beat == 4:
+                    accent_beat.play()
+                else:
+                    regular_beat.play()
 
             # Update timing
             self.last_beat_time = current_time

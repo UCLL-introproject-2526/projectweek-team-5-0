@@ -17,6 +17,8 @@ from avatar import Avatar
 from projectile import Projectile
 from healthpack import HealthPack
 from explosion import Explosion
+from powerup_item import PowerUpItem
+from combat_modifier import CombatModifier
 
 pygame.init()
 
@@ -48,6 +50,9 @@ def main(skip_menu=False):
     metronome = Metronome(bpm=120)
     running = True # run game status
     game_over = False
+    combat_mod = CombatModifier()
+    powerup_items = []
+    last_powerup_spawn = 0
 
     # Only show main menu if skip_menu is False
     if not skip_menu:
@@ -110,7 +115,7 @@ def main(skip_menu=False):
         surface.fill((0, 0, 0))
         surface.blit(game_background, (0, 0))
 
-        metronome.update()
+        metronome.update(combat_mod)
         player_state.update()
         elapsed_time = time.time() - start_time
 
@@ -135,6 +140,25 @@ def main(skip_menu=False):
             if elapsed_time - last_healthpack_spawn >= 15:  # Spawn every 15 seconds
                 spawn_healthpack()
                 last_healthpack_spawn = elapsed_time
+
+            # SPAWN LOGIC FOR SHOTGUN POWERUP
+            if elapsed_time - last_powerup_spawn >= 25 and not combat_mod.active: # Spawn every 25s
+                powerup_items.append(PowerUpItem(surface.get_width(), surface.get_height()))
+                last_powerup_spawn = elapsed_time
+
+            # UPDATE COMBAT MODIFIER
+            combat_mod.update(metronome)
+
+            # DRAW & UPDATE POWERUPS
+            for p_item in powerup_items[:]:
+                p_item.update()
+                p_item.draw(surface)
+                
+                # Collision with Player
+                if p_item.rect.colliderect(avatar.rect):
+                    combat_mod.activate(metronome)
+                    p_item.play_sound()
+                    powerup_items.remove(p_item)
 
             # 1. DRAW BACKGROUND LAYER FIRST (Earth Bar)
             draw_earth_image(surface)
@@ -293,9 +317,13 @@ def main(skip_menu=False):
             if shoot_pressed:
                 if metronome.can_shoot() == True:
                     if player_state.is_hit == False:
-                        spawn_projectile(avatar.get_gun_position(), avatar.angle)
-                        avatar.trigger_fire()
-                        print("PEWPEW")
+                        if combat_mod.is_beat_forbidden(metronome.current_beat):
+                            print("GUN JAMMED - EMPTY BEAT")
+                        else:
+                            new_shots = combat_mod.create_shots(avatar, metronome)
+                            projectiles.extend(new_shots)
+                            avatar.trigger_fire()
+                            print("PEWPEW")
                 else:
                     player_state.paralyse()
                     print("FOUTE TIMING JIJ IDIOOT")

@@ -57,7 +57,7 @@ def draw_earth_image(surface):
         pygame.draw.rect(surface, (30, 144, 255), (0, bar_y, half_width, bar_height))
         pygame.draw.rect(surface, (34, 139, 34), (half_width, bar_y, half_width, bar_height))
 
-def draw_shoot_indicator(surface, metronome):
+def draw_shoot_indicator(surface, metronome, combat_mod=None):
     screen_width, screen_height = surface.get_size()
 
     bar_width = screen_width * 0.015
@@ -81,9 +81,21 @@ def draw_shoot_indicator(surface, metronome):
         fade = 1.0 - ((min_time - metronome.shoot_tolerance) / fade_duration) # CHANGED: Divided by fade_duration instead of 100 to prevent snapping
     else:
         fade = 0.0
+
+    is_jammed = combat_mod and combat_mod.is_beat_forbidden(metronome.current_beat)
     
-    dark_color = (128, 0, 0)
-    bright_color = (0,255,0)
+    if is_jammed:
+        # Gray colors for forbidden beats
+        dark_color = (50, 50, 50)
+        bright_color = (100, 100, 100)
+    elif combat_mod and combat_mod.active:
+        # Gold/yellow for allowed shotgun beats
+        dark_color = (128, 100, 0)
+        bright_color = (255, 215, 0)
+    else:
+        # Normal green
+        dark_color = (128, 0, 0)
+        bright_color = (0, 255, 0)
     
     bar_color = (
         int(dark_color[0] + (bright_color[0] - dark_color[0]) * fade),
@@ -100,6 +112,7 @@ def draw_shoot_indicator(surface, metronome):
         glow_surface = pygame.Surface((glow_width, bar_height), pygame.SRCALPHA)
         glow_surface.fill((*bright_color, glow_intensity))
         surface.blit(glow_surface, (glow_x, bar_y))
+
 
     pygame.draw.rect(surface, bar_color, (bar_x, bar_y, bar_width, bar_height))
 
