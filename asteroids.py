@@ -3,7 +3,20 @@ import random
 import os
 
 class Asteroid:
+    destroy_sound = None
+    
+    @classmethod
+    def load_sound(cls):
+        """Load destroy sound once for all asteroids"""
+        if cls.destroy_sound is None:
+            script_dir = os.path.dirname(os.path.abspath(__file__))
+            sound_path = os.path.join(script_dir, "sfx", "asteroidDies.wav")
+            cls.destroy_sound = pygame.mixer.Sound(sound_path)
+            cls.destroy_sound.set_volume(0.5)
+            print("Asteroid destroy sound loaded")
+
     def __init__(self, screen_width, screen_height, health, speed):
+        Asteroid.load_sound()
         script_dir = os.path.dirname(os.path.abspath(__file__))
         sprite_folder = os.path.join(script_dir, "sprites", "asteroid")
 
@@ -29,6 +42,10 @@ class Asteroid:
         self.rect.y = int(self.pos_y)
 
         self.health = health
+
+    def play_destroy_sound(self):
+        if Asteroid.destroy_sound:
+            Asteroid.destroy_sound.play()
 
     def update(self):
         # move straight down using float position

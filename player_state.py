@@ -45,11 +45,14 @@ class PlayerState:
         self.max_health = 100
 
         script_dir = os.path.dirname(os.path.abspath(__file__))
+    
+    # Sound for asteroid hitting earth
         sound_path = os.path.join(script_dir, "sfx/hitHurt.wav")
-        # Try to load hit sound
         self.hit_sound = pygame.mixer.Sound(sound_path)
-        self.hit_sound.set_volume(1)
-        print("Hit sound loaded successfully from hit_sound.wav")
+        self.hit_sound.set_volume(0.5)
+        paralyze_sound_path = os.path.join(script_dir, "sfx/paralyze.wav")
+        self.paralyze_sound = pygame.mixer.Sound(paralyze_sound_path)
+        self.paralyze_sound.set_volume(0.8)
 
         #paralisys 
         self.current_paralisys_frame = 0
@@ -128,9 +131,9 @@ class PlayerState:
             self.is_hit = True
         
         # Play sound (change to a paralyze sound)
-        if self.hit_sound:
-            self.hit_sound.play()
-            print("Hit sound played!")
+        if self.paralyze_sound:
+                self.paralyze_sound.play()
+
 
         # Draw flame sprite if firing
     def draw_paralisys(self, surface, avatar):
