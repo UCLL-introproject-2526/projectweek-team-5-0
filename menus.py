@@ -53,7 +53,8 @@ def main_menu(screen):
                         html_message="""
 <b>EARTH'S LAST DEFENSE</b><br><br>
 A massive meteoroid stream is headed straight for Earth! You're piloting humanity's last hope - a prototype spacecraft equipped with an experimental Plasma Cannon.<br><br>
-The cannon is incredibly powerful, but there's a catch: it can only fire when synchronized with your ship's powercore rhythm. Listen for the steady pulse - that's your core charging. Fire ON THE BEAT and unleash devastating shots. When you fire off-beat and the unstable energy will backfire, damaging your own systems!<br><br>
+The cannon is incredibly powerful, but there's a catch: it can only fire when synchronized with your ship's powercore rhythm. Listen for the steady pulse - that's your core charging. Fire ON THE BEAT and unleash devastating shots. When you fire off-beat and the unstable energy will backfire, damaging your own systems! <br>
+There are upgrades in the debris that make you more powerful but they might need more charge and thus change the rythm of your power core!<br>
 <b>Your Mission:</b> Destroy every meteoroid before they reach Earth!<br><br>
 <b>Controls:</b><br>
 - WASD - Maneuver your ship<br>
