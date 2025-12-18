@@ -61,7 +61,16 @@ class Avatar:
         self.friction = 0.9
         self.max_speed = 8
 
-        self.base_image = pygame.image.load('sprites/player/player.png').convert_alpha()
+        skin_path = {
+            "default": "sprites/player/player.png",
+            "redeye": "sprites/player/player_skin_eye.png",
+            "pinky": "sprites/player/player_skin_pink.png"
+        }
+
+        self.base_image = pygame.image.load(
+            skin_path.get(menus.current_skin, "sprites/player/player.png")
+        ).convert_alpha()
+
         self.base_image = pygame.transform.scale(self.base_image, (self.width, self.height))
         self.image = self.base_image
 

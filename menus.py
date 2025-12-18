@@ -273,8 +273,12 @@ def video_menu(surface):
         manager.draw_ui(surface)
         pygame.display.flip()
 
-# keyboard sebmenu
+# skins sebmenu
+current_skin = "default"
+
 def skins_menu(surface):
+    global current_skin
+
     clock = pygame.time.Clock()
 
     background = pygame.image.load("sprites/background/space.jpg").convert()
@@ -288,7 +292,6 @@ def skins_menu(surface):
 
     title_font = pygame.font.Font(None, 80)
     title_text = title_font.render("Meteo Beats", True, (255, 255, 255))
-    title_text = title_font.render("Meteo Beats", True, (255, 255, 255))
     title_rect = title_text.get_rect(center=(surface.get_width() // 2, surface.get_height() // 2 - 70))
 
     subtitle_font = pygame.font.Font(None, 60)
@@ -298,10 +301,30 @@ def skins_menu(surface):
     manager = pygame_gui.UIManager(surface.get_size(), "gui-themes/theme.json")
 
     # buttons
-    skin_default_btn = pygame_gui.elements.UIButton(pygame.Rect(surface.get_width() // 2 - 100, surface.get_height() // 2 + 40, 200, 50), "Default", manager)
-    skin_redeye_btn = pygame_gui.elements.UIButton(pygame.Rect(surface.get_width() // 2 - 100, surface.get_height() // 2 + 100, 200, 50), "Red eye", manager)
-    skin_pinky_btn = pygame_gui.elements.UIButton(pygame.Rect(surface.get_width() // 2 - 100, surface.get_height() // 2 + 160, 200, 50), "Pinky", manager)
-    back_btn = pygame_gui.elements.UIButton(pygame.Rect(surface.get_width() // 2 - 100, surface.get_height() // 2 + 220, 200, 50), "Back", manager)
+    skin_default_btn = pygame_gui.elements.UIButton(
+        pygame.Rect(surface.get_width() // 2 - 100, surface.get_height() // 2 + 40, 200, 50),
+        "Default", manager
+    )
+    skin_redeye_btn = pygame_gui.elements.UIButton(
+        pygame.Rect(surface.get_width() // 2 - 100, surface.get_height() // 2 + 100, 200, 50),
+        "Red eye", manager
+    )
+    skin_pinky_btn = pygame_gui.elements.UIButton(
+        pygame.Rect(surface.get_width() // 2 - 100, surface.get_height() // 2 + 160, 200, 50),
+        "Pinky", manager
+    )
+    back_btn = pygame_gui.elements.UIButton(
+        pygame.Rect(surface.get_width() // 2 - 100, surface.get_height() // 2 + 220, 200, 50),
+        "Back", manager
+    )
+
+    # Set initial button states based on current_skin
+    if current_skin == "default":
+        skin_default_btn.disable()
+    elif current_skin == "redeye":
+        skin_redeye_btn.disable()
+    elif current_skin == "pinky":
+        skin_pinky_btn.disable()
 
     while True:
         time_delta = clock.tick(60) / 1000.0
@@ -320,19 +343,22 @@ def skins_menu(surface):
                 if event.ui_element == back_btn:
                     return "back"
                 elif event.ui_element == skin_default_btn:
+                    current_skin = "default"
+                    skin_default_btn.disable()
                     skin_redeye_btn.enable()
                     skin_pinky_btn.enable()
-                    skin_default_btn.disable()
                     print('default')
                 elif event.ui_element == skin_redeye_btn:
+                    current_skin = "redeye"
+                    skin_redeye_btn.disable()
                     skin_default_btn.enable()
                     skin_pinky_btn.enable()
-                    skin_redeye_btn.disable()
                     print('red eye')
                 elif event.ui_element == skin_pinky_btn:
+                    current_skin = "pinky"
+                    skin_pinky_btn.disable()
                     skin_default_btn.enable()
                     skin_redeye_btn.enable()
-                    skin_pinky_btn.disable()
                     print('youre pink now')
 
         manager.update(time_delta)
