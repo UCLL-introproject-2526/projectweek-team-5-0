@@ -3,7 +3,7 @@ import random
 import os
 
 class Asteroid:
-    def __init__(self, screen_width, screen_height, health):
+    def __init__(self, screen_width, screen_height, health, speed):
         script_dir = os.path.dirname(os.path.abspath(__file__))
         sprite_folder = os.path.join(script_dir, "sprites", "asteroid")
 
@@ -23,7 +23,7 @@ class Asteroid:
 
         # Position
         self.x = random.randint(0, screen_width - 40)
-        self.speed = random.randint(2, 3)
+        self.speed = speed
         self.rect.x = self.x
         self.rect.y = -40
 
