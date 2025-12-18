@@ -1,10 +1,23 @@
 import pygame
 import math
+import os
 
 class Projectile:
-    def __init__(self, player_position, angle):
-        self.rect = pygame.Rect(player_position[0], player_position[1], 10, 10)
 
+    projectile_sprite = None
+    
+    @classmethod
+    def load_sprite(cls):
+        if cls.projectile_sprite is None:
+            script_dir = os.path.dirname(os.path.abspath(__file__))
+            sprite_path = os.path.join(script_dir, "sprites/projectile/projectile.png") 
+            cls.projectile_sprite = pygame.image.load(sprite_path).convert_alpha()
+            cls.projectile_sprite = pygame.transform.scale(cls.projectile_sprite, (50, 50))
+
+    def __init__(self, player_position, angle):
+        Projectile.load_sprite() 
+        self.rect = pygame.Rect(player_position[0], player_position[1], 10, 10)
+        self.angle = angle
         self.speed = 15
         rad = math.radians(angle + 90)
 
@@ -23,4 +36,6 @@ class Projectile:
             projectiles.remove(self)
 
     def draw(self, surface):
-        pygame.draw.rect(surface, (255, 100, 100), self.rect)
+        rotated = pygame.transform.rotate(Projectile.projectile_sprite, self.angle-90)
+        rect = rotated.get_rect(center=self.rect.center)
+        surface.blit(rotated, rect)
