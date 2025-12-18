@@ -129,7 +129,7 @@ def main(skip_menu=False):
             elif 180 >= elapsed_time > 120:
                 stage_speed= randint(2, 3)
             else:
-                stage_split_chance = 0
+                stage_split_chance = 1.0
                 asteroid_damage = 100
 
             if elapsed_time - last_spawn_time >= 2:
