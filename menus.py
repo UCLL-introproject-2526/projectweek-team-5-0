@@ -158,6 +158,10 @@ def keyboard_menu(surface):
             if event.type == pygame_gui.UI_BUTTON_PRESSED:
                 if event.ui_element == back_btn:
                     return "back"
+                elif event.ui_element == azerty_btn:
+                    print('azerty')
+                elif event.ui_element == qwearty_btn:
+                    print('qwearty')
 
         manager.update(time_delta)
         manager.draw_ui(surface)
@@ -207,6 +211,10 @@ def video_menu(surface):
             if event.type == pygame_gui.UI_BUTTON_PRESSED:
                 if event.ui_element == back_btn:
                     return "back"
+                elif event.ui_element == fullscreen_btn:
+                    print('fullscreen')
+                elif event.ui_element == windowed_btn:
+                    print('windowed')
 
         manager.update(time_delta)
         manager.draw_ui(surface)
@@ -256,6 +264,10 @@ def skins_menu(surface):
             if event.type == pygame_gui.UI_BUTTON_PRESSED:
                 if event.ui_element == back_btn:
                     return "back"
+                elif event.ui_element == skin_redeye_btn:
+                    print('red eye')
+                elif event.ui_element == skin_pinky_btn:
+                    print('youre pink now')
 
         manager.update(time_delta)
         manager.draw_ui(surface)
