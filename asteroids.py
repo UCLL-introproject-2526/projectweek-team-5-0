@@ -24,15 +24,16 @@ class Asteroid:
         # Position
         self.x = random.randint(0, screen_width - 40)
         self.speed = speed
+        self.pos_y = -40.0                 # NEW: track float position
         self.rect.x = self.x
-        self.rect.y = -40
+        self.rect.y = int(self.pos_y)
 
         self.health = health
 
     def update(self):
-        # move straight down
-        self.rect.y += self.speed
-
+        # move straight down using float position
+        self.pos_y += self.speed
+        self.rect.y = int(self.pos_y)      # update rect from float
 
     def damage(self, damage):
         self.health -= damage
@@ -41,8 +42,9 @@ class Asteroid:
         surface.blit(self.image, self.rect)
 
     def get_asteroid_position(self):
-        position = [self.rect.x + 20, self.rect.y - 20]
-        return position
+        # return center-ish position
+        return [self.rect.x + 20, self.rect.y - 20]
+
 
 class Splitter:
     def __init__(self, spawn_offset_x, spawn_offset_y, health, size, asteroid):
@@ -64,17 +66,24 @@ class Splitter:
         self.rect = self.image.get_rect()
 
         # Position
-        self.x = (asteroid.get_asteroid_position())[0]
-        self.y = (asteroid.get_asteroid_position())[1]
-        self.speed = asteroid.speed - 1
+        self.x = asteroid.get_asteroid_position()[0]
+        self.y = asteroid.get_asteroid_position()[1]
+
+        # --- CHANGE: clamp speed so it's never 0 ---
+        # If asteroid.speed == 1, this gives 0.5 instead of 0
+        self.speed = max(0.5, asteroid.speed - 0.5)
+
+        # NEW: track float position for smooth movement
+        self.pos_y = float(self.y + spawn_offset_y)
         self.rect.x = self.x + spawn_offset_x
-        self.rect.y = self.y + spawn_offset_y
+        self.rect.y = int(self.pos_y)
 
         self.health = health
 
     def update(self):
-        # move straight down
-        self.rect.y += self.speed
+        # move straight down using float position
+        self.pos_y += self.speed
+        self.rect.y = int(self.pos_y)
 
     def damage(self, damage):
         self.health -= damage

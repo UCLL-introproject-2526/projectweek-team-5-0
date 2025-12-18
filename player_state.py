@@ -10,13 +10,36 @@ import os
 from avatar import Avatar
 
 class PlayerState:
+
+# paralisys 
+    paralisys_sprites = None
+    
+    @classmethod
+    def load_paralisys_sprites(cls):
+        """Load all paralisys sprites from the sprites/paralyze folder"""
+        if cls.paralisys_sprites is None:
+            cls.paralisys_sprites = []
+            script_dir = os.path.dirname(os.path.abspath(__file__))
+            paralisys_folder = os.path.join(script_dir, "sprites", "paralyze")
+            
+            try:
+                frame_files = sorted([f for f in os.listdir(paralisys_folder) if f.endswith(('.png', '.jpg', '.jpeg'))])
+                for filename in frame_files:
+                    image_path = os.path.join(paralisys_folder, filename)
+                    sprite = pygame.image.load(image_path).convert_alpha()
+                    cls.paralisys_sprites.append(sprite)
+                
+                print(f"Loaded {len(cls.paralisys_sprites)} paralisys sprites")
+            except FileNotFoundError:
+                print(f"Warning: {paralisys_folder} not found - no paralisys effects")
+                cls.paralisys_sprites = []
+
     def __init__(self):
-        """
-        Manages player state including hit detection and health
-        """
+        PlayerState.load_paralisys_sprites()
+
         self.is_hit = False  # Flag indicating if player was just hit
         self.hit_time = 0  # When the hit occurred
-        self.hit_duration = 5000  # How long hit state lasts (ms)
+        self.hit_duration = 1000  # How long hit state lasts (ms)
 
         self.health = 100  # Starting health
         self.max_health = 100
@@ -27,6 +50,11 @@ class PlayerState:
         self.hit_sound = pygame.mixer.Sound(sound_path)
         self.hit_sound.set_volume(1)
         print("Hit sound loaded successfully from hit_sound.wav")
+
+        #paralisys 
+        self.current_paralisys_frame = 0
+        self.paralisys_frame_speed = 3
+        self.paralisys_frame_count = 0
 
     def _create_fallback_sound(self):
         """Create a simple hit sound if WAV file is missing"""
@@ -59,8 +87,6 @@ class PlayerState:
         damage_amount: How much health to subtract (default 10)
         Returns: True if player died, False otherwise
         """
-        current_time = pygame.time.get_ticks()
-        
         # Apply damage
         self.health -= damage_amount
         
@@ -81,6 +107,12 @@ class PlayerState:
         # Return True if player died
         return self.health <= 0
     
+    def trigger_paralisys(self):
+        if PlayerState.paralisys_sprites:
+            self.current_paralisys = (PlayerState.paralisys_sprites)
+            self.is_firing = True
+            self.fire_frame_count = self.hit_duration  # How long hit state lasts (ms)
+    
     def paralyse(self):
         # Paralyzes the player(ship)
 
@@ -91,29 +123,33 @@ class PlayerState:
         
         # paralyze
         if self.is_hit == False:
+            self.trigger_paralisys
+            self.hit_time = pygame.time.get_ticks()
             self.is_hit = True
-            print(f"Ship paralysed! Keep your shots in scync capt\'n")
         
-        # Play sound
-        print(f"Attempting to play hit sound: {self.hit_sound}")
+        # Play sound (change to a paralyze sound)
         if self.hit_sound:
             self.hit_sound.play()
             print("Hit sound played!")
-        else:
-            print("ERROR: No hit sound to play!")
 
-        # Play sound
-        print(f"Attempting to play hit sound: {self.hit_sound}")
-        if self.hit_sound:
-            self.hit_sound.play()
-            print("Hit sound played!")
-        else:
-            print("ERROR: No hit sound to play!")
+        # Draw flame sprite if firing
+    def draw_paralisys(self, surface, avatar):
+        if self.is_hit and PlayerState.paralisys_sprites:
+            # Cycle through frames
+            if self.current_paralisys_frame < len(PlayerState.paralisys_sprites):
+                current_sprite = PlayerState.paralisys_sprites[self.current_paralisys_frame]
+                
+                # Scale and position over avatar
+                paralisys_width = 70
+                paralisys_height = 70
+                scaled_paralisys = pygame.transform.scale(current_sprite, (paralisys_width, paralisys_height))
+                
+                # Center on avatar
+                paralisys_x = avatar.rect.centerx - paralisys_width // 2
+                paralisys_y = avatar.rect.centery - paralisys_height // 2
+                
+                surface.blit(scaled_paralisys, (paralisys_x, paralisys_y))
 
-        print(f"Player hit! Health: {self.health}/{self.max_health}")
-
-        # Return True if player died
-        return self.health <= 0
 
     def update(self):
         """
@@ -121,16 +157,30 @@ class PlayerState:
         """
         if self.is_hit:
             current_time = pygame.time.get_ticks()
-
             # Check if hit duration has passed
-            if current_time - self.hit_time >= self.hit_duration:
+
+            self.paralisys_frame_count += 1
+            if self.paralisys_frame_count >= self.paralisys_frame_speed:
+                self.paralisys_frame_count = 0
+                self.current_paralisys_frame += 1
+
+                if self.current_paralisys_frame >= len(PlayerState.paralisys_sprites):
+                    self.current_paralisys_frame = 0
+
+
+            if current_time >= self.hit_time + self.hit_duration:
                 self.is_hit = False
                 print("Hit state ended - player vulnerable again")
+        print(pygame.time.get_ticks())
+        print(self.hit_time)
 
     def update_ship_collision(self, avatar, astroidlist):
+        if self.is_hit:
+            return  # invincibility frames active
+
         if pygame.Rect.collidelist(avatar.rect, astroidlist) != -1:
-            self.is_hit = True
-            print("You've been hit")
+                self.paralyse()
+                print("You've been hit")
 
     def is_alive(self):
         """Check if player is still alive"""

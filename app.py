@@ -16,6 +16,7 @@ from player_state import PlayerState
 from avatar import Avatar
 from projectile import Projectile
 from healthpack import HealthPack
+from explosion import Explosion
 
 pygame.init()
 
@@ -61,9 +62,10 @@ def main(skip_menu=False):
     shoot_pressed = False
     healthpacks = []
     last_healthpack_spawn = 0
+    explosions = []
 
     # Create a avatar instance
-    avatar = Avatar(surface.get_width(), surface.get_height())
+    avatar = Avatar(surface.get_width(), surface.get_height(), player_state)
 
     def spawn_asteroid():
         asteroid = Asteroid(surface.get_width(), surface.get_height(), 10, stage_speed)
@@ -144,7 +146,12 @@ def main(skip_menu=False):
                         splitters.append(Splitter(-30, 0, 10, 20, asteroid))
                     asteroids.remove(asteroid)
                 
-                if asteroid.rect.y > surface.get_height():
+                if asteroid.rect.y > surface.get_height()-75:
+
+                    #BOOM
+                    explosion = Explosion(asteroid.rect.centerx, surface.get_height() - 60)
+                    explosions.append(explosion)
+
                     asteroids.remove(asteroid)
                     player_state.take_damage(asteroid_damage)
 
@@ -162,7 +169,12 @@ def main(skip_menu=False):
                 splitter.draw(surface)
                 if splitter.health <= 0:
                     splitters.remove(splitter)
-                if splitter.rect.y > surface.get_height():
+                if splitter.rect.y > surface.get_height()-75:
+
+                    #BOOM
+                    explosion = Explosion(splitter.rect.centerx, surface.get_height() - 60)
+                    explosions.append(explosion)
+
                     splitters.remove(splitter)
                     player_state.take_damage(2)
 
@@ -178,12 +190,21 @@ def main(skip_menu=False):
                     continue
                 
                 healthpack.draw(surface)
-            #NO MORE HP 
+            #NO MORE HP  
+
+            #EXPLOSION REMOVAL
+            for explosion in explosions[:]:
+                explosion.update()
+                if explosion.is_finished():
+                    explosions.remove(explosion)
+                else:
+                    explosion.draw(surface)
 
             # 3. DRAW PLAYER LAYER (On top of asteroids)
             keys = pygame.key.get_pressed()
             avatar.update(keys, surface.get_width(), surface.get_height())
             avatar.draw(surface)
+            player_state.draw_paralisys(surface, avatar) 
 
             # 4. DRAW UI LAYER (On very top)
             draw_health(surface, font, player_state.health)
@@ -236,7 +257,7 @@ def main(skip_menu=False):
                         avatar.trigger_fire()
                         print("PEWPEW")
                 else:
-                    player_state.is_hit = True
+                    player_state.paralyse()
                     print("FOUTE TIMING JIJ IDIOOT")
                 shoot_pressed=False
 

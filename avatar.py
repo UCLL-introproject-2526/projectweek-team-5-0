@@ -27,7 +27,7 @@ class Avatar:
                 print(f"Warning: {flame_folder} not found - no flame effects")
                 cls.flame_sprites = []
 
-    def __init__(self, screen_width, screen_height):
+    def __init__(self, screen_width, screen_height, player_state):
         Avatar.load_flame_sprites() #enkel bij eerste shoot nodig, init
 
         # start at center bottom
@@ -46,6 +46,8 @@ class Avatar:
         self.base_image = pygame.transform.scale(self.base_image, (self.width, self.height))
         self.image = self.base_image
 
+        self.player_state = player_state
+
         #VUUR 
         self.is_firing = False   #A FLAG
         self.fire_duration = 8  # How many frames the flame shows
@@ -60,23 +62,24 @@ class Avatar:
             self.fire_frame_count = self.fire_duration
 
     def update(self, keys, screen_width, screen_height):
-        
-        if keys[pygame.K_a]:
-            self.vx -= self.acceleration
-        if keys[pygame.K_d]:
-            self.vx += self.acceleration
-        if keys[pygame.K_w]:
-            self.vy -= self.acceleration
-        if keys[pygame.K_s]:
-            self.vy += self.acceleration
-        if keys[pygame.K_LEFT]:
-            self.vx -= self.acceleration
-        if keys[pygame.K_RIGHT]:
-            self.vx += self.acceleration
-        if keys[pygame.K_UP]:
-            self.vy -= self.acceleration
-        if keys[pygame.K_DOWN]:
-            self.vy += self.acceleration
+        if not self.player_state.is_hit:
+            if keys[pygame.K_a]:
+                self.vx -= self.acceleration
+            if keys[pygame.K_d]:
+                self.vx += self.acceleration
+            if keys[pygame.K_w]:
+                self.vy -= self.acceleration
+            if keys[pygame.K_s]:
+                self.vy += self.acceleration
+            if keys[pygame.K_LEFT]:
+                self.vx -= self.acceleration
+            if keys[pygame.K_RIGHT]:
+                self.vx += self.acceleration
+            if keys[pygame.K_UP]:
+                self.vy -= self.acceleration
+            if keys[pygame.K_DOWN]:
+                self.vy += self.acceleration
+        print(self.player_state.is_hit)
 
         self.vx *= self.friction
         self.vy *= self.friction
