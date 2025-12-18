@@ -190,6 +190,7 @@ def main(skip_menu=False):
             keys = pygame.key.get_pressed()
             avatar.update(keys, surface.get_width(), surface.get_height())
             avatar.draw(surface)
+            player_state.draw_paralisys(surface, avatar) 
 
             # 4. DRAW UI LAYER (On very top)
             draw_health(surface, font, player_state.health)
