@@ -11,7 +11,6 @@ from asteroids import Splitter
 from player_state import PlayerState
 from avatar import Avatar
 from projectile import Projectile
-from healthpack import HealthPack
 from explosion import Explosion
 
 pygame.init()
@@ -151,19 +150,7 @@ def main():
                     explosions.remove(explosion)
                 else:
                     explosion.draw(surface)
-            #THIS DRAWS ALL HP OBS/PACKS
-            for healthpack in healthpacks[:]:
-                healthpack.update()
-                
-                # Check collision with player
-                if healthpack.rect.colliderect(avatar.rect):
-                    player_state.heal(50)
-                    healthpacks.remove(healthpack)
-                    print("HEALTH PACK COLLECTED!")
-                    continue
-                
-                healthpack.draw(surface)
-            #NO MORE HP 
+  
             #EXPLOSION REMOVAL
             for explosion in explosions[:]:
                 explosion.update()
