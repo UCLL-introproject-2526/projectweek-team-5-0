@@ -63,7 +63,7 @@ The cannon is incredibly powerful, but there's a catch: it can only fire when sy
 - Listen to the metronome pulse<br>
 - Off-beat shots hurt YOU<br>
 - Collect health packs from debris<br>
-- Earth is counting on you, pilot!
+- Tip: the easiest way to survive is to keep shooting every beat, even if there is nothing there just to keep the rythm!
 """,
                         manager=manager,
                         window_title="How to Play"
