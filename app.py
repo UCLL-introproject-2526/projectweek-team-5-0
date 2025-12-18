@@ -155,7 +155,7 @@ def main(skip_menu=False):
                 splitter.draw(surface)
                 if splitter.health <= 0:
                     splitters.remove(splitter)
-                if splitter.rect.y > surface.get_height():
+                if splitter.rect.y > surface.get_height()-75:
 
                     #BOOM
                     explosion = Explosion(splitter.rect.centerx, surface.get_height() - 60)
