@@ -160,6 +160,10 @@ def main(skip_menu=False):
                 asteroid.draw(surface)
 
                 if asteroid.health <= 0:
+                    #black white exploseion
+                    explosion = Explosion(asteroid.rect.centerx, asteroid.rect.centery,scale=1, grayscale=True)  # Half size
+                    explosions.append(explosion)
+
                     asteroid.play_destroy_sound()
                     if random() > stage_split_chance:
                         splitters.append(Splitter(30, 0, 10, 20, asteroid))
@@ -168,9 +172,9 @@ def main(skip_menu=False):
                 if asteroid.rect.y > surface.get_height()-75:
 
                     #BOOM
-                    explosion = Explosion(asteroid.rect.centerx, surface.get_height() - 60)
+                    explosion = Explosion(asteroid.rect.centerx, surface.get_height() - 60, scale=1.0, grayscale=False)
                     explosions.append(explosion)
-
+                    
                     asteroids.remove(asteroid)
                     player_state.take_damage(asteroid_damage)
 
@@ -187,6 +191,8 @@ def main(skip_menu=False):
 
                 splitter.draw(surface)
                 if splitter.health <= 0:
+                    explosion = Explosion(splitter.rect.centerx, splitter.rect.centery, scale=0.5, grayscale=True)  # Quarter size
+                    explosions.append(explosion)
                     splitters.remove(splitter)
                 if splitter.rect.y > surface.get_height()-75:
 

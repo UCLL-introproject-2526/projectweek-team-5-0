@@ -52,7 +52,7 @@ class PlayerState:
         self.hit_sound.set_volume(0.5)
         paralyze_sound_path = os.path.join(script_dir, "sfx/paralyze.wav")
         self.paralyze_sound = pygame.mixer.Sound(paralyze_sound_path)
-        self.paralyze_sound.set_volume(0.8)
+        self.paralyze_sound.set_volume(0.5)
 
         #paralisys 
         self.current_paralisys_frame = 0

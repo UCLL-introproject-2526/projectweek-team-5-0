@@ -20,8 +20,8 @@ def create_click_sound(frequency, duration=0.1):
     return pygame.sndarray.make_sound(stereo_wave)
 
 # Create sounds
-accent_beat = create_click_sound(200)
-regular_beat = create_click_sound(200)
+accent_beat = create_click_sound(300)
+regular_beat = create_click_sound(300)
 
 accent_beat.set_volume(1)
 regular_beat.set_volume(1)
