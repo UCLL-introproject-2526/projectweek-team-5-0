@@ -57,7 +57,7 @@ def draw_earth_image(surface):
         pygame.draw.rect(surface, (30, 144, 255), (0, bar_y, half_width, bar_height))
         pygame.draw.rect(surface, (34, 139, 34), (half_width, bar_y, half_width, bar_height))
 
-def draw_shoot_indicator(surface, metronome):
+def draw_shoot_indicator(surface, metronome, combat_mod=None):
     screen_width, screen_height = surface.get_size()
 
     bar_width = screen_width * 0.015
@@ -97,6 +97,30 @@ def draw_shoot_indicator(surface, metronome):
         glow_x = bar_x - (glow_width - bar_width) / 2
         
         # CHANGED: Used a temporary Surface with SRCALPHA to enable real transparency for the glow
+        glow_surface = pygame.Surface((glow_width, bar_height), pygame.SRCALPHA)
+        glow_surface.fill((*bright_color, glow_intensity))
+        surface.blit(glow_surface, (glow_x, bar_y))
+
+    #BIJ SHOTGUN TIMING VERANDERT
+
+    is_jammed = False
+    if combat_mod and combat_mod.is_beat_forbidden(metronome.current_beat):
+        is_jammed = True
+        bright_color = (100, 100, 100) # Grey (Visual cue for "Empty")
+        dark_color = (50, 50, 50)      # Dark Grey
+
+    bar_color = (
+        int(dark_color[0] + (bright_color[0] - dark_color[0]) * fade),
+        int(dark_color[1] + (bright_color[1] - dark_color[1]) * fade),
+        int(dark_color[2] + (bright_color[2] - dark_color[2]) * fade)
+    )
+    
+    # Only draw glow if NOT jammed
+    if fade > 0.3 and not is_jammed:
+        glow_intensity = int(100 * fade)
+        glow_width = bar_width
+        glow_x = bar_x - (glow_width - bar_width) / 2
+        
         glow_surface = pygame.Surface((glow_width, bar_height), pygame.SRCALPHA)
         glow_surface.fill((*bright_color, glow_intensity))
         surface.blit(glow_surface, (glow_x, bar_y))
