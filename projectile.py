@@ -5,6 +5,7 @@ import os
 class Projectile:
 
     projectile_sprite = None
+    shoot_sound = None
     
     @classmethod
     def load_sprite(cls):
@@ -14,8 +15,18 @@ class Projectile:
             cls.projectile_sprite = pygame.image.load(sprite_path).convert_alpha()
             cls.projectile_sprite = pygame.transform.scale(cls.projectile_sprite, (50, 50))
 
+    @classmethod
+    def load_sound(cls):  # ADD THIS METHOD
+        if cls.shoot_sound is None:
+            script_dir = os.path.dirname(os.path.abspath(__file__))
+            sound_path = os.path.join(script_dir, "sfx/laserShoot.wav")
+            cls.shoot_sound = pygame.mixer.Sound(sound_path)
+            cls.shoot_sound.set_volume(0.3)
+
+
     def __init__(self, player_position, angle):
-        Projectile.load_sprite() 
+        Projectile.load_sprite()
+        Projectile.load_sound() 
         self.rect = pygame.Rect(player_position[0], player_position[1], 10, 10)
         self.angle = angle
         self.speed = 15
@@ -24,6 +35,10 @@ class Projectile:
         # velocity based on angle
         self.vx = math.cos(rad) * self.speed
         self.vy = -math.sin(rad) * self.speed
+
+        #SFX
+        if Projectile.shoot_sound: 
+            Projectile.shoot_sound.play()
 
     def update(self, projectiles, screen_width, screen_height):
         # move in direction of vx, vy
