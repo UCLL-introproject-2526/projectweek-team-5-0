@@ -153,7 +153,7 @@ def main(skip_menu=False):
             for p_item in powerup_items[:]:
                 p_item.update()
                 p_item.draw(surface)
-                
+
                 # Collision with Player
                 if p_item.rect.colliderect(avatar.rect):
                     combat_mod.activate(metronome)
@@ -203,7 +203,7 @@ def main(skip_menu=False):
                     #BOOM
                     explosion = Explosion(asteroid.rect.centerx, surface.get_height() - 60, scale=1.0, grayscale=False)
                     explosions.append(explosion)
-                    
+
                     asteroids.remove(asteroid)
                     player_state.take_damage(asteroid_damage)
 

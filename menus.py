@@ -142,13 +142,16 @@ def settings_menu(screen):
         pygame.display.flip()
 
 ################################
-# Sub Menus
+# Sub Mencurrent_layoutus
 ################################
+current_layout = "QWERTY"
 
-# keyboard sebmenu
 def keyboard_menu(surface):
+    global current_layout  # Declare global variable to modify the layout
+
     clock = pygame.time.Clock()
 
+    # Load background and logo
     background = pygame.image.load("sprites/background/space.jpg").convert()
     background = pygame.transform.scale(background, surface.get_size())
 
@@ -158,20 +161,22 @@ def keyboard_menu(surface):
     logo_image = pygame.transform.scale(logo_image, (logo_width, logo_height))
     logo_rect = logo_image.get_rect(center=(surface.get_width() // 2, surface.get_height() // 2 - 200))
 
+    # Title text
     title_font = pygame.font.Font(None, 80)
-    title_text = title_font.render("Meteo Beats", True, (255, 255, 255))
     title_text = title_font.render("Meteo Beats", True, (255, 255, 255))
     title_rect = title_text.get_rect(center=(surface.get_width() // 2, surface.get_height() // 2 - 70))
 
+    # Subtitle text
     subtitle_font = pygame.font.Font(None, 60)
     subtitle_text = subtitle_font.render("Keyboard Settings", True, (255, 255, 255))
     subtitle_rect = subtitle_text.get_rect(center=(surface.get_width() // 2, surface.get_height() // 2))
 
+    # GUI Manager
     manager = pygame_gui.UIManager(surface.get_size(), "gui-themes/theme.json")
 
-    # buttons
-    qwearty_btn = pygame_gui.elements.UIButton(pygame.Rect(surface.get_width() // 2 - 100, surface.get_height() // 2 + 40, 200, 50), "Qwearty", manager)
-    azerty_btn = pygame_gui.elements.UIButton(pygame.Rect(surface.get_width() // 2 - 100, surface.get_height() // 2 + 100, 200, 50), "Azerty", manager)
+    # Buttons
+    qwearty_btn = pygame_gui.elements.UIButton(pygame.Rect(surface.get_width() // 2 - 100, surface.get_height() // 2 + 40, 200, 50), "Qwerty (WASD)", manager)
+    azerty_btn = pygame_gui.elements.UIButton(pygame.Rect(surface.get_width() // 2 - 100, surface.get_height() // 2 + 100, 200, 50), "Azerty (ZQSD)", manager)
     back_btn = pygame_gui.elements.UIButton(pygame.Rect(surface.get_width() // 2 - 100, surface.get_height() // 2 + 160, 200, 50), "Back", manager)
 
     while True:
@@ -181,6 +186,7 @@ def keyboard_menu(surface):
         surface.blit(title_text, title_rect)
         surface.blit(subtitle_text, subtitle_rect)
 
+        # Event handling
         for event in pygame.event.get():
             manager.process_events(event)
             if event.type == pygame.QUIT:
@@ -189,12 +195,18 @@ def keyboard_menu(surface):
 
             if event.type == pygame_gui.UI_BUTTON_PRESSED:
                 if event.ui_element == back_btn:
-                    return "back"
+                    return current_layout  # Return to previous screen with current layout
                 elif event.ui_element == azerty_btn:
-                    print('azerty')
-                elif event.ui_element == qwearty_btn:
-                    print('qwearty')
+                    current_layout = "AZERTY"  # Set layout to AZERTY
+                    print('Switched to ZQSD layout')
+                    print(f"Current Layout: {current_layout}") # debug
 
+                elif event.ui_element == qwearty_btn:
+                    current_layout = "QWERTY"  # Set layout to QWERTY
+                    print('Switched to WASD layout')
+                    print(f"Current Layout: {current_layout}") # debug
+
+        # Update GUI and display
         manager.update(time_delta)
         manager.draw_ui(surface)
         pygame.display.flip()

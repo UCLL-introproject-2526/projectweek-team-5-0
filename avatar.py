@@ -2,6 +2,26 @@ import pygame
 import math
 import random
 import os
+from menus import current_layout
+
+def get_controls():
+    """Return the control mapping based on the current layout"""
+    print(f"Avatar log Layout: {current_layout}")  # Print the current layout
+
+    if current_layout == "AZERTY":
+        return {
+            'move_left': pygame.K_q,
+            'move_up': pygame.K_z,
+            'move_down': pygame.K_s,
+            'move_right': pygame.K_d,
+        }
+    else:  # Default to QWERTY
+        return {
+            'move_left': pygame.K_a,
+            'move_up': pygame.K_w,
+            'move_down': pygame.K_s,
+            'move_right': pygame.K_d,
+        }
 
 class Avatar:
 
@@ -64,23 +84,19 @@ class Avatar:
     def update(self, keys, screen_width, screen_height):
         if not self.player_state.is_hit:
 
-            # azerty
-            if keys[pygame.K_q]:
-                self.vx -= self.acceleration
-            if keys[pygame.K_z]:
-                self.vy -= self.acceleration
+            controls = get_controls()  # Get control mapping based on the active layout
 
-            #qwerty
-            if keys[pygame.K_a]:
+            # Movement based on layout keys
+            if keys[controls['move_left']]:
                 self.vx -= self.acceleration
-            if keys[pygame.K_d]:
+            if keys[controls['move_right']]:
                 self.vx += self.acceleration
-            if keys[pygame.K_w]:
+            if keys[controls['move_up']]:
                 self.vy -= self.acceleration
-            if keys[pygame.K_s]:
+            if keys[controls['move_down']]:
                 self.vy += self.acceleration
 
-            # arrows
+            # Always allow arrow keys to work for movement
             if keys[pygame.K_LEFT]:
                 self.vx -= self.acceleration
             if keys[pygame.K_RIGHT]:
