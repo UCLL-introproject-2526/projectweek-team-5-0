@@ -198,11 +198,15 @@ def keyboard_menu(surface):
                     return current_layout  # Return to previous screen with current layout
                 elif event.ui_element == azerty_btn:
                     current_layout = "AZERTY"  # Set layout to AZERTY
+                    azerty_btn.disable()
+                    qwearty_btn.enable()
                     print('Switched to ZQSD layout')
                     print(f"Current Layout: {current_layout}") # debug
 
                 elif event.ui_element == qwearty_btn:
                     current_layout = "QWERTY"  # Set layout to QWERTY
+                    qwearty_btn.disable()
+                    azerty_btn.enable()
                     print('Switched to WASD layout')
                     print(f"Current Layout: {current_layout}") # debug
 
@@ -257,8 +261,12 @@ def video_menu(surface):
                 if event.ui_element == back_btn:
                     return "back"
                 elif event.ui_element == fullscreen_btn:
+                    fullscreen_btn.disable()
+                    windowed_btn.enable()
                     print('fullscreen')
                 elif event.ui_element == windowed_btn:
+                    windowed_btn.disable()
+                    fullscreen_btn.enable()
                     print('windowed')
 
         manager.update(time_delta)
@@ -311,8 +319,12 @@ def skins_menu(surface):
                 if event.ui_element == back_btn:
                     return "back"
                 elif event.ui_element == skin_redeye_btn:
+                    skin_redeye_btn.disable()
+                    skin_pinky_btn.enable()
                     print('red eye')
                 elif event.ui_element == skin_pinky_btn:
+                    skin_pinky_btn.disable()
+                    skin_redeye_btn.enable()
                     print('youre pink now')
 
         manager.update(time_delta)

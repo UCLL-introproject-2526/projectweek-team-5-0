@@ -2,13 +2,12 @@ import pygame
 import math
 import random
 import os
-from menus import current_layout
+import menus
 
 def get_controls():
     """Return the control mapping based on the current layout"""
-    print(f"Avatar log Layout: {current_layout}")  # Print the current layout
 
-    if current_layout == "AZERTY":
+    if menus.current_layout == "AZERTY":
         return {
             'move_left': pygame.K_q,
             'move_up': pygame.K_z,
