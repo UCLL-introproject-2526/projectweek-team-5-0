@@ -175,9 +175,24 @@ def keyboard_menu(surface):
     manager = pygame_gui.UIManager(surface.get_size(), "gui-themes/theme.json")
 
     # Buttons
-    qwearty_btn = pygame_gui.elements.UIButton(pygame.Rect(surface.get_width() // 2 - 100, surface.get_height() // 2 + 40, 200, 50), "Qwerty (WASD)", manager)
-    azerty_btn = pygame_gui.elements.UIButton(pygame.Rect(surface.get_width() // 2 - 100, surface.get_height() // 2 + 100, 200, 50), "Azerty (ZQSD)", manager)
-    back_btn = pygame_gui.elements.UIButton(pygame.Rect(surface.get_width() // 2 - 100, surface.get_height() // 2 + 160, 200, 50), "Back", manager)
+    qwearty_btn = pygame_gui.elements.UIButton(
+        pygame.Rect(surface.get_width() // 2 - 100, surface.get_height() // 2 + 40, 200, 50),
+        "Qwerty (WASD)", manager
+    )
+    azerty_btn = pygame_gui.elements.UIButton(
+        pygame.Rect(surface.get_width() // 2 - 100, surface.get_height() // 2 + 100, 200, 50),
+        "Azerty (ZQSD)", manager
+    )
+    back_btn = pygame_gui.elements.UIButton(
+        pygame.Rect(surface.get_width() // 2 - 100, surface.get_height() // 2 + 160, 200, 50),
+        "Back", manager
+    )
+
+    # Set initial button states based on current_layout
+    if current_layout == "QWERTY":
+        qwearty_btn.disable()
+    elif current_layout == "AZERTY":
+        azerty_btn.disable()
 
     while True:
         time_delta = clock.tick(60) / 1000.0
@@ -197,14 +212,13 @@ def keyboard_menu(surface):
                 if event.ui_element == back_btn:
                     return current_layout  # Return to previous screen with current layout
                 elif event.ui_element == azerty_btn:
-                    current_layout = "AZERTY"  # Set layout to AZERTY
+                    current_layout = "AZERTY"
                     azerty_btn.disable()
                     qwearty_btn.enable()
                     print('Switched to ZQSD layout')
                     print(f"Current Layout: {current_layout}") # debug
-
                 elif event.ui_element == qwearty_btn:
-                    current_layout = "QWERTY"  # Set layout to QWERTY
+                    current_layout = "QWERTY"
                     qwearty_btn.disable()
                     azerty_btn.enable()
                     print('Switched to WASD layout')
