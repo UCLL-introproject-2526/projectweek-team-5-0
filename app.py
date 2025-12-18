@@ -121,7 +121,7 @@ def main(skip_menu=False):
                 asteroid_damage = 10
             elif 120 >= elapsed_time > 60:
                 stage_split_chance = 0.5
-            elif 180 >= elapsed_time > 120: 
+            elif 180 >= elapsed_time > 120:
                 stage_speed= randint(2, 3)
             else:
                 stage_split_chance = 0
@@ -235,6 +235,8 @@ def main(skip_menu=False):
             if player_state.health <= 0:
                 game_over = True
         else:
+
+            # you can use "main_menu, restart and quit" in other functions to trigger this
             action = game_over_menu(elapsed_time)
 
             if action == "restart":

@@ -3,6 +3,11 @@ import pygame
 import pygame_gui
 import os
 
+# Function to load the tutorial HTML content from the file
+def load_html_tutorial(file_path):
+    with open(file_path, 'r') as file:
+        return file.read()
+
 ################################
 # Main Menu
 ################################
@@ -31,6 +36,10 @@ def main_menu(screen):
     how_to_play_btn = pygame_gui.elements.UIButton(pygame.Rect(screen.get_width()//2 - 100, screen.get_height()//2 + 120, 200, 50), "How to Play", manager)
     quit_btn = pygame_gui.elements.UIButton(pygame.Rect(screen.get_width()//2 - 100, screen.get_height()//2 + 180, 200, 50), "Quit", manager)
 
+    # load html
+    tutorial_html_path = os.path.join("html", "tutorial.html")
+    tutorial_html_content = load_html_tutorial(tutorial_html_path)
+
     while True:
         time_delta = clock.tick(60)/1000.0
         screen.blit(background, (0, 0))
@@ -47,24 +56,11 @@ def main_menu(screen):
                     return "start"
                 elif event.ui_element == settings_btn:
                     return "settings"
-                elif event.ui_element == how_to_play_btn:  # NEW
+                elif event.ui_element == how_to_play_btn:  # Show the "How to Play" window with the HTML from the file
+                    # Open the message window with the loaded HTML content
                     pygame_gui.windows.UIMessageWindow(
-                        rect=pygame.Rect((screen.get_width()//2 - 300, screen.get_height()//2 - 200), (600, 400)),
-                        html_message="""
-<b>EARTH'S LAST DEFENSE</b><br><br>
-A massive asteroid field is headed straight for Earth! You're piloting humanity's last hope - a prototype ship equipped with an experimental Resonance Cannon.<br><br>
-The cannon is incredibly powerful, but there's a catch: it can only fire when synchronized with your ship's power core rhythm. Listen for the steady pulse - that's your core charging. Fire ON THE BEAT and unleash devastating shots. Fire off-beat and the unstable energy will backfire, damaging your own systems!<br><br>
-<b>Your Mission:</b> Destroy every asteroid before they reach Earth!<br><br>
-<b>Controls:</b><br>
-- WASD - Maneuver your ship<br>
-- Mouse - Aim<br>
-- Left Click - Fire (only on the beat!)<br><br>
-<b>Remember:</b><br>
-- Listen to the metronome pulse<br>
-- Off-beat shots hurt YOU<br>
-- Collect health packs from debris<br>
-- Tip: the easiest way to survive is to keep shooting every beat, even if there is nothing there just to keep the rythm!
-""",
+                        rect=pygame.Rect((screen.get_width() // 2 - 300, screen.get_height() // 2 - 200), (600, 400)),
+                        html_message=tutorial_html_content,  # Pass the HTML content from the file
                         manager=manager,
                         window_title="How to Play"
                     )
