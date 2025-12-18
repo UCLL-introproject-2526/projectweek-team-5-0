@@ -20,8 +20,8 @@ def main_menu(screen):
     logo_rect = logo_image.get_rect(center=(screen.get_width()//2, screen.get_height()//2 - 200))
 
     title_font = pygame.font.Font(None, 80)
-    title_text = title_font.render("Asteroid Destroyers", True, (255, 255, 255))
-    title_rect = title_text.get_rect(center=(screen.get_width()//2, screen.get_height()//2 - 70))
+    title_text = title_font.render("Meteo Beats", True, (255, 255, 255))
+    title_rect = title_text.get_rect(center=(screen.get_width()//2, screen.get_height()//2 - 50))
 
     manager = pygame_gui.UIManager(screen.get_size(), "gui-themes/theme.json")
 
@@ -52,9 +52,9 @@ def main_menu(screen):
                         rect=pygame.Rect((screen.get_width()//2 - 300, screen.get_height()//2 - 200), (600, 400)),
                         html_message="""
 <b>EARTH'S LAST DEFENSE</b><br><br>
-A massive asteroid field is headed straight for Earth! You're piloting humanity's last hope - a prototype ship equipped with an experimental Resonance Cannon.<br><br>
-The cannon is incredibly powerful, but there's a catch: it can only fire when synchronized with your ship's power core rhythm. Listen for the steady pulse - that's your core charging. Fire ON THE BEAT and unleash devastating shots. Fire off-beat and the unstable energy will backfire, damaging your own systems!<br><br>
-<b>Your Mission:</b> Destroy every asteroid before they reach Earth!<br><br>
+A massive meteoroid stream is headed straight for Earth! You're piloting humanity's last hope - a prototype spacecraft equipped with an experimental Plasma Cannon.<br><br>
+The cannon is incredibly powerful, but there's a catch: it can only fire when synchronized with your ship's powercore rhythm. Listen for the steady pulse - that's your core charging. Fire ON THE BEAT and unleash devastating shots. When you fire off-beat and the unstable energy will backfire, damaging your own systems!<br><br>
+<b>Your Mission:</b> Destroy every meteoroid before they reach Earth!<br><br>
 <b>Controls:</b><br>
 - WASD - Maneuver your ship<br>
 - Mouse - Aim<br>
@@ -92,7 +92,7 @@ def settings_menu(screen):
     logo_rect = logo_image.get_rect(center=(screen.get_width()//2, screen.get_height()//2 - 200))
 
     title_font = pygame.font.Font(None, 80)
-    title_text = title_font.render("Asteroid Destroyers", True, (255, 255, 255))
+    title_text = title_font.render("Meteo Beats", True, (255, 255, 255))
     title_rect = title_text.get_rect(center=(screen.get_width()//2, screen.get_height()//2 - 70))
 
     subtitle_font = pygame.font.Font(None, 60)
@@ -150,7 +150,7 @@ def keyboard_menu(surface):
     logo_rect = logo_image.get_rect(center=(surface.get_width() // 2, surface.get_height() // 2 - 200))
 
     title_font = pygame.font.Font(None, 80)
-    title_text = title_font.render("Asteroid Destroyers", True, (255, 255, 255))
+    title_text = title_font.render("Meteo Beats", True, (255, 255, 255))
     title_rect = title_text.get_rect(center=(surface.get_width() // 2, surface.get_height() // 2 - 70))
 
     subtitle_font = pygame.font.Font(None, 60)
@@ -203,7 +203,7 @@ def video_menu(surface):
     logo_rect = logo_image.get_rect(center=(surface.get_width() // 2, surface.get_height() // 2 - 200))
 
     title_font = pygame.font.Font(None, 80)
-    title_text = title_font.render("Asteroid Destroyers", True, (255, 255, 255))
+    title_text = title_font.render("Meteo Beats", True, (255, 255, 255))
     title_rect = title_text.get_rect(center=(surface.get_width() // 2, surface.get_height() // 2 - 70))
 
     subtitle_font = pygame.font.Font(None, 60)
@@ -256,7 +256,7 @@ def skins_menu(surface):
     logo_rect = logo_image.get_rect(center=(surface.get_width() // 2, surface.get_height() // 2 - 200))
 
     title_font = pygame.font.Font(None, 80)
-    title_text = title_font.render("Asteroid Destroyers", True, (255, 255, 255))
+    title_text = title_font.render("Meteo Beats", True, (255, 255, 255))
     title_rect = title_text.get_rect(center=(surface.get_width() // 2, surface.get_height() // 2 - 70))
 
     subtitle_font = pygame.font.Font(None, 60)
@@ -318,7 +318,7 @@ def game_over_menu(elapsed_time):
 
     # Game title
     title_font = pygame.font.Font(None, 80)
-    title_text = title_font.render("Asteroid Destroyers", True, (255, 255, 255))
+    title_text = title_font.render("Meteo Beats", True, (255, 255, 255))
     title_rect = title_text.get_rect(center=(screen.get_width() // 2, screen.get_height() // 2 - 70))
 
     # Game Over text
