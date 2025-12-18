@@ -72,7 +72,7 @@ def draw_shoot_indicator(surface, metronome):
     
     min_time = min(time_since_last, time_until_next)
     
-    fade_duration = 150
+    fade_duration = 120
     fade_distance = metronome.shoot_tolerance + fade_duration
 
     if min_time <= metronome.shoot_tolerance:
