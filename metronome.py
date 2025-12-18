@@ -1,27 +1,12 @@
 # metronome.py
 import pygame
 import numpy as np
+import os
 
 pygame.mixer.init(frequency=22050, size=-16, channels=2, buffer=512)
-
-def create_click_sound(frequency, duration=0.1):
-    sample_rate = 22050
-    n_samples = int(sample_rate * duration)
-
-    t = np.linspace(0, duration, n_samples, False)
-    wave = np.sin(frequency * t * 2 * np.pi)
-
-    envelope = np.linspace(1, 0, n_samples)
-    wave = wave * envelope
-
-    wave = (wave * 32767).astype(np.int16)
-    stereo_wave = np.column_stack((wave, wave))
-
-    return pygame.sndarray.make_sound(stereo_wave)
-
-# Create sounds
-accent_beat = create_click_sound(300)
-regular_beat = create_click_sound(300)
+script_dir = os.path.dirname(os.path.abspath(__file__))
+accent_beat = pygame.mixer.Sound(os.path.join(script_dir, "sfx/dance_kick3-92807.wav")) 
+regular_beat = pygame.mixer.Sound(os.path.join(script_dir, "sfx/dance_kick3-92807.wav"))
 
 accent_beat.set_volume(1)
 regular_beat.set_volume(1)
@@ -30,6 +15,7 @@ class Metronome:
     def __init__(self, bpm=120):
         self.bpm = bpm
         self.beat_interval = 60000 / bpm
+        self.base_beat_interval = 60000 / bpm 
         self.current_beat = 0
 
         current_time = pygame.time.get_ticks()
@@ -43,6 +29,11 @@ class Metronome:
 
     def update(self, combat_mod=None):
         current_time = pygame.time.get_ticks()
+
+        if combat_mod and combat_mod.active:
+            self.beat_interval = self.base_beat_interval * 2  # Double interval for 4 beats
+        else:
+            self.beat_interval = self.base_beat_interval
 
         if current_time >= self.next_beat_time:
             # Check if this beat should be silent

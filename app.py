@@ -129,7 +129,7 @@ def main(skip_menu=False):
             elif 180 >= elapsed_time > 120:
                 stage_speed= randint(2, 3)
             else:
-                stage_split_chance = 0
+                stage_split_chance = 1.0
                 asteroid_damage = 100
 
             if elapsed_time - last_spawn_time >= 2:
@@ -161,7 +161,7 @@ def main(skip_menu=False):
                     powerup_items.remove(p_item)
 
             # 1. DRAW BACKGROUND LAYER FIRST (Earth Bar)
-            draw_earth_image(surface)
+            draw_earth_image(surface, player_state.health)
 
             # 2. UPDATE & COLLISION LOGIC
 
@@ -263,7 +263,7 @@ def main(skip_menu=False):
             # 4. DRAW UI LAYER (On very top)
             draw_health(surface, font, player_state.health)
             draw_timer(surface, font, elapsed_time)
-            draw_shoot_indicator(surface, metronome)
+            draw_shoot_indicator(surface, metronome, combat_mod)
 
             player_state.update_ship_collision(avatar, asteroids)
 
@@ -282,6 +282,8 @@ def main(skip_menu=False):
                 return main(skip_menu=False)
             elif action == "quit":
                 running = False
+
+            
 
         pygame.display.flip()
 

@@ -32,9 +32,10 @@ class CombatModifier:
         # Shotgun on all allowed beats when modifier is active
         if self.active:
             angles = [base_angle - 20, base_angle - 10, base_angle, base_angle + 10, base_angle + 20]
-            for a in angles:
-                shots.append(Projectile(gun_pos, a))
+            for i, a in enumerate(angles):
+                # Only play sound on first projectile
+                shots.append(Projectile(gun_pos, a, is_shotgun=(i == 0)))
         else:
-            shots.append(Projectile(gun_pos, base_angle))
+            shots.append(Projectile(gun_pos, base_angle, is_shotgun=False))
         
         return shots
