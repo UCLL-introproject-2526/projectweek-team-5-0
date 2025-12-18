@@ -185,30 +185,6 @@ def main(skip_menu=False):
                     explosions.remove(explosion)
                 else:
                     explosion.draw(surface)
-  
-            #EXPLOSION REMOVAL
-            for explosion in explosions[:]:
-                explosion.update()
-                if explosion.is_finished():
-                    explosions.remove(explosion)
-                else:
-                    explosion.draw(surface)
-
-            #EXPLOSION REMOVAL
-            for explosion in explosions[:]:
-                explosion.update()
-                if explosion.is_finished():
-                    explosions.remove(explosion)
-                else:
-                    explosion.draw(surface)
-  
-            #EXPLOSION REMOVAL
-            for explosion in explosions[:]:
-                explosion.update()
-                if explosion.is_finished():
-                    explosions.remove(explosion)
-                else:
-                    explosion.draw(surface)
 
             # 3. DRAW PLAYER LAYER (On top of asteroids)
             keys = pygame.key.get_pressed()

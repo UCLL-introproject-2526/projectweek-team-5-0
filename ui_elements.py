@@ -34,7 +34,7 @@ def load_earth_image():
     if _earth_image is None:
         script_dir = os.path.dirname(os.path.abspath(__file__))
         try:
-            _earth_image = pygame.image.load(os.path.join(script_dir, "sprites", "earth.png")).convert_alpha()
+            _earth_image = pygame.image.load(os.path.join(script_dir, "sprites", "earth-transparrent.png")).convert_alpha()
             print("Earth image loaded successfully")
         except:
             _earth_image = False  # Mark as failed to avoid retrying
