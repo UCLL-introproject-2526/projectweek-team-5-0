@@ -127,6 +127,7 @@ def main(skip_menu=False):
                 asteroid.draw(surface)
 
                 if asteroid.health <= 0:
+                    asteroid.play_destroy_sound()
                     if random.random() > 0.5:
                         splitters.append(Splitter(30, 0, 10, 20, asteroid))
                         splitters.append(Splitter(-30, 0, 10, 20, asteroid))
@@ -172,7 +173,7 @@ def main(skip_menu=False):
                 if healthpack.rect.colliderect(avatar.rect):
                     player_state.heal(50)
                     healthpacks.remove(healthpack)
-                    print("HEALTH PACK COLLECTED!")
+                    healthpack.play_pickup_sound()
                     continue
                 
                 healthpack.draw(surface)
