@@ -45,7 +45,7 @@ class Metronome:
         current_time = pygame.time.get_ticks()
 
         if current_time >= self.next_beat_time:
-            # Check if this beat should be silent (Empty Beat)
+            # Check if this beat should be silent
             is_silent = False
             if combat_mod and combat_mod.is_beat_forbidden(self.current_beat):
                 is_silent = True

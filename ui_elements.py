@@ -81,9 +81,21 @@ def draw_shoot_indicator(surface, metronome, combat_mod=None):
         fade = 1.0 - ((min_time - metronome.shoot_tolerance) / fade_duration) # CHANGED: Divided by fade_duration instead of 100 to prevent snapping
     else:
         fade = 0.0
+
+    is_jammed = combat_mod and combat_mod.is_beat_forbidden(metronome.current_beat)
     
-    dark_color = (128, 0, 0)
-    bright_color = (0,255,0)
+    if is_jammed:
+        # Gray colors for forbidden beats
+        dark_color = (50, 50, 50)
+        bright_color = (100, 100, 100)
+    elif combat_mod and combat_mod.active:
+        # Gold/yellow for allowed shotgun beats
+        dark_color = (128, 100, 0)
+        bright_color = (255, 215, 0)
+    else:
+        # Normal green
+        dark_color = (128, 0, 0)
+        bright_color = (0, 255, 0)
     
     bar_color = (
         int(dark_color[0] + (bright_color[0] - dark_color[0]) * fade),
@@ -101,29 +113,6 @@ def draw_shoot_indicator(surface, metronome, combat_mod=None):
         glow_surface.fill((*bright_color, glow_intensity))
         surface.blit(glow_surface, (glow_x, bar_y))
 
-    #BIJ SHOTGUN TIMING VERANDERT
-
-    is_jammed = False
-    if combat_mod and combat_mod.is_beat_forbidden(metronome.current_beat):
-        is_jammed = True
-        bright_color = (100, 100, 100) # Grey (Visual cue for "Empty")
-        dark_color = (50, 50, 50)      # Dark Grey
-
-    bar_color = (
-        int(dark_color[0] + (bright_color[0] - dark_color[0]) * fade),
-        int(dark_color[1] + (bright_color[1] - dark_color[1]) * fade),
-        int(dark_color[2] + (bright_color[2] - dark_color[2]) * fade)
-    )
-    
-    # Only draw glow if NOT jammed
-    if fade > 0.3 and not is_jammed:
-        glow_intensity = int(100 * fade)
-        glow_width = bar_width
-        glow_x = bar_x - (glow_width - bar_width) / 2
-        
-        glow_surface = pygame.Surface((glow_width, bar_height), pygame.SRCALPHA)
-        glow_surface.fill((*bright_color, glow_intensity))
-        surface.blit(glow_surface, (glow_x, bar_y))
 
     pygame.draw.rect(surface, bar_color, (bar_x, bar_y, bar_width, bar_height))
 

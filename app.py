@@ -142,7 +142,7 @@ def main(skip_menu=False):
                 last_healthpack_spawn = elapsed_time
 
             # SPAWN LOGIC FOR SHOTGUN POWERUP
-            if elapsed_time - last_powerup_spawn >= 25: # Spawn every 25s
+            if elapsed_time - last_powerup_spawn >= 25 and not combat_mod.active: # Spawn every 25s
                 powerup_items.append(PowerUpItem(surface.get_width(), surface.get_height()))
                 last_powerup_spawn = elapsed_time
 
@@ -302,10 +302,13 @@ def main(skip_menu=False):
             if shoot_pressed:
                 if metronome.can_shoot() == True:
                     if player_state.is_hit == False:
-                        new_shots = combat_mod.create_shots(avatar, metronome)
-                        projectiles.extend(new_shots)
-                        avatar.trigger_fire()
-                        print("PEWPEW")
+                        if combat_mod.is_beat_forbidden(metronome.current_beat):
+                            print("GUN JAMMED - EMPTY BEAT")
+                        else:
+                            new_shots = combat_mod.create_shots(avatar, metronome)
+                            projectiles.extend(new_shots)
+                            avatar.trigger_fire()
+                            print("PEWPEW")
                 else:
                     player_state.paralyse()
                     print("FOUTE TIMING JIJ IDIOOT")
