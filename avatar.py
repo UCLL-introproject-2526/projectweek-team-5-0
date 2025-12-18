@@ -6,7 +6,7 @@ import os
 class Avatar:
 
     flame_sprites = None
-    
+
     @classmethod
     def load_flame_sprites(cls):
         """Load all flame sprites from the sprites/flames folder"""
@@ -14,14 +14,14 @@ class Avatar:
             cls.flame_sprites = []
             script_dir = os.path.dirname(os.path.abspath(__file__))
             flame_folder = os.path.join(script_dir, "sprites", "flames")
-            
+
             try:
                 for filename in os.listdir(flame_folder):
                     if filename.endswith(('.png', '.jpg', '.jpeg')):
                         image_path = os.path.join(flame_folder, filename)
                         sprite = pygame.image.load(image_path).convert_alpha()
                         cls.flame_sprites.append(sprite)
-                
+
                 print(f"Loaded {len(cls.flame_sprites)} flame sprites")
             except FileNotFoundError:
                 print(f"Warning: {flame_folder} not found - no flame effects")
@@ -48,7 +48,7 @@ class Avatar:
 
         self.player_state = player_state
 
-        #VUUR 
+        #VUUR
         self.is_firing = False   #A FLAG
         self.fire_duration = 8  # How many frames the flame shows
         self.fire_frame_count = 0
@@ -63,6 +63,10 @@ class Avatar:
 
     def update(self, keys, screen_width, screen_height):
         if not self.player_state.is_hit:
+            if keys[pygame.K_q]:
+                self.vx -= self.acceleration
+            if keys[pygame.K_z]:
+                self.vy -= self.acceleration
             if keys[pygame.K_a]:
                 self.vx -= self.acceleration
             if keys[pygame.K_d]:
@@ -88,14 +92,14 @@ class Avatar:
         speed = math.sqrt(self.vx**2 + self.vy**2)
         if speed > self.max_speed:
             self.vx = (self.vx / speed) * self.max_speed
-            self.vy = (self.vy / speed) * self.max_speed    
+            self.vy = (self.vy / speed) * self.max_speed
 
         # Stop completely if moving very slowly (prevents tiny drifting)
         if abs(self.vx) < 0.1:
             self.vx = 0
         if abs(self.vy) < 0.1:
             self.vy = 0
-        
+
         self.rect.x += self.vx
         self.rect.y += self.vy
 
@@ -125,31 +129,31 @@ class Avatar:
         mouse_x, mouse_y = pygame.mouse.get_pos()
         dx = mouse_x - self.rect.centerx
         dy = mouse_y - self.rect.centery
-        self.angle = math.degrees(math.atan2(-dy, dx)) - 90  
+        self.angle = math.degrees(math.atan2(-dy, dx)) - 90
 
         #Rotate the image
         self.image = pygame.transform.rotate(self.base_image, self.angle)
 
         #Update rect to new image size and keep center
-        self.rect = self.image.get_rect(center=true_center) 
-            
+        self.rect = self.image.get_rect(center=true_center)
+
     def get_avatar_position(self):
         #gets avatar position and returns it
         avatar_position = [self.rect.x + (self.width/2), self.rect.y + (self.height/2)]
         #the division ensures the middle of the avatar is returned
         return avatar_position
-    
+
     def get_gun_position(self):
         tip_offset = self.height // 2 + 5
-        
+
         rad = math.radians(self.angle + 90)
-        
+
         # Calculate tip position - SAME formula as projectile velocity
         tip_x = self.rect.centerx + tip_offset * math.cos(rad)
         tip_y = self.rect.centery - tip_offset * math.sin(rad)
-        
+
         return [tip_x, tip_y]
-    
+
     def draw(self, surface):
         surface.blit(self.image, self.rect)
 

@@ -24,6 +24,13 @@ pygame.init()
 # deze functie zitten alle dingen in die gerund worden.
 # =====================================================
 
+# Settings menu's
+SETTINGS_MENUS = {
+    "keyboard": keyboard_menu,
+    "video": video_menu,
+    "skins": skins_menu,
+}
+
 # closes game properly
 def close_game():
     pygame.quit()
@@ -48,11 +55,24 @@ def main(skip_menu=False):
             action = main_menu(surface)  # Returns "start", "settings", or quits
 
             if action == "settings":
-                settings_menu(surface)
-                continue  # Show main menu again after settings
+                while True:
+                    settings_action = settings_menu(surface)
+
+                    if settings_action == "back":
+                        break  # back to main menu
+
+                    submenu = SETTINGS_MENUS.get(settings_action)
+                    if submenu:
+                        submenu(surface)
+
+                continue
+
             elif action == "start":
                 break  # Exit menu loop and start game
-    
+            elif action == "quit":
+                close_game()
+                return
+
     start_time = time.time()
 
     asteroids = []
@@ -87,7 +107,7 @@ def main(skip_menu=False):
         running = False
 
     while running:
-        surface.fill((0, 0, 0)) 
+        surface.fill((0, 0, 0))
         surface.blit(game_background, (0, 0))
 
         metronome.update()
@@ -121,7 +141,7 @@ def main(skip_menu=False):
             draw_earth_image(surface)
 
             # 2. UPDATE & COLLISION LOGIC
-            
+
             # Projectiles Update
             for projectile in projectiles[:]:
                 projectile.update(projectiles, surface.get_width(), surface.get_height())
@@ -130,13 +150,13 @@ def main(skip_menu=False):
             # Asteroid Update + Collision
             for asteroid in asteroids[:]:
                 asteroid.update() # CHANGE: No longer passing projectiles
-                
+
                 # NEW COLLISION BLOCK: Handles deletion on impact
                 for projectile in projectiles[:]:
                     if asteroid.rect.colliderect(projectile.rect):
                         asteroid.damage(10)
                         if projectile in projectiles:
-                            projectiles.remove(projectile) 
+                            projectiles.remove(projectile)
 
                 asteroid.draw(surface)
 
@@ -146,7 +166,6 @@ def main(skip_menu=False):
                         splitters.append(Splitter(30, 0, 10, 20, asteroid))
                         splitters.append(Splitter(-30, 0, 10, 20, asteroid))
                     asteroids.remove(asteroid)
-                
                 if asteroid.rect.y > surface.get_height()-75:
 
                     #BOOM
@@ -159,7 +178,7 @@ def main(skip_menu=False):
             # Splitter Update + Collision
             for splitter in splitters[:]:
                 splitter.update() # CHANGE: No longer passing projectiles
-                
+
                 # NEW COLLISION BLOCK for Splitters
                 for projectile in projectiles[:]:
                     if splitter.rect.colliderect(projectile.rect):
@@ -182,7 +201,7 @@ def main(skip_menu=False):
             #THIS DRAWS ALL HP OBS/PACKS
             for healthpack in healthpacks[:]:
                 healthpack.update()
-                
+
                 # Check collision with player
                 if healthpack.rect.colliderect(avatar.rect):
                     player_state.heal(50)

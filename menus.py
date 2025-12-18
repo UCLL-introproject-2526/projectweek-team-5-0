@@ -101,9 +101,10 @@ def settings_menu(screen):
 
     manager = pygame_gui.UIManager(screen.get_size(), "gui-themes/theme.json")
 
-    video_btn = pygame_gui.elements.UIButton(pygame.Rect(screen.get_width()//2 - 100, screen.get_height()//2 + 40, 200, 50), "Video", manager)
-    skins_btn = pygame_gui.elements.UIButton(pygame.Rect(screen.get_width()//2 - 100, screen.get_height()//2 + 100, 200, 50), "Skins", manager)
-    back_btn = pygame_gui.elements.UIButton(pygame.Rect(screen.get_width()//2 - 100, screen.get_height()//2 + 160, 200, 50), "Back", manager)
+    keyboard_btn = pygame_gui.elements.UIButton(pygame.Rect(screen.get_width()//2 - 100, screen.get_height()//2 + 40, 200, 50), "Keyboard", manager)
+    video_btn = pygame_gui.elements.UIButton(pygame.Rect(screen.get_width()//2 - 100, screen.get_height()//2 + 100, 200, 50), "Video", manager)
+    skins_btn = pygame_gui.elements.UIButton(pygame.Rect(screen.get_width()//2 - 100, screen.get_height()//2 + 160, 200, 50), "Skins", manager)
+    back_btn = pygame_gui.elements.UIButton(pygame.Rect(screen.get_width()//2 - 100, screen.get_height()//2 + 220, 200, 50), "Back", manager)
 
     while True:
         time_delta = clock.tick(60)/1000.0
@@ -120,9 +121,178 @@ def settings_menu(screen):
             if event.type == pygame_gui.UI_BUTTON_PRESSED:
                 if event.ui_element == back_btn:
                     return "back"
+                elif event.ui_element == keyboard_btn:
+                    return "keyboard"
+                elif event.ui_element == video_btn:
+                    return "video"
+                elif event.ui_element == skins_btn:
+                    return "skins"
 
         manager.update(time_delta)
         manager.draw_ui(screen)
+        pygame.display.flip()
+
+################################
+# Sub Menus
+################################
+
+# keyboard sebmenu
+def keyboard_menu(surface):
+    clock = pygame.time.Clock()
+
+    background = pygame.image.load("sprites/background/space.jpg").convert()
+    background = pygame.transform.scale(background, surface.get_size())
+
+    logo_image = pygame.image.load("sprites/logo/logo.jpg").convert_alpha()
+    logo_width = 300
+    logo_height = int(logo_image.get_height() * (logo_width / logo_image.get_width()))
+    logo_image = pygame.transform.scale(logo_image, (logo_width, logo_height))
+    logo_rect = logo_image.get_rect(center=(surface.get_width() // 2, surface.get_height() // 2 - 200))
+
+    title_font = pygame.font.Font(None, 80)
+    title_text = title_font.render("Asteroid Destroyers", True, (255, 255, 255))
+    title_rect = title_text.get_rect(center=(surface.get_width() // 2, surface.get_height() // 2 - 70))
+
+    subtitle_font = pygame.font.Font(None, 60)
+    subtitle_text = subtitle_font.render("Keyboard Settings", True, (255, 255, 255))
+    subtitle_rect = subtitle_text.get_rect(center=(surface.get_width() // 2, surface.get_height() // 2))
+
+    manager = pygame_gui.UIManager(surface.get_size(), "gui-themes/theme.json")
+
+    # buttons
+    qwearty_btn = pygame_gui.elements.UIButton(pygame.Rect(surface.get_width() // 2 - 100, surface.get_height() // 2 + 40, 200, 50), "Qwearty", manager)
+    azerty_btn = pygame_gui.elements.UIButton(pygame.Rect(surface.get_width() // 2 - 100, surface.get_height() // 2 + 100, 200, 50), "Azerty", manager)
+    back_btn = pygame_gui.elements.UIButton(pygame.Rect(surface.get_width() // 2 - 100, surface.get_height() // 2 + 160, 200, 50), "Back", manager)
+
+    while True:
+        time_delta = clock.tick(60) / 1000.0
+        surface.blit(background, (0, 0))
+        surface.blit(logo_image, logo_rect)
+        surface.blit(title_text, title_rect)
+        surface.blit(subtitle_text, subtitle_rect)
+
+        for event in pygame.event.get():
+            manager.process_events(event)
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                exit()
+
+            if event.type == pygame_gui.UI_BUTTON_PRESSED:
+                if event.ui_element == back_btn:
+                    return "back"
+                elif event.ui_element == azerty_btn:
+                    print('azerty')
+                elif event.ui_element == qwearty_btn:
+                    print('qwearty')
+
+        manager.update(time_delta)
+        manager.draw_ui(surface)
+        pygame.display.flip()
+
+# video sebmenu
+def video_menu(surface):
+    clock = pygame.time.Clock()
+
+    background = pygame.image.load("sprites/background/space.jpg").convert()
+    background = pygame.transform.scale(background, surface.get_size())
+
+    logo_image = pygame.image.load("sprites/logo/logo.jpg").convert_alpha()
+    logo_width = 300
+    logo_height = int(logo_image.get_height() * (logo_width / logo_image.get_width()))
+    logo_image = pygame.transform.scale(logo_image, (logo_width, logo_height))
+    logo_rect = logo_image.get_rect(center=(surface.get_width() // 2, surface.get_height() // 2 - 200))
+
+    title_font = pygame.font.Font(None, 80)
+    title_text = title_font.render("Asteroid Destroyers", True, (255, 255, 255))
+    title_rect = title_text.get_rect(center=(surface.get_width() // 2, surface.get_height() // 2 - 70))
+
+    subtitle_font = pygame.font.Font(None, 60)
+    subtitle_text = subtitle_font.render("Video Settings", True, (255, 255, 255))
+    subtitle_rect = subtitle_text.get_rect(center=(surface.get_width() // 2, surface.get_height() // 2))
+
+    manager = pygame_gui.UIManager(surface.get_size(), "gui-themes/theme.json")
+
+    # buttons
+    fullscreen_btn = pygame_gui.elements.UIButton(pygame.Rect(surface.get_width() // 2 - 100, surface.get_height() // 2 + 40, 200, 50), "Fullscreen", manager)
+    windowed_btn = pygame_gui.elements.UIButton(pygame.Rect(surface.get_width() // 2 - 100, surface.get_height() // 2 + 100, 200, 50), "Windowed", manager)
+    back_btn = pygame_gui.elements.UIButton(pygame.Rect(surface.get_width() // 2 - 100, surface.get_height() // 2 + 160, 200, 50), "Back", manager)
+
+    while True:
+        time_delta = clock.tick(60) / 1000.0
+        surface.blit(background, (0, 0))
+        surface.blit(logo_image, logo_rect)
+        surface.blit(title_text, title_rect)
+        surface.blit(subtitle_text, subtitle_rect)
+
+        for event in pygame.event.get():
+            manager.process_events(event)
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                exit()
+
+            if event.type == pygame_gui.UI_BUTTON_PRESSED:
+                if event.ui_element == back_btn:
+                    return "back"
+                elif event.ui_element == fullscreen_btn:
+                    print('fullscreen')
+                elif event.ui_element == windowed_btn:
+                    print('windowed')
+
+        manager.update(time_delta)
+        manager.draw_ui(surface)
+        pygame.display.flip()
+
+# keyboard sebmenu
+def skins_menu(surface):
+    clock = pygame.time.Clock()
+
+    background = pygame.image.load("sprites/background/space.jpg").convert()
+    background = pygame.transform.scale(background, surface.get_size())
+
+    logo_image = pygame.image.load("sprites/logo/logo.jpg").convert_alpha()
+    logo_width = 300
+    logo_height = int(logo_image.get_height() * (logo_width / logo_image.get_width()))
+    logo_image = pygame.transform.scale(logo_image, (logo_width, logo_height))
+    logo_rect = logo_image.get_rect(center=(surface.get_width() // 2, surface.get_height() // 2 - 200))
+
+    title_font = pygame.font.Font(None, 80)
+    title_text = title_font.render("Asteroid Destroyers", True, (255, 255, 255))
+    title_rect = title_text.get_rect(center=(surface.get_width() // 2, surface.get_height() // 2 - 70))
+
+    subtitle_font = pygame.font.Font(None, 60)
+    subtitle_text = subtitle_font.render("Skins Settings", True, (255, 255, 255))
+    subtitle_rect = subtitle_text.get_rect(center=(surface.get_width() // 2, surface.get_height() // 2))
+
+    manager = pygame_gui.UIManager(surface.get_size(), "gui-themes/theme.json")
+
+    # buttons
+    skin_redeye_btn = pygame_gui.elements.UIButton(pygame.Rect(surface.get_width() // 2 - 100, surface.get_height() // 2 + 40, 200, 50), "Red eye", manager)
+    skin_pinky_btn = pygame_gui.elements.UIButton(pygame.Rect(surface.get_width() // 2 - 100, surface.get_height() // 2 + 100, 200, 50), "Pinky", manager)
+    back_btn = pygame_gui.elements.UIButton(pygame.Rect(surface.get_width() // 2 - 100, surface.get_height() // 2 + 160, 200, 50), "Back", manager)
+
+    while True:
+        time_delta = clock.tick(60) / 1000.0
+        surface.blit(background, (0, 0))
+        surface.blit(logo_image, logo_rect)
+        surface.blit(title_text, title_rect)
+        surface.blit(subtitle_text, subtitle_rect)
+
+        for event in pygame.event.get():
+            manager.process_events(event)
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                exit()
+
+            if event.type == pygame_gui.UI_BUTTON_PRESSED:
+                if event.ui_element == back_btn:
+                    return "back"
+                elif event.ui_element == skin_redeye_btn:
+                    print('red eye')
+                elif event.ui_element == skin_pinky_btn:
+                    print('youre pink now')
+
+        manager.update(time_delta)
+        manager.draw_ui(surface)
         pygame.display.flip()
 
 ################################
@@ -197,3 +367,4 @@ def game_over_menu():
         manager.update(time_delta)
         manager.draw_ui(screen)
         pygame.display.flip()
+
