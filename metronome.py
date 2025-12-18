@@ -20,8 +20,11 @@ def create_click_sound(frequency, duration=0.1):
     return pygame.sndarray.make_sound(stereo_wave)
 
 # Create sounds
-accent_beat = create_click_sound(400)
-regular_beat = create_click_sound(400)
+accent_beat = create_click_sound(200)
+regular_beat = create_click_sound(200)
+
+accent_beat.set_volume(1)
+regular_beat.set_volume(1)
 
 class Metronome:
     def __init__(self, bpm=120):
@@ -36,7 +39,7 @@ class Metronome:
         self.last_beat_time = current_time - self.beat_interval
         self.next_beat_time = current_time  # First beat will happen immediately
 
-        self.shoot_tolerance = 100 
+        self.shoot_tolerance = 150 
 
     def update(self):
         current_time = pygame.time.get_ticks()

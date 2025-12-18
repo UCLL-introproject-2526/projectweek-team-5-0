@@ -12,7 +12,7 @@ class Asteroid:
             script_dir = os.path.dirname(os.path.abspath(__file__))
             sound_path = os.path.join(script_dir, "sfx", "asteroidDies.wav")
             cls.destroy_sound = pygame.mixer.Sound(sound_path)
-            cls.destroy_sound.set_volume(0.5)
+            cls.destroy_sound.set_volume(0.1)
             print("Asteroid destroy sound loaded")
 
     def __init__(self, screen_width, screen_height, health, speed):
