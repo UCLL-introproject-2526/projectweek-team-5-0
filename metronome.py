@@ -15,6 +15,7 @@ class Metronome:
     def __init__(self, bpm=120):
         self.bpm = bpm
         self.beat_interval = 60000 / bpm
+        self.base_beat_interval = 60000 / bpm 
         self.current_beat = 0
 
         current_time = pygame.time.get_ticks()
@@ -28,6 +29,11 @@ class Metronome:
 
     def update(self, combat_mod=None):
         current_time = pygame.time.get_ticks()
+
+        if combat_mod and combat_mod.active:
+            self.beat_interval = self.base_beat_interval * 2  # Double interval for 4 beats
+        else:
+            self.beat_interval = self.base_beat_interval
 
         if current_time >= self.next_beat_time:
             # Check if this beat should be silent
