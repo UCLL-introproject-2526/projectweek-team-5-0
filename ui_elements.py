@@ -57,45 +57,64 @@ def draw_earth_image(surface):
         pygame.draw.rect(surface, (30, 144, 255), (0, bar_y, half_width, bar_height))
         pygame.draw.rect(surface, (34, 139, 34), (half_width, bar_y, half_width, bar_height))
 
-def draw_shoot_indicator(surface, metronome):
-    """
-    Draws a vertical bar on the right side that lights up when you can shoot
-
-    surface: The pygame surface to draw on
-    metronome: The Metronome object to check timing
-    """
-    # Get window dimensions
+def draw_shoot_indicator(surface, metronome, combat_mod=None):
     screen_width, screen_height = surface.get_size()
 
-    # Bar dimensions as percentage of screen
-    bar_width = screen_width * 0.015  # 3% of screen width
-    bar_height = screen_height * 0.5  # 50% of screen height
+    bar_width = screen_width * 0.015
+    bar_height = screen_height * 0.5
 
-    # Position on right side, vertically centered
-    bar_x = screen_width - bar_width - (screen_width * 0.02)  # 2% margin from right
-    bar_y = (screen_height - bar_height) / 2  # Centered vertically
+    bar_x = screen_width - bar_width - (screen_width * 0.02)
+    bar_y = (screen_height - bar_height) / 2
 
-    # Check if player can shoot
-    can_shoot = metronome.can_shoot()
+    current_time = pygame.time.get_ticks()
+    time_since_last = current_time - metronome.last_beat_time
+    time_until_next = metronome.next_beat_time - current_time
+    
+    min_time = min(time_since_last, time_until_next)
+    
+    fade_duration = 120
+    fade_distance = metronome.shoot_tolerance + fade_duration
 
-    # Choose color based on shoot window
-    if can_shoot:
-        bar_color = (74, 222, 128)  # Bright green - GO!
-        glow_color = (74, 222, 128, 100)  # Semi-transparent green glow
+    if min_time <= metronome.shoot_tolerance:
+        fade = 1.0
+    elif min_time <= fade_distance:
+        fade = 1.0 - ((min_time - metronome.shoot_tolerance) / fade_duration) # CHANGED: Divided by fade_duration instead of 100 to prevent snapping
     else:
-        bar_color = (71, 85, 105)  # Dark gray - NOT YET
-        glow_color = None
+        fade = 0.0
 
-    # Draw glow effect when active
-    if glow_color:
-        glow_width = bar_width * 1.5
+    is_jammed = combat_mod and combat_mod.is_beat_forbidden(metronome.current_beat)
+    
+    if is_jammed:
+        # Gray colors for forbidden beats
+        dark_color = (50, 50, 50)
+        bright_color = (100, 100, 100)
+    elif combat_mod and combat_mod.active:
+        # Gold/yellow for allowed shotgun beats
+        dark_color = (128, 100, 0)
+        bright_color = (255, 215, 0)
+    else:
+        # Normal green
+        dark_color = (128, 0, 0)
+        bright_color = (0, 255, 0)
+    
+    bar_color = (
+        int(dark_color[0] + (bright_color[0] - dark_color[0]) * fade),
+        int(dark_color[1] + (bright_color[1] - dark_color[1]) * fade),
+        int(dark_color[2] + (bright_color[2] - dark_color[2]) * fade)
+    )
+    
+    if fade > 0.3:
+        glow_intensity = int(100 * fade)
+        glow_width = bar_width
         glow_x = bar_x - (glow_width - bar_width) / 2
-        pygame.draw.rect(surface, glow_color[:3],
-                        (glow_x, bar_y, glow_width, bar_height))
+        
+        # CHANGED: Used a temporary Surface with SRCALPHA to enable real transparency for the glow
+        glow_surface = pygame.Surface((glow_width, bar_height), pygame.SRCALPHA)
+        glow_surface.fill((*bright_color, glow_intensity))
+        surface.blit(glow_surface, (glow_x, bar_y))
 
-    # Draw main bar
+
     pygame.draw.rect(surface, bar_color, (bar_x, bar_y, bar_width, bar_height))
 
-    # Draw border
     pygame.draw.rect(surface, (255, 255, 255),
                     (bar_x, bar_y, bar_width, bar_height), 2)

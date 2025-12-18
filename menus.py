@@ -22,6 +22,8 @@ def main_menu(screen):
     title_font = pygame.font.Font(None, 80)
     title_text = title_font.render("Meteo Beats", True, (255, 255, 255))
     title_rect = title_text.get_rect(center=(screen.get_width()//2, screen.get_height()//2 - 50))
+    title_text = title_font.render("Meteo Beats", True, (255, 255, 255))
+    title_rect = title_text.get_rect(center=(screen.get_width()//2, screen.get_height()//2 - 50))
 
     manager = pygame_gui.UIManager(screen.get_size(), "gui-themes/theme.json")
 
@@ -99,6 +101,7 @@ def settings_menu(screen):
 
     title_font = pygame.font.Font(None, 80)
     title_text = title_font.render("Meteo Beats", True, (255, 255, 255))
+    title_text = title_font.render("Meteo Beats", True, (255, 255, 255))
     title_rect = title_text.get_rect(center=(screen.get_width()//2, screen.get_height()//2 - 70))
 
     subtitle_font = pygame.font.Font(None, 60)
@@ -157,6 +160,7 @@ def keyboard_menu(surface):
 
     title_font = pygame.font.Font(None, 80)
     title_text = title_font.render("Meteo Beats", True, (255, 255, 255))
+    title_text = title_font.render("Meteo Beats", True, (255, 255, 255))
     title_rect = title_text.get_rect(center=(surface.get_width() // 2, surface.get_height() // 2 - 70))
 
     subtitle_font = pygame.font.Font(None, 60)
@@ -210,6 +214,7 @@ def video_menu(surface):
 
     title_font = pygame.font.Font(None, 80)
     title_text = title_font.render("Meteo Beats", True, (255, 255, 255))
+    title_text = title_font.render("Meteo Beats", True, (255, 255, 255))
     title_rect = title_text.get_rect(center=(surface.get_width() // 2, surface.get_height() // 2 - 70))
 
     subtitle_font = pygame.font.Font(None, 60)
@@ -262,6 +267,7 @@ def skins_menu(surface):
     logo_rect = logo_image.get_rect(center=(surface.get_width() // 2, surface.get_height() // 2 - 200))
 
     title_font = pygame.font.Font(None, 80)
+    title_text = title_font.render("Meteo Beats", True, (255, 255, 255))
     title_text = title_font.render("Meteo Beats", True, (255, 255, 255))
     title_rect = title_text.get_rect(center=(surface.get_width() // 2, surface.get_height() // 2 - 70))
 
@@ -324,6 +330,7 @@ def game_over_menu(elapsed_time):
 
     # Game title
     title_font = pygame.font.Font(None, 80)
+    title_text = title_font.render("Meteo Beats", True, (255, 255, 255))
     title_text = title_font.render("Meteo Beats", True, (255, 255, 255))
     title_rect = title_text.get_rect(center=(screen.get_width() // 2, screen.get_height() // 2 - 70))
 

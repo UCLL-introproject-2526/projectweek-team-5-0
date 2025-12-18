@@ -83,7 +83,6 @@ class Avatar:
                 self.vy -= self.acceleration
             if keys[pygame.K_DOWN]:
                 self.vy += self.acceleration
-        print(self.player_state.is_hit)
 
         self.vx *= self.friction
         self.vy *= self.friction

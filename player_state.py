@@ -52,7 +52,7 @@ class PlayerState:
         self.hit_sound.set_volume(0.5)
         paralyze_sound_path = os.path.join(script_dir, "sfx/paralyze.wav")
         self.paralyze_sound = pygame.mixer.Sound(paralyze_sound_path)
-        self.paralyze_sound.set_volume(0.8)
+        self.paralyze_sound.set_volume(0.5)
 
         #paralisys 
         self.current_paralisys_frame = 0
@@ -84,12 +84,7 @@ class PlayerState:
         return sound
 
     def take_damage(self, damage_amount=10):
-        """
-        Called when player (earth) takes damage
-        
-        damage_amount: How much health to subtract (default 10)
-        Returns: True if player died, False otherwise
-        """
+
         # Apply damage
         self.health -= damage_amount
         
@@ -174,8 +169,6 @@ class PlayerState:
             if current_time >= self.hit_time + self.hit_duration:
                 self.is_hit = False
                 print("Hit state ended - player vulnerable again")
-        print(pygame.time.get_ticks())
-        print(self.hit_time)
 
     def update_ship_collision(self, avatar, astroidlist):
         if self.is_hit:
