@@ -72,17 +72,46 @@ def draw_shoot_indicator(surface, metronome, combat_mod=None):
     
     min_time = min(time_since_last, time_until_next)
     
-    fade_duration = 120
-    fade_distance = metronome.shoot_tolerance + fade_duration
+    # fade_duration = 120
+    # fade_distance = metronome.shoot_tolerance + fade_duration
 
+    # fade = 0
+    # fade_duration = 0
+
+    # if min_time <= metronome.shoot_tolerance:
+    #     fade = 1.0
+    # elif min_time <= fade_distance:
+    #     fade = 1.0 - ((min_time - metronome.shoot_tolerance) / fade_duration) # CHANGED: Divided by fade_duration instead of 100 to prevent snapping
+    # else:
+    #     fade = 0.0
+
+    # is_jammed = combat_mod and combat_mod.is_beat_forbidden(metronome.current_beat)
+    
+    # if is_jammed:
+    #     # Gray colors for forbidden beats
+    #     dark_color = (50, 50, 50)
+    #     bright_color = (100, 100, 100)
+    # elif combat_mod and combat_mod.active:
+    #     # Gold/yellow for allowed shotgun beats
+    #     dark_color = (128, 100, 0)
+    #     bright_color = (255, 215, 0)
+    # else:
+    #     # Normal green
+    #     dark_color = (128, 0, 0)
+    #     bright_color = (0, 255, 0)
+    
+
+    # No fade - instant on/off
     if min_time <= metronome.shoot_tolerance:
-        fade = 1.0
-    elif min_time <= fade_distance:
-        fade = 1.0 - ((min_time - metronome.shoot_tolerance) / fade_duration) # CHANGED: Divided by fade_duration instead of 100 to prevent snapping
+        fade = 1.0  # Fully bright in shoot window
     else:
-        fade = 0.0
+        fade = 0.0  # Fully dark outside shoot window
 
     is_jammed = combat_mod and combat_mod.is_beat_forbidden(metronome.current_beat)
+    
+    # Keep jammed beats always dark
+    if is_jammed:
+        fade = 0.0
     
     if is_jammed:
         # Gray colors for forbidden beats
@@ -96,22 +125,22 @@ def draw_shoot_indicator(surface, metronome, combat_mod=None):
         # Normal green
         dark_color = (128, 0, 0)
         bright_color = (0, 255, 0)
-    
+
     bar_color = (
         int(dark_color[0] + (bright_color[0] - dark_color[0]) * fade),
         int(dark_color[1] + (bright_color[1] - dark_color[1]) * fade),
         int(dark_color[2] + (bright_color[2] - dark_color[2]) * fade)
     )
     
-    if fade > 0.3:
-        glow_intensity = int(100 * fade)
-        glow_width = bar_width
-        glow_x = bar_x - (glow_width - bar_width) / 2
+    # if fade > 0.3:
+    #     glow_intensity = int(100 * fade)
+    #     glow_width = bar_width
+    #     glow_x = bar_x - (glow_width - bar_width) / 2
         
-        # CHANGED: Used a temporary Surface with SRCALPHA to enable real transparency for the glow
-        glow_surface = pygame.Surface((glow_width, bar_height), pygame.SRCALPHA)
-        glow_surface.fill((*bright_color, glow_intensity))
-        surface.blit(glow_surface, (glow_x, bar_y))
+    #     # CHANGED: Used a temporary Surface with SRCALPHA to enable real transparency for the glow
+    #     glow_surface = pygame.Surface((glow_width, bar_height), pygame.SRCALPHA)
+    #     glow_surface.fill((*bright_color, glow_intensity))
+    #     surface.blit(glow_surface, (glow_x, bar_y))
 
 
     pygame.draw.rect(surface, bar_color, (bar_x, bar_y, bar_width, bar_height))
