@@ -264,6 +264,16 @@ def main(skip_menu=False):
                     print("closed game")
                     running = False
 
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_TAB:
+                    print("restarted game")
+                    return main(skip_menu=False)
+
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_r:
+                    print("restarted game")
+                    return main(skip_menu=True)
+
             # SPATIE CHECK
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_SPACE:
