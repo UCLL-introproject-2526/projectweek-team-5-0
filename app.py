@@ -6,7 +6,7 @@ import pygame
 import pygame_gui
 import time
 import os
-import random
+from random import random, randint
 from ui_elements import *
 from menus import *
 from metronome import Metronome
@@ -37,7 +37,6 @@ def main(skip_menu=False):
 
     clock = pygame.time.Clock()
     font = pygame.font.Font(None, 36)
-    start_time = time.time()
     player_state = PlayerState()
     metronome = Metronome(bpm=120)
     running = True # run game status
@@ -53,6 +52,8 @@ def main(skip_menu=False):
                 continue  # Show main menu again after settings
             elif action == "start":
                 break  # Exit menu loop and start game
+    
+    start_time = time.time()
 
     asteroids = []
     splitters = []
@@ -60,14 +61,14 @@ def main(skip_menu=False):
     last_spawn_time = 0
     shoot_pressed = False
     healthpacks = []
-    last_healthpack_spawn = 0   
+    last_healthpack_spawn = 0
     explosions = []
 
     # Create a avatar instance
     avatar = Avatar(surface.get_width(), surface.get_height(), player_state)
 
     def spawn_asteroid():
-        asteroid = Asteroid(surface.get_width(), surface.get_height(), 10)
+        asteroid = Asteroid(surface.get_width(), surface.get_height(), 10, stage_speed)
         asteroids.append(asteroid)
 
     def spawn_healthpack():
@@ -94,6 +95,19 @@ def main(skip_menu=False):
         elapsed_time = time.time() - start_time
 
         if not game_over:
+            if elapsed_time <= 60:
+                stage_speed = randint(1, 2)
+                stage_split_chance = 0.7
+                asteroid_damage = 10
+            elif 120 >= elapsed_time > 60:
+                stage_split_chance = 0.5
+            elif 180 >= elapsed_time > 120: 
+                stage_speed= randint(2, 3)
+            else:
+                stage_split_chance = 0
+                asteroid_damage = 100
+
+            
             if elapsed_time - last_spawn_time >= 2:
                 spawn_asteroid()
                 last_spawn_time = elapsed_time
@@ -127,7 +141,7 @@ def main(skip_menu=False):
                 asteroid.draw(surface)
 
                 if asteroid.health <= 0:
-                    if random.random() > 0.5:
+                    if random() > stage_split_chance:
                         splitters.append(Splitter(30, 0, 10, 20, asteroid))
                         splitters.append(Splitter(-30, 0, 10, 20, asteroid))
                     asteroids.remove(asteroid)
@@ -139,7 +153,7 @@ def main(skip_menu=False):
                     explosions.append(explosion)
 
                     asteroids.remove(asteroid)
-                    player_state.take_damage(10)
+                    player_state.take_damage(asteroid_damage)
 
             # Splitter Update + Collision
             for splitter in splitters[:]:
