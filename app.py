@@ -127,11 +127,10 @@ def main(skip_menu=False):
                 stage_split_chance = 0
                 asteroid_damage = 100
 
-            
             if elapsed_time - last_spawn_time >= 2:
                 spawn_asteroid()
                 last_spawn_time = elapsed_time
-            
+
             # HP ORB SPAWN
             if elapsed_time - last_healthpack_spawn >= 15:  # Spawn every 15 seconds
                 spawn_healthpack()
@@ -208,9 +207,9 @@ def main(skip_menu=False):
                     healthpacks.remove(healthpack)
                     healthpack.play_pickup_sound()
                     continue
-                
+
                 healthpack.draw(surface)
-            #NO MORE HP  
+            #NO MORE HP
 
             #EXPLOSION REMOVAL
             for explosion in explosions[:]:
@@ -224,7 +223,7 @@ def main(skip_menu=False):
             keys = pygame.key.get_pressed()
             avatar.update(keys, surface.get_width(), surface.get_height())
             avatar.draw(surface)
-            player_state.draw_paralisys(surface, avatar) 
+            player_state.draw_paralisys(surface, avatar)
 
             # 4. DRAW UI LAYER (On very top)
             draw_health(surface, font, player_state.health)
