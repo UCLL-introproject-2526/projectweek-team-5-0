@@ -84,12 +84,7 @@ class PlayerState:
         return sound
 
     def take_damage(self, damage_amount=10):
-        """
-        Called when player (earth) takes damage
-        
-        damage_amount: How much health to subtract (default 10)
-        Returns: True if player died, False otherwise
-        """
+
         # Apply damage
         self.health -= damage_amount
         
