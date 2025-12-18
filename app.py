@@ -11,6 +11,8 @@ from asteroids import Splitter
 from player_state import PlayerState
 from avatar import Avatar
 from projectile import Projectile
+from healthpack import HealthPack
+from explosion import Explosion
 
 pygame.init()
 
@@ -36,6 +38,9 @@ def main():
     projectiles = []
     last_spawn_time = 0
     shoot_pressed = False
+    healthpacks = []
+    last_healthpack_spawn = 0   
+    explosions = []
 
     # Create a avatar instance
     avatar = Avatar(surface.get_width(), surface.get_height())
@@ -108,6 +113,11 @@ def main():
                     asteroids.remove(asteroid)
                 
                 if asteroid.rect.y > surface.get_height():
+
+                    #BOOM
+                    explosion = Explosion(asteroid.rect.centerx, surface.get_height() - 60)
+                    explosions.append(explosion)
+
                     asteroids.remove(asteroid)
                     player_state.take_damage(10)
 
@@ -126,8 +136,41 @@ def main():
                 if splitter.health <= 0:
                     splitters.remove(splitter)
                 if splitter.rect.y > surface.get_height():
+
+                    #BOOM
+                    explosion = Explosion(splitter.rect.centerx, surface.get_height() - 60)
+                    explosions.append(explosion)
+
                     splitters.remove(splitter)
                     player_state.take_damage(5)
+
+            #EXPLOSION REMOVAL
+            for explosion in explosions[:]:
+                explosion.update()
+                if explosion.is_finished():
+                    explosions.remove(explosion)
+                else:
+                    explosion.draw(surface)
+            #THIS DRAWS ALL HP OBS/PACKS
+            for healthpack in healthpacks[:]:
+                healthpack.update()
+                
+                # Check collision with player
+                if healthpack.rect.colliderect(avatar.rect):
+                    player_state.heal(50)
+                    healthpacks.remove(healthpack)
+                    print("HEALTH PACK COLLECTED!")
+                    continue
+                
+                healthpack.draw(surface)
+            #NO MORE HP 
+            #EXPLOSION REMOVAL
+            for explosion in explosions[:]:
+                explosion.update()
+                if explosion.is_finished():
+                    explosions.remove(explosion)
+                else:
+                    explosion.draw(surface)
 
             # 3. DRAW PLAYER LAYER (On top of asteroids)
             keys = pygame.key.get_pressed()
