@@ -263,7 +263,7 @@ def main(skip_menu=False):
             # 4. DRAW UI LAYER (On very top)
             draw_health(surface, font, player_state.health)
             draw_timer(surface, font, elapsed_time)
-            draw_shoot_indicator(surface, metronome)
+            draw_shoot_indicator(surface, metronome, combat_mod)
 
             player_state.update_ship_collision(avatar, asteroids)
 

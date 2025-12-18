@@ -17,7 +17,7 @@ class PowerUpItem:
                 cls.sprite = pygame.Surface((30, 30))
                 cls.sprite.fill((0, 255, 255)) # Cyan box fallback
             
-            cls.sprite = pygame.transform.scale(cls.sprite, (30, 30))
+            cls.sprite = pygame.transform.scale(cls.sprite, (40, 40))
 
         if cls.pickup_sound is None:
             try:
@@ -30,10 +30,10 @@ class PowerUpItem:
 
     def __init__(self, screen_width, screen_height):
         PowerUpItem.load_assets()
-        self.width = 30
-        self.height = 30
+        self.width = 40
+        self.height = 40
         self.rect = pygame.Rect(random.randint(0, screen_width - self.width), -40, self.width, self.height)
-        self.speed = 3
+        self.speed = 1.5
         self.float_y = float(self.rect.y)
 
     def update(self):
