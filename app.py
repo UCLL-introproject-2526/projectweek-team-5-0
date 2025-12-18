@@ -161,7 +161,7 @@ def main(skip_menu=False):
                     powerup_items.remove(p_item)
 
             # 1. DRAW BACKGROUND LAYER FIRST (Earth Bar)
-            draw_earth_image(surface)
+            draw_earth_image(surface, player_state.health)
 
             # 2. UPDATE & COLLISION LOGIC
 
@@ -282,6 +282,8 @@ def main(skip_menu=False):
                 return main(skip_menu=False)
             elif action == "quit":
                 running = False
+
+            
 
         pygame.display.flip()
 

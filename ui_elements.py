@@ -1,5 +1,6 @@
 import pygame
 import os
+from player_state import PlayerState
 
 _earth_image = None
 
@@ -42,20 +43,32 @@ def load_earth_image():
     
     return _earth_image if _earth_image else None
 
-def draw_earth_image(surface):
+def draw_earth_image(surface, health):
     bar_height = 120  # Height for earth display
     bar_y = surface.get_height() - bar_height
     bar_width = surface.get_width()
     
-    earth_image = load_earth_image()
+    if health > 66:
+        sprite_name = "earth-transparrent.png"
+    elif health > 33:
+        sprite_name = "earth-transparrent-phase-2.png"
+    else:
+        sprite_name = "earth-transparrent-phase-3.png"
     
-    if earth_image:
+    # Try to load the appropriate sprite
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    sprite_path = os.path.join(script_dir, "sprites", sprite_name)
+    
+    try:
+        earth_image = pygame.image.load(sprite_path).convert_alpha()
         earth_stretched = pygame.transform.scale(earth_image, (bar_width, bar_height))
         surface.blit(earth_stretched, (0, bar_y))
-    else:
+    except:
+        # Fallback to colored bar if sprite not found
         half_width = bar_width // 2
         pygame.draw.rect(surface, (30, 144, 255), (0, bar_y, half_width, bar_height))
         pygame.draw.rect(surface, (34, 139, 34), (half_width, bar_y, half_width, bar_height))
+
 
 def draw_shoot_indicator(surface, metronome, combat_mod=None):
     screen_width, screen_height = surface.get_size()
