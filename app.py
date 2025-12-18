@@ -236,7 +236,7 @@ def main(skip_menu=False):
             if player_state.health <= 0:
                 game_over = True
         else:
-            action = game_over_menu()
+            action = game_over_menu(elapsed_time)
 
             if action == "restart":
                 # Restart the game and skip the main menu

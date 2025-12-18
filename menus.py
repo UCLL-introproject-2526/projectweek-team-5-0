@@ -298,7 +298,7 @@ def skins_menu(surface):
 ################################
 # Game Over Menu
 ################################
-def game_over_menu():
+def game_over_menu(elapsed_time):
     screen = pygame.display.get_surface()
     clock = pygame.time.Clock()
 
@@ -326,6 +326,12 @@ def game_over_menu():
     game_over_text = game_over_font.render("Game Over", True, (255, 0, 0))
     game_over_rect = game_over_text.get_rect(center=(screen.get_width() // 2, screen.get_height() // 2))
 
+    minutes = int(elapsed_time // 60)
+    seconds = int(elapsed_time % 60)
+    timer_font = pygame.font.Font(None, 50)
+    timer_surface = timer_font.render(f"Time Survived: {minutes:02d}:{seconds:02d}", True, (255, 255, 255))
+    timer_rect = timer_surface.get_rect(center=(screen.get_width() // 2, screen.get_height() // 2 + 40))
+
     # Buttons
     restart_btn = pygame_gui.elements.UIButton(
         pygame.Rect(screen.get_width() // 2 - 100, screen.get_height() // 2 + 60, 200, 50),
@@ -350,6 +356,7 @@ def game_over_menu():
         screen.blit(logo_image, logo_rect)
         screen.blit(title_text, title_rect)
         screen.blit(game_over_text, game_over_rect)
+        screen.blit(timer_surface, timer_rect)
 
         for event in pygame.event.get():
             manager.process_events(event)
