@@ -283,8 +283,6 @@ def main(skip_menu=False):
             elif action == "quit":
                 running = False
 
-            
-
         pygame.display.flip()
 
         for event in pygame.event.get():
