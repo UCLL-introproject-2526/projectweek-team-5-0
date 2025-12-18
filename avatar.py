@@ -63,10 +63,14 @@ class Avatar:
 
     def update(self, keys, screen_width, screen_height):
         if not self.player_state.is_hit:
+
+            # azerty
             if keys[pygame.K_q]:
                 self.vx -= self.acceleration
             if keys[pygame.K_z]:
                 self.vy -= self.acceleration
+
+            #qwerty
             if keys[pygame.K_a]:
                 self.vx -= self.acceleration
             if keys[pygame.K_d]:
@@ -75,6 +79,8 @@ class Avatar:
                 self.vy -= self.acceleration
             if keys[pygame.K_s]:
                 self.vy += self.acceleration
+
+            # arrows
             if keys[pygame.K_LEFT]:
                 self.vx -= self.acceleration
             if keys[pygame.K_RIGHT]:
