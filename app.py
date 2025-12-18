@@ -132,7 +132,7 @@ def main(skip_menu=False):
                         splitters.append(Splitter(-30, 0, 10, 20, asteroid))
                     asteroids.remove(asteroid)
                 
-                if asteroid.rect.y > surface.get_height():
+                if asteroid.rect.y > surface.get_height()-75:
 
                     #BOOM
                     explosion = Explosion(asteroid.rect.centerx, surface.get_height() - 60)
