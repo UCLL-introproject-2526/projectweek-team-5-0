@@ -169,8 +169,6 @@ class PlayerState:
             if current_time >= self.hit_time + self.hit_duration:
                 self.is_hit = False
                 print("Hit state ended - player vulnerable again")
-        print(pygame.time.get_ticks())
-        print(self.hit_time)
 
     def update_ship_collision(self, avatar, astroidlist):
         if self.is_hit:
