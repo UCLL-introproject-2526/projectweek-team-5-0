@@ -5,8 +5,8 @@ import os
 
 pygame.mixer.init(frequency=22050, size=-16, channels=2, buffer=512)
 script_dir = os.path.dirname(os.path.abspath(__file__))
-accent_beat = pygame.mixer.Sound(os.path.join(script_dir, "sfx/mixkit-drum-bass-hit-2294.wav"))  # Change filename as needed
-regular_beat = pygame.mixer.Sound(os.path.join(script_dir, "sfx/mixkit-drum-bass-hit-2294.wav"))
+accent_beat = pygame.mixer.Sound(os.path.join(script_dir, "sfx/dance_kick3-92807.wav")) 
+regular_beat = pygame.mixer.Sound(os.path.join(script_dir, "sfx/dance_kick3-92807.wav"))
 
 accent_beat.set_volume(1)
 regular_beat.set_volume(1)
