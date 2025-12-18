@@ -298,9 +298,10 @@ def skins_menu(surface):
     manager = pygame_gui.UIManager(surface.get_size(), "gui-themes/theme.json")
 
     # buttons
-    skin_redeye_btn = pygame_gui.elements.UIButton(pygame.Rect(surface.get_width() // 2 - 100, surface.get_height() // 2 + 40, 200, 50), "Red eye", manager)
-    skin_pinky_btn = pygame_gui.elements.UIButton(pygame.Rect(surface.get_width() // 2 - 100, surface.get_height() // 2 + 100, 200, 50), "Pinky", manager)
-    back_btn = pygame_gui.elements.UIButton(pygame.Rect(surface.get_width() // 2 - 100, surface.get_height() // 2 + 160, 200, 50), "Back", manager)
+    skin_default_btn = pygame_gui.elements.UIButton(pygame.Rect(surface.get_width() // 2 - 100, surface.get_height() // 2 + 40, 200, 50), "Default", manager)
+    skin_redeye_btn = pygame_gui.elements.UIButton(pygame.Rect(surface.get_width() // 2 - 100, surface.get_height() // 2 + 100, 200, 50), "Red eye", manager)
+    skin_pinky_btn = pygame_gui.elements.UIButton(pygame.Rect(surface.get_width() // 2 - 100, surface.get_height() // 2 + 160, 200, 50), "Pinky", manager)
+    back_btn = pygame_gui.elements.UIButton(pygame.Rect(surface.get_width() // 2 - 100, surface.get_height() // 2 + 220, 200, 50), "Back", manager)
 
     while True:
         time_delta = clock.tick(60) / 1000.0
@@ -318,13 +319,20 @@ def skins_menu(surface):
             if event.type == pygame_gui.UI_BUTTON_PRESSED:
                 if event.ui_element == back_btn:
                     return "back"
-                elif event.ui_element == skin_redeye_btn:
-                    skin_redeye_btn.disable()
+                elif event.ui_element == skin_default_btn:
+                    skin_redeye_btn.enable()
                     skin_pinky_btn.enable()
+                    skin_default_btn.disable()
+                    print('default')
+                elif event.ui_element == skin_redeye_btn:
+                    skin_default_btn.enable()
+                    skin_pinky_btn.enable()
+                    skin_redeye_btn.disable()
                     print('red eye')
                 elif event.ui_element == skin_pinky_btn:
-                    skin_pinky_btn.disable()
+                    skin_default_btn.enable()
                     skin_redeye_btn.enable()
+                    skin_pinky_btn.disable()
                     print('youre pink now')
 
         manager.update(time_delta)

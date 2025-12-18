@@ -5,7 +5,7 @@ import os
 import menus
 
 def get_controls():
-    """Return the control mapping based on the current layout"""
+    # Return the control mapping based on the current layout
 
     if menus.current_layout == "AZERTY":
         return {
