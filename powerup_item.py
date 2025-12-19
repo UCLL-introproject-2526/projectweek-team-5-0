@@ -22,7 +22,7 @@ class PowerUpItem:
         if cls.pickup_sound is None:
             try:
                 script_dir = os.path.dirname(os.path.abspath(__file__))
-                sound_path = os.path.join(script_dir, "sfx/powerup.wav")
+                sound_path = os.path.join(script_dir, "sfx\healthpack.wav")
                 cls.pickup_sound = pygame.mixer.Sound(sound_path)
                 cls.pickup_sound.set_volume(0.4)
             except:
