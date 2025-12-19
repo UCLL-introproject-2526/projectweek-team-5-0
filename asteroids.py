@@ -41,9 +41,10 @@ class Asteroid:
         self.rect = self.image.get_rect()
 
         # Position
-        self.x = random.randint(0, screen_width - 40)
+        max_spawn_x = int(screen_width * 0.92) - 40
+        self.x = random.randint(0, max_spawn_x)
         self.speed = speed
-        self.pos_y = -40.0                 # NEW: track float position
+        self.pos_y = -40.0 
         self.rect.x = self.x
         self.rect.y = int(self.pos_y)
 
