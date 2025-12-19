@@ -258,14 +258,14 @@ def main(skip_menu=False):
             keys = pygame.key.get_pressed()
             avatar.update(keys, surface.get_width(), surface.get_height())
             avatar.draw(surface)
-            player_state.draw_paralisys(surface, avatar)
+            player_state.draw_paralyse(surface, avatar)
 
             # 4. DRAW UI LAYER (On very top)
             draw_health(surface, font, player_state.health)
             draw_timer(surface, font, elapsed_time)
             draw_shoot_indicator(surface, metronome, combat_mod)
 
-            player_state.update_ship_collision(avatar, asteroids)
+            player_state.update_ship_collision(avatar, asteroids, splitters)
 
             if player_state.health <= 0:
                 game_over = True

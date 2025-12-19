@@ -11,31 +11,31 @@ from avatar import Avatar
 
 class PlayerState:
 
-# paralisys
-    paralisys_sprites = None
+# paralyse
+    paralyse_sprites = None
 
     @classmethod
-    def load_paralisys_sprites(cls):
-        """Load all paralisys sprites from the sprites/paralyze folder"""
-        if cls.paralisys_sprites is None:
-            cls.paralisys_sprites = []
+    def load_paralyse_sprites(cls):
+        """Load all paralyse sprites from the sprites/paralyze folder"""
+        if cls.paralyse_sprites is None:
+            cls.paralyse_sprites = []
             script_dir = os.path.dirname(os.path.abspath(__file__))
-            paralisys_folder = os.path.join(script_dir, "sprites", "paralyze")
+            paralyse_folder = os.path.join(script_dir, "sprites", "paralyze")
 
             try:
-                frame_files = sorted([f for f in os.listdir(paralisys_folder) if f.endswith(('.png', '.jpg', '.jpeg'))])
+                frame_files = sorted([f for f in os.listdir(paralyse_folder) if f.endswith(('.png', '.jpg', '.jpeg'))])
                 for filename in frame_files:
-                    image_path = os.path.join(paralisys_folder, filename)
+                    image_path = os.path.join(paralyse_folder, filename)
                     sprite = pygame.image.load(image_path).convert_alpha()
-                    cls.paralisys_sprites.append(sprite)
+                    cls.paralyse_sprites.append(sprite)
 
-                print(f"Loaded {len(cls.paralisys_sprites)} paralisys sprites")
+                print(f"Loaded {len(cls.paralyse_sprites)} paralyse sprites")
             except FileNotFoundError:
-                print(f"Warning: {paralisys_folder} not found - no paralisys effects")
-                cls.paralisys_sprites = []
+                print(f"Warning: {paralyse_folder} not found - no paralyse effects")
+                cls.paralyse_sprites = []
 
     def __init__(self):
-        PlayerState.load_paralisys_sprites()
+        PlayerState.load_paralyse_sprites()
 
         self.is_hit = False  # Flag indicating if player was just hit
         self.hit_time = 0  # When the hit occurred
@@ -54,10 +54,10 @@ class PlayerState:
         self.paralyze_sound = pygame.mixer.Sound(paralyze_sound_path)
         self.paralyze_sound.set_volume(0.5)
 
-        #paralisys
-        self.current_paralisys_frame = 0
-        self.paralisys_frame_speed = 3
-        self.paralisys_frame_count = 0
+        #paralyse
+        self.current_paralyse_frame = 0
+        self.paralyse_frame_speed = 3
+        self.paralyse_frame_count = 0
 
     def _create_fallback_sound(self):
         """Create a simple hit sound if WAV file is missing"""
@@ -105,9 +105,9 @@ class PlayerState:
         # Return True if player died
         return self.health <= 0
 
-    def trigger_paralisys(self):
-        if PlayerState.paralisys_sprites:
-            self.current_paralisys = (PlayerState.paralisys_sprites)
+    def trigger_paralyse(self):
+        if PlayerState.paralyse_sprites:
+            self.current_paralyse = (PlayerState.paralyse_sprites)
             self.is_firing = True
             self.fire_frame_count = self.hit_duration  # How long hit state lasts (ms)
 
@@ -121,7 +121,7 @@ class PlayerState:
 
         # paralyze
         if self.is_hit == False:
-            self.trigger_paralisys
+            self.trigger_paralyse
             self.hit_time = pygame.time.get_ticks()
             self.is_hit = True
 
@@ -131,22 +131,22 @@ class PlayerState:
 
 
         # Draw flame sprite if firing
-    def draw_paralisys(self, surface, avatar):
-        if self.is_hit and PlayerState.paralisys_sprites:
+    def draw_paralyse(self, surface, avatar):
+        if self.is_hit and PlayerState.paralyse_sprites:
             # Cycle through frames
-            if self.current_paralisys_frame < len(PlayerState.paralisys_sprites):
-                current_sprite = PlayerState.paralisys_sprites[self.current_paralisys_frame]
+            if self.current_paralyse_frame < len(PlayerState.paralyse_sprites):
+                current_sprite = PlayerState.paralyse_sprites[self.current_paralyse_frame]
 
                 # Scale and position over avatar
-                paralisys_width = 70
-                paralisys_height = 70
-                scaled_paralisys = pygame.transform.scale(current_sprite, (paralisys_width, paralisys_height))
+                paralyse_width = 70
+                paralyse_height = 70
+                scaled_paralyse = pygame.transform.scale(current_sprite, (paralyse_width, paralyse_height))
 
                 # Center on avatar
-                paralisys_x = avatar.rect.centerx - paralisys_width // 2
-                paralisys_y = avatar.rect.centery - paralisys_height // 2
+                paralyse_x = avatar.rect.centerx - paralyse_width // 2
+                paralyse_y = avatar.rect.centery - paralyse_height // 2
 
-                surface.blit(scaled_paralisys, (paralisys_x, paralisys_y))
+                surface.blit(scaled_paralyse, (paralyse_x, paralyse_y))
 
 
     def update(self):
@@ -157,24 +157,24 @@ class PlayerState:
             current_time = pygame.time.get_ticks()
             # Check if hit duration has passed
 
-            self.paralisys_frame_count += 1
-            if self.paralisys_frame_count >= self.paralisys_frame_speed:
-                self.paralisys_frame_count = 0
-                self.current_paralisys_frame += 1
+            self.paralyse_frame_count += 1
+            if self.paralyse_frame_count >= self.paralyse_frame_speed:
+                self.paralyse_frame_count = 0
+                self.current_paralyse_frame += 1
 
-                if self.current_paralisys_frame >= len(PlayerState.paralisys_sprites):
-                    self.current_paralisys_frame = 0
+                if self.current_paralyse_frame >= len(PlayerState.paralyse_sprites):
+                    self.current_paralyse_frame = 0
 
 
             if current_time >= self.hit_time + self.hit_duration:
                 self.is_hit = False
                 print("Hit state ended - player vulnerable again")
 
-    def update_ship_collision(self, avatar, astroidlist):
+    def update_ship_collision(self, avatar, astroid_list, splitter_list):
         if self.is_hit:
             return  # invincibility frames active
 
-        if pygame.Rect.collidelist(avatar.rect, astroidlist) != -1:
+        if pygame.Rect.collidelist(avatar.rect, astroid_list) != -1 or pygame.Rect.collidelist(avatar.rect, splitter_list) != -1:
                 self.paralyse()
                 print("You've been hit")
 
