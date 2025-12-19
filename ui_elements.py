@@ -9,11 +9,11 @@ def create_main_surface():
     window_size = [600, 600]
     return pygame.display.set_mode(window_size, pygame.RESIZABLE)
 
-def draw_circle(surface):
-    # Draw circle centered in the window
-    center_x = surface.get_width() // 2
-    center_y = surface.get_height() // 2
-    pygame.draw.circle(surface, (255, 0, 0), (center_x, center_y), 50)
+# def draw_circle(surface):
+#     # Draw circle centered in the window
+#     center_x = surface.get_width() // 2
+#     center_y = surface.get_height() // 2
+#     pygame.draw.circle(surface, (255, 0, 0), (center_x, center_y), 50)
 
 def draw_health(surface, font, health):
     # Draw health text at top-left
