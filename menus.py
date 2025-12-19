@@ -455,17 +455,17 @@ def game_over_menu(elapsed_time):
 
     # Buttons
     restart_btn = pygame_gui.elements.UIButton(
-        pygame.Rect(screen.get_width() // 2 - 100, screen.get_height() // 2 + 60, 200, 50),
+        pygame.Rect(screen.get_width() // 2 - 100, screen.get_height() // 2 + 80, 200, 50),
         "Restart",
         manager
     )
     main_menu_btn = pygame_gui.elements.UIButton(
-        pygame.Rect(screen.get_width() // 2 - 100, screen.get_height() // 2 + 120, 200, 50),
+        pygame.Rect(screen.get_width() // 2 - 100, screen.get_height() // 2 + 140, 200, 50),
         "Main Menu",
         manager
     )
     quit_btn = pygame_gui.elements.UIButton(
-        pygame.Rect(screen.get_width() // 2 - 100, screen.get_height() // 2 + 180, 200, 50),
+        pygame.Rect(screen.get_width() // 2 - 100, screen.get_height() // 2 + 200, 200, 50),
         "Quit",
         manager
     )
