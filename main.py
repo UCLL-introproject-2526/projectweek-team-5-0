@@ -80,6 +80,17 @@ def main(skip_menu=False):
 
     start_time = time.time()
 
+
+    # @alina hier is de muziek-code
+    try:
+        script_dir = os.path.dirname(os.path.abspath(__file__))
+        music_path = os.path.join(script_dir, "sfx", "background_music.mp3")
+        pygame.mixer.music.load(music_path)
+        pygame.mixer.music.set_volume(0.3)
+        pygame.mixer.music.play(-1)
+    except:
+        print("fusicile not found")
+
     asteroids = []
     splitters = []
     projectiles = []
