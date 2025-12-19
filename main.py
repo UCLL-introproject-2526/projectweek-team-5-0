@@ -86,7 +86,7 @@ def main(skip_menu=False):
         script_dir = os.path.dirname(os.path.abspath(__file__))
         music_path = os.path.join(script_dir, "sfx", "background_music.mp3")
         pygame.mixer.music.load(music_path)
-        pygame.mixer.music.set_volume(0.3)
+        pygame.mixer.music.set_volume(1)
         pygame.mixer.music.play(-1) #dit is voor looping stel iemand overleeft 6minuten of zo
     except:
         print("fusicile not found")
