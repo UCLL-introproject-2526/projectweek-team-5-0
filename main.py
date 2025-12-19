@@ -96,13 +96,13 @@ def main(skip_menu=False):
     # @alina hier is de muziek-code
     try:
         script_dir = os.path.dirname(os.path.abspath(__file__))
-        music_path = os.path.join(script_dir, "sfx", "background_music_synced.mp3")
+        music_path = os.path.join(script_dir, "sfx", "game_music_120bpm.wav")
         pygame.mixer.music.load(music_path)
         pygame.mixer.music.set_volume(1)
         pygame.mixer.music.play(-1)  # Start music
         
         # NOW sync the metronome to the music start time
-        metronome.sync_to_music_start(offset_ms=128)
+        metronome.sync_to_music_start(offset_ms=200)
         
     except:
         print("music file not found")
