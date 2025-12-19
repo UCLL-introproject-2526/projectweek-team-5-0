@@ -47,7 +47,6 @@ def main(skip_menu=False):
     clock = pygame.time.Clock()
     font = pygame.font.Font(None, 36)
     player_state = PlayerState()
-    metronome = Metronome(bpm=120)
     running = True # run game status
     game_over = False
     combat_mod = CombatModifier()
@@ -56,6 +55,8 @@ def main(skip_menu=False):
 
     # Only show main menu if skip_menu is False
     if not skip_menu:
+        
+
         while running:
             action = main_menu(surface)  # Returns "start", "settings", or quits
 
@@ -77,20 +78,7 @@ def main(skip_menu=False):
             elif action == "quit":
                 close_game()
                 return
-
-    start_time = time.time()
-
-
-    # @alina hier is de muziek-code
-    try:
-        script_dir = os.path.dirname(os.path.abspath(__file__))
-        music_path = os.path.join(script_dir, "sfx", "background_music_louder.mp3")
-        pygame.mixer.music.load(music_path)
-        pygame.mixer.music.set_volume(1)
-        pygame.mixer.music.play(-1) #dit is voor looping stel iemand overleeft 6minuten of zo
-    except:
-        print("fusicile not found")
-
+            
     asteroids = []
     splitters = []
     projectiles = []
@@ -99,6 +87,20 @@ def main(skip_menu=False):
     healthpacks = []
     last_healthpack_spawn = 0
     explosions = []
+
+    start_time = time.time()
+
+    metronome = Metronome(bpm=120)
+    # @alina hier is de muziek-code
+    try:
+        script_dir = os.path.dirname(os.path.abspath(__file__))
+        music_path = os.path.join(script_dir, "sfx", "background_music_synced.mp3")
+        pygame.mixer.music.load(music_path)
+        pygame.mixer.music.set_volume(1)
+        pygame.time.delay(0)
+        pygame.mixer.music.play(-1) #dit is voor looping stel iemand overleeft 6minuten of zo
+    except:
+        print("fusicile not found")
 
     # Create a avatar instance
     avatar = Avatar(surface.get_width(), surface.get_height(), player_state)
