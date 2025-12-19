@@ -63,6 +63,7 @@ class Avatar:
 
         skin_path = {
             "default": "sprites/player/player.png",
+            "doge": "sprites/player/player_skin_doge.png",
             "redeye": "sprites/player/player_skin_eye.png",
             "pinky": "sprites/player/player_skin_pink.png"
         }

@@ -370,6 +370,11 @@ def skins_menu(surface):
                     input_buffer.pop(0)
 
                 if input_buffer == code and easter_egg_window is None:
+                    print('secret found')
+                    current_skin = "doge"
+                    skin_default_btn.disable()
+                    skin_pinky_btn.disable()
+                    skin_redeye_btn.disable()
                     easter_egg_window = pygame_gui.windows.UIMessageWindow(
                         rect=pygame.Rect(
                             surface.get_width() // 2 - 200,
