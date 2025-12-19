@@ -255,7 +255,7 @@ def video_menu(surface):
 
     # Create buttons
     fullscreen_btn = pygame_gui.elements.UIButton(pygame.Rect(surface.get_width() // 2 - 100, surface.get_height() // 2 + 40, 200, 50), "Fullscreen", manager)
-    windowed_btn = pygame_gui.elements.UIButton(pygame.Rect(surface.get_width() // 2 - 100, surface.get_height() // 2 + 100, 200, 50), "Windowed", manager)
+    windowed_btn = pygame_gui.elements.UIButton(pygame.Rect(surface.get_width() // 2 - 100, surface.get_height() // 2 + 100, 200, 50), "Windowed (experimental)", manager)
     back_btn = pygame_gui.elements.UIButton(pygame.Rect(surface.get_width() // 2 - 100, surface.get_height() // 2 + 160, 200, 50), "Back", manager)
 
     # Set initial button states
@@ -284,12 +284,17 @@ def video_menu(surface):
                     current_video = "fullscreen"
                     fullscreen_btn.disable()
                     windowed_btn.enable()
-                    print('fullscreen')
+
+                    # set window fullscreen
+                    surface = pygame.display.set_mode((pygame.display.Info().current_w, pygame.display.Info().current_h), pygame.FULLSCREEN)
+
                 elif event.ui_element == windowed_btn:
                     current_video = "windowed"
                     windowed_btn.disable()
                     fullscreen_btn.enable()
-                    print('windowed')
+
+                    # Set to windowed mode with resizing enabled
+                    surface = pygame.display.set_mode((1920, 1080), pygame.RESIZABLE)
 
         manager.update(time_delta)
         manager.draw_ui(surface)
