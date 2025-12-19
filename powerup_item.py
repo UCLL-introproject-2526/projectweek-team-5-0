@@ -11,7 +11,7 @@ class PowerUpItem:
         if cls.sprite is None:
             script_dir = os.path.dirname(os.path.abspath(__file__))
             try:
-                img_path = os.path.join(script_dir, "sprites/upgrades/ShootGun.png")
+                img_path = os.path.join(script_dir, "sprites/upgrades/purple_shock_weapon.png")
                 cls.sprite = pygame.image.load(img_path).convert_alpha()
             except:
                 cls.sprite = pygame.Surface((30, 30))
