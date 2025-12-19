@@ -10,7 +10,7 @@
 <h4 align="center">A simple python game  built using <a href="https://www.pygame.org/" target="_blank">Pygame</a>.</h4>
 
 <p align="center">
-  <a href="#key-features">Key Features</a> •
+  <a href="#cool-features">Cool Features</a> •
   <a href="#how-to-play">How To Play</a> •
   <a href="#credits">Credits</a> •
 </p>
