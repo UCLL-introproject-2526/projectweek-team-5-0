@@ -93,7 +93,7 @@ def main(skip_menu=False):
     avatar = Avatar(surface.get_width(), surface.get_height(), player_state)
 
     def spawn_asteroid():
-        asteroid = Asteroid(surface.get_width(), surface.get_height(), 10, stage_speed)
+        asteroid = Asteroid(surface.get_width(), surface.get_height(), 10, stage_speed, spawn_time=elapsed_time)
         asteroids.append(asteroid)
 
     def spawn_healthpack():
@@ -174,7 +174,7 @@ def main(skip_menu=False):
             for asteroid in asteroids[:]:
                 asteroid.update() # CHANGE: No longer passing projectiles
                 # Only enable doomsday if time > 180 seconds
-                if elapsed_time > 180: #Stage 4 condition
+                if asteroid.spawn_time >= 180: #Stage 4 condition
                     explosion = Explosion(asteroid.rect.centerx, asteroid.rect.centery)
                     explosions.append(explosion)
 
@@ -205,7 +205,7 @@ def main(skip_menu=False):
                     explosions.append(explosion)
 
                     asteroids.remove(asteroid)
-                    player_state.take_damage(asteroid_damage)
+                    player_state.take_damage(asteroid.damage_value)
 
             # Splitter Update + Collision
             for splitter in splitters[:]:

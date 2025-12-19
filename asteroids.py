@@ -15,8 +15,14 @@ class Asteroid:
             cls.destroy_sound.set_volume(0.1)
             print("Asteroid destroy sound loaded")
 
-    def __init__(self, screen_width, screen_height, health, speed):
+    def __init__(self, screen_width, screen_height, health, speed, spawn_time):
         Asteroid.load_sound()
+        self.spawn_time = spawn_time
+
+        if self.spawn_time >= 180:
+            self.damage_value = 100
+        else:
+            self.damage_value = 10
         script_dir = os.path.dirname(os.path.abspath(__file__))
         sprite_folder = os.path.join(script_dir, "sprites", "asteroid")
 
