@@ -334,7 +334,7 @@ def skins_menu(surface):
     )
     skin_pinky_btn = pygame_gui.elements.UIButton(
         pygame.Rect(surface.get_width() // 2 - 100, surface.get_height() // 2 + 160, 200, 50),
-        "Pinky", manager
+        "Pinkeye", manager
     )
     back_btn = pygame_gui.elements.UIButton(
         pygame.Rect(surface.get_width() // 2 - 100, surface.get_height() // 2 + 220, 200, 50),
