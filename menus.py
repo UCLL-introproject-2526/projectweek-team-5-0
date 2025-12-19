@@ -228,7 +228,10 @@ def keyboard_menu(surface):
         pygame.display.flip()
 
 # video sebmenu
+current_video = "fullscreen"
+
 def video_menu(surface):
+    global current_video
     clock = pygame.time.Clock()
 
     background = pygame.image.load("sprites/background/space.jpg").convert()
@@ -242,7 +245,6 @@ def video_menu(surface):
 
     title_font = pygame.font.Font(None, 80)
     title_text = title_font.render("Meteo Beats", True, (255, 255, 255))
-    title_text = title_font.render("Meteo Beats", True, (255, 255, 255))
     title_rect = title_text.get_rect(center=(surface.get_width() // 2, surface.get_height() // 2 - 50))
 
     subtitle_font = pygame.font.Font(None, 60)
@@ -251,10 +253,16 @@ def video_menu(surface):
 
     manager = pygame_gui.UIManager(surface.get_size(), "gui-themes/theme.json")
 
-    # buttons
+    # Create buttons
     fullscreen_btn = pygame_gui.elements.UIButton(pygame.Rect(surface.get_width() // 2 - 100, surface.get_height() // 2 + 40, 200, 50), "Fullscreen", manager)
     windowed_btn = pygame_gui.elements.UIButton(pygame.Rect(surface.get_width() // 2 - 100, surface.get_height() // 2 + 100, 200, 50), "Windowed", manager)
     back_btn = pygame_gui.elements.UIButton(pygame.Rect(surface.get_width() // 2 - 100, surface.get_height() // 2 + 160, 200, 50), "Back", manager)
+
+    # Set initial button states
+    if current_video == "fullscreen":
+        fullscreen_btn.disable()
+    elif current_video == "windowed":
+        windowed_btn.disable()
 
     while True:
         time_delta = clock.tick(60) / 1000.0
@@ -273,10 +281,12 @@ def video_menu(surface):
                 if event.ui_element == back_btn:
                     return "back"
                 elif event.ui_element == fullscreen_btn:
+                    current_video = "fullscreen"
                     fullscreen_btn.disable()
                     windowed_btn.enable()
                     print('fullscreen')
                 elif event.ui_element == windowed_btn:
+                    current_video = "windowed"
                     windowed_btn.disable()
                     fullscreen_btn.enable()
                     print('windowed')
