@@ -29,7 +29,8 @@ def main_menu(screen):
     start_btn = pygame_gui.elements.UIButton(pygame.Rect(screen.get_width()//2 - 100, screen.get_height()//2, 200, 50), "Start Game", manager)
     settings_btn = pygame_gui.elements.UIButton(pygame.Rect(screen.get_width()//2 - 100, screen.get_height()//2 + 60, 200, 50), "Settings", manager)
     how_to_play_btn = pygame_gui.elements.UIButton(pygame.Rect(screen.get_width()//2 - 100, screen.get_height()//2 + 120, 200, 50), "How to Play", manager)
-    quit_btn = pygame_gui.elements.UIButton(pygame.Rect(screen.get_width()//2 - 100, screen.get_height()//2 + 180, 200, 50), "Quit", manager)
+    credits_btn = pygame_gui.elements.UIButton(pygame.Rect(screen.get_width()//2 - 100, screen.get_height()//2 + 180, 200, 50), "Credits", manager)
+    quit_btn = pygame_gui.elements.UIButton(pygame.Rect(screen.get_width()//2 - 100, screen.get_height()//2 + 240, 200, 50), "Quit", manager)
 
     while True:
         time_delta = clock.tick(60)/1000.0
@@ -49,7 +50,7 @@ def main_menu(screen):
                     return "settings"
                 elif event.ui_element == how_to_play_btn:  # NEW
                     pygame_gui.windows.UIMessageWindow(
-                        rect=pygame.Rect((screen.get_width()//2 - 300, screen.get_height()//2 - 200), (600, 400)),
+                        rect=pygame.Rect((screen.get_width()//2 - 300, screen.get_height()//2 - 250), (600, 400)),
                         html_message="""
 <b>EARTH'S LAST DEFENSE</b>
 <div style="margin-bottom: 5px; padding-bottom: 0px;">A massive meteoroid stream is headed straight for Earth! You're piloting humanity's last hope - a prototype spacecraft equipped with an experimental Plasma Cannon.</div>
@@ -73,6 +74,25 @@ def main_menu(screen):
 """,
                         manager=manager,
                         window_title="How to Play"
+                    )
+                elif event.ui_element == credits_btn:  # NEW
+                    pygame_gui.windows.UIMessageWindow(
+                        rect=pygame.Rect((screen.get_width()//2 - 150, screen.get_height()//2 - 250), (300, 450)),
+                        html_message="""
+<b>Developed By</b>
+<div style="margin-bottom: 5px; padding-bottom: 0px;">Alina Mievis</div>
+<div style="margin-bottom: 5px; padding-bottom: 0px;">David Renneboog</div>
+<div style="margin-bottom: 5px; padding-bottom: 0px;">Dias Stas</div>
+<div style="margin-bottom: 5px; padding-bottom: 0px;">Glen Zhang</div>
+<div style="margin-bottom: 5px; padding-bottom: 0px;">Tinya Coens</div>
+
+<b>Music by</b>
+<div style="margin-bottom: 5px; padding-bottom: 0px;">Minamalov_Techno</div>
+<div style="margin-bottom: 5px; padding-bottom: 0px;">https://www.youtube.com/@koslotkos</div>
+
+""",
+                        manager=manager,
+                        window_title="Credits"
                     )
                 elif event.ui_element == quit_btn:
                     pygame.quit()
