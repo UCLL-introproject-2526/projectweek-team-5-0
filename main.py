@@ -90,18 +90,25 @@ def main(skip_menu=False):
 
     start_time = time.time()
 
+    # Create a metronome instance BEFORE starting music
     metronome = Metronome(bpm=120)
+
     # @alina hier is de muziek-code
     try:
         script_dir = os.path.dirname(os.path.abspath(__file__))
         music_path = os.path.join(script_dir, "sfx", "background_music_synced.mp3")
         pygame.mixer.music.load(music_path)
         pygame.mixer.music.set_volume(1)
-        pygame.time.delay(0)
-        pygame.mixer.music.play(-1) #dit is voor looping stel iemand overleeft 6minuten of zo
+        pygame.mixer.music.play(-1)  # Start music
+        
+        # NOW sync the metronome to the music start time
+        metronome.sync_to_music_start(offset_ms=128)
+        
     except:
-        print("fusicile not found")
+        print("music file not found")
 
+# Remove the old metronome creation line that was here
+# metronome = Metronome(bpm=120)  # DELETE THIS LINE
     # Create a avatar instance
     avatar = Avatar(surface.get_width(), surface.get_height(), player_state)
 

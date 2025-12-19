@@ -27,6 +27,22 @@ class Metronome:
 
         self.shoot_tolerance = 100 
 
+    def sync_to_music_start(self, offset_ms=0):
+        """
+        Call this immediately after starting the music to sync timing
+        offset_ms: how many milliseconds into the music the first beat occurs
+        """
+        current_time = pygame.time.get_ticks()
+        
+        # Adjust for music offset
+        self.last_beat_time = current_time - offset_ms
+        self.next_beat_time = current_time + (self.beat_interval - offset_ms)
+        self.current_beat = 0
+        
+        print(f"Metronome synced to music at {current_time}ms with {offset_ms}ms offset")
+        
+        print(f"Metronome synced to music at {current_time}ms")
+
     def update(self, combat_mod=None):
         current_time = pygame.time.get_ticks()
 
