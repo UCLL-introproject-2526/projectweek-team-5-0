@@ -1,7 +1,6 @@
 <h1 align="center">
   <br>
-  <a><img src="https://raw.githubusercontent.com/UCLL-introproject-2526/projectweek-team-5-0/main/sprites/poster/poster-groep-5.png
-  " alt="Meteo Beats" width="200"></a>
+  <a><img src="https://raw.githubusercontent.com/UCLL-introproject-2526/projectweek-team-5-0/main/sprites/poster/poster-groep-5.png" alt="Meteo Beats" width="200"></a>
   <br>
   Meteo Beats
   <br>
