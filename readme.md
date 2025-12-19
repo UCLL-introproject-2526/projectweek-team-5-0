@@ -31,7 +31,7 @@
 You need to shoot on the beat. Time youre shots and use powerups and health packs to stay alive
 
 > **Note**
-> If you're using Linux Hyperland or a other tilling wm, Youre bar might still be on top once game loads. Manually setting fullscreen resolves this
+> If you're using Linux Hyperland or a other tilling wm, You're bar might still be on top once the game loads. Manually toggling fullscreen solves this issue.
 
 ## Credits
 
