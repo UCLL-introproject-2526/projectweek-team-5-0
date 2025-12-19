@@ -288,8 +288,19 @@ def video_menu(surface):
 # skins sebmenu
 current_skin = "default"
 
+# Easter egg
+code = [
+    pygame.K_UP, pygame.K_UP,
+    pygame.K_DOWN, pygame.K_DOWN,
+    pygame.K_LEFT, pygame.K_RIGHT,
+    pygame.K_LEFT, pygame.K_RIGHT,
+    pygame.K_a
+]
+input_buffer = []
+easter_egg_window = None
+
 def skins_menu(surface):
-    global current_skin
+    global current_skin, easter_egg_window
 
     clock = pygame.time.Clock()
 
@@ -350,6 +361,28 @@ def skins_menu(surface):
             if event.type == pygame.QUIT:
                 pygame.quit()
                 exit()
+
+            # Easter egg: detect ↑ ↑ ↓ ↓ ← → ← → A
+            if event.type == pygame.KEYDOWN:
+                input_buffer.append(event.key)
+
+                if len(input_buffer) > len(code):
+                    input_buffer.pop(0)
+
+                if input_buffer == code and easter_egg_window is None:
+                    easter_egg_window = pygame_gui.windows.UIMessageWindow(
+                        rect=pygame.Rect(
+                            surface.get_width() // 2 - 200,
+                            surface.get_height() // 2 - 100,
+                            400,
+                            200
+                        ),
+                        html_message=(
+                            "you found a easter egg"
+                        ),
+                        manager=manager,
+                        window_title="Secret"
+                    )
 
             if event.type == pygame_gui.UI_BUTTON_PRESSED:
                 if event.ui_element == back_btn:
